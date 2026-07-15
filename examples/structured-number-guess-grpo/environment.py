@@ -37,6 +37,11 @@ def parse_guess(text: str) -> int | None:
     return guess
 
 
+def parse_bounded_guess(text: str, low: int, high: int) -> int | None:
+    guess = parse_guess(text)
+    return guess if guess is not None and low <= guess <= high else None
+
+
 def build_dataset(
     num_examples: int = 24, low: int = 1, high: int = 100, max_turns: int = 7
 ) -> list[dict]:
@@ -92,8 +97,8 @@ class StructuredNumberGuessEnvironment(EnvironmentMultiTurn):
     ) -> EnvironmentStepResult:
         _ = messages
         low, high, secret, _ = metadata(example)
-        guess = parse_guess(assistant_response)
-        if guess is None or not low <= guess <= high:
+        guess = parse_bounded_guess(assistant_response, low, high)
+        if guess is None:
             reply = f"invalid: reply with one JSON integer guess from {low} through {high}"
             return EnvironmentStepResult(
                 done=False, messages=({"role": "user", "content": reply},)
@@ -110,16 +115,15 @@ class StructuredNumberGuessEnvironment(EnvironmentMultiTurn):
     def score_episode(
         self, example: TaskExample, episode: EnvironmentEpisode
     ) -> RewardResult:
-        _ = example
-        solved = any(
-            message["role"] == "user" and str(message["content"]).strip() == "correct"
+        low, high, secret, _ = metadata(example)
+        guesses = [
+            parse_bounded_guess(str(message["content"]), low, high)
             for message in episode.messages
-        )
-        assistant_messages = [
-            message for message in episode.messages if message["role"] == "assistant"
+            if message["role"] == "assistant"
         ]
-        valid = sum(parse_guess(str(message["content"])) is not None for message in assistant_messages)
-        format_score = valid / max(1, len(assistant_messages))
+        solved = secret in guesses
+        valid = sum(guess is not None for guess in guesses)
+        format_score = valid / max(1, len(guesses))
         score = (0.9 if solved else 0.0) + 0.1 * format_score
         return RewardResult(
             score=score,
