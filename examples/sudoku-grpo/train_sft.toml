@@ -1,0 +1,25 @@
+model = "Qwen/Qwen3.5-4B"
+algorithm = "sft"
+thinking = false
+seed = 42
+
+[environment]
+id = "clay/sudoku-warmstart-sft-20260717"
+
+[train]
+epochs = 3
+max_examples = 99
+max_steps = 75
+save_at_steps = [25, 50, 75]
+batch_size = 4
+max_context_tokens = 8192
+learning_rate = 0.0001
+lora_rank = 16
+lora_alpha = 32
+
+[gpu]
+provider = "runpod"
+type = "H100"
+exact_type = "H100"
+max_retries = 5
+max_wall_seconds = 3600

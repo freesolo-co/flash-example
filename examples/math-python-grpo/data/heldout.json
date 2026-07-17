@@ -1,0 +1,602 @@
+[
+  {
+    "id": "math-python-grpo-heldout-0000",
+    "input": "Compute the binomial coefficient C(128, 19).",
+    "expected_answer": "21955357473882018032000",
+    "metadata": {
+      "answer": "21955357473882018032000",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 100
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0001",
+    "input": "Find the sum of the decimal digits of 75^98.",
+    "expected_answer": "837",
+    "metadata": {
+      "answer": "837",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 101
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0002",
+    "input": "Find the sum of the decimal digits of 33 factorial.",
+    "expected_answer": "144",
+    "metadata": {
+      "answer": "144",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 102
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0003",
+    "input": "Find the sum of the decimal digits of 54546210^4.",
+    "expected_answer": "126",
+    "metadata": {
+      "answer": "126",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 103
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0004",
+    "input": "Compute exactly: 63760725773 multiplied by 923933921.",
+    "expected_answer": "58910697369253645933",
+    "metadata": {
+      "answer": "58910697369253645933",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 104
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0005",
+    "input": "Compute 474648426^969 modulo 793534.",
+    "expected_answer": "543494",
+    "metadata": {
+      "answer": "543494",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 105
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0006",
+    "input": "Find gcd(3202210910324, 7853234871191).",
+    "expected_answer": "1",
+    "metadata": {
+      "answer": "1",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 106
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0007",
+    "input": "Find lcm(4727, 421).",
+    "expected_answer": "1990067",
+    "metadata": {
+      "answer": "1990067",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 107
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0008",
+    "input": "Compute the binomial coefficient C(99, 9).",
+    "expected_answer": "1731030945644",
+    "metadata": {
+      "answer": "1731030945644",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 108
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0009",
+    "input": "Find the sum of the decimal digits of 144^25.",
+    "expected_answer": "216",
+    "metadata": {
+      "answer": "216",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 109
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0010",
+    "input": "Find the sum of the decimal digits of 128 factorial.",
+    "expected_answer": "828",
+    "metadata": {
+      "answer": "828",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 110
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0011",
+    "input": "Find the sum of the decimal digits of 35593335^3.",
+    "expected_answer": "126",
+    "metadata": {
+      "answer": "126",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 111
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0012",
+    "input": "Compute exactly: 95559325114 multiplied by 542218925.",
+    "expected_answer": "51814074537038582450",
+    "metadata": {
+      "answer": "51814074537038582450",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 112
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0013",
+    "input": "Compute 190738981^3498 modulo 502198.",
+    "expected_answer": "308085",
+    "metadata": {
+      "answer": "308085",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 113
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0014",
+    "input": "Find gcd(9388006962062, 6945063204091).",
+    "expected_answer": "1",
+    "metadata": {
+      "answer": "1",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 114
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0015",
+    "input": "Find lcm(1717, 2270).",
+    "expected_answer": "3897590",
+    "metadata": {
+      "answer": "3897590",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 115
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0016",
+    "input": "Compute the binomial coefficient C(61, 13).",
+    "expected_answer": "6566222272575",
+    "metadata": {
+      "answer": "6566222272575",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 116
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0017",
+    "input": "Find the sum of the decimal digits of 46^47.",
+    "expected_answer": "361",
+    "metadata": {
+      "answer": "361",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 117
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0018",
+    "input": "Find the sum of the decimal digits of 127 factorial.",
+    "expected_answer": "873",
+    "metadata": {
+      "answer": "873",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 118
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0019",
+    "input": "Find the sum of the decimal digits of 84297987^2.",
+    "expected_answer": "54",
+    "metadata": {
+      "answer": "54",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 119
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0020",
+    "input": "Compute exactly: 90259310664 multiplied by 183157682.",
+    "expected_answer": "16531686120136120848",
+    "metadata": {
+      "answer": "16531686120136120848",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 120
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0021",
+    "input": "Compute 139839279^3478 modulo 690546.",
+    "expected_answer": "503961",
+    "metadata": {
+      "answer": "503961",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 121
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0022",
+    "input": "Find gcd(7708422336313, 498013460981).",
+    "expected_answer": "1",
+    "metadata": {
+      "answer": "1",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 122
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0023",
+    "input": "Find lcm(2816, 904).",
+    "expected_answer": "318208",
+    "metadata": {
+      "answer": "318208",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 123
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0024",
+    "input": "Compute the binomial coefficient C(50, 21).",
+    "expected_answer": "67327446062800",
+    "metadata": {
+      "answer": "67327446062800",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 124
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0025",
+    "input": "Find the sum of the decimal digits of 140^98.",
+    "expected_answer": "475",
+    "metadata": {
+      "answer": "475",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 125
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0026",
+    "input": "Find the sum of the decimal digits of 37 factorial.",
+    "expected_answer": "153",
+    "metadata": {
+      "answer": "153",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 126
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0027",
+    "input": "Find the sum of the decimal digits of 8604609^5.",
+    "expected_answer": "171",
+    "metadata": {
+      "answer": "171",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 127
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0028",
+    "input": "Compute exactly: 71983305404 multiplied by 17668133.",
+    "expected_answer": "1271810613657490732",
+    "metadata": {
+      "answer": "1271810613657490732",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 128
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0029",
+    "input": "Compute 139275229^1948 modulo 814281.",
+    "expected_answer": "686026",
+    "metadata": {
+      "answer": "686026",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 129
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0030",
+    "input": "Find gcd(6738101272653, 2773082850550).",
+    "expected_answer": "1",
+    "metadata": {
+      "answer": "1",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 130
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0031",
+    "input": "Find lcm(4527, 666).",
+    "expected_answer": "334998",
+    "metadata": {
+      "answer": "334998",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 131
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0032",
+    "input": "Compute the binomial coefficient C(168, 30).",
+    "expected_answer": "1376636059192326914174153338863408",
+    "metadata": {
+      "answer": "1376636059192326914174153338863408",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 132
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0033",
+    "input": "Find the sum of the decimal digits of 126^27.",
+    "expected_answer": "261",
+    "metadata": {
+      "answer": "261",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 133
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0034",
+    "input": "Find the sum of the decimal digits of 87 factorial.",
+    "expected_answer": "495",
+    "metadata": {
+      "answer": "495",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 134
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0035",
+    "input": "Find the sum of the decimal digits of 13208679^7.",
+    "expected_answer": "225",
+    "metadata": {
+      "answer": "225",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 135
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0036",
+    "input": "Compute exactly: 10983771049 multiplied by 1476613.",
+    "expected_answer": "16218779119977037",
+    "metadata": {
+      "answer": "16218779119977037",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 136
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0037",
+    "input": "Compute 723774304^4525 modulo 208927.",
+    "expected_answer": "59172",
+    "metadata": {
+      "answer": "59172",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 137
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0038",
+    "input": "Find gcd(2673220161834, 3810939765087).",
+    "expected_answer": "3",
+    "metadata": {
+      "answer": "3",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 138
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0039",
+    "input": "Find lcm(2989, 3316).",
+    "expected_answer": "9911524",
+    "metadata": {
+      "answer": "9911524",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 139
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0040",
+    "input": "Compute the binomial coefficient C(106, 30).",
+    "expected_answer": "229195210180832933051198184",
+    "metadata": {
+      "answer": "229195210180832933051198184",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 140
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0041",
+    "input": "Find the sum of the decimal digits of 53^78.",
+    "expected_answer": "622",
+    "metadata": {
+      "answer": "622",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 141
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0042",
+    "input": "Find the sum of the decimal digits of 39 factorial.",
+    "expected_answer": "189",
+    "metadata": {
+      "answer": "189",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 142
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0043",
+    "input": "Find the sum of the decimal digits of 96612752^3.",
+    "expected_answer": "98",
+    "metadata": {
+      "answer": "98",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 143
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0044",
+    "input": "Compute exactly: 69599800240 multiplied by 601693752.",
+    "expected_answer": "41877764944856100480",
+    "metadata": {
+      "answer": "41877764944856100480",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 144
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0045",
+    "input": "Compute 325910274^3766 modulo 455022.",
+    "expected_answer": "172440",
+    "metadata": {
+      "answer": "172440",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 145
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0046",
+    "input": "Find gcd(3487316603106, 5910361277074).",
+    "expected_answer": "2",
+    "metadata": {
+      "answer": "2",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 146
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0047",
+    "input": "Find lcm(4533, 787).",
+    "expected_answer": "3567471",
+    "metadata": {
+      "answer": "3567471",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 147
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0048",
+    "input": "Compute the binomial coefficient C(47, 27).",
+    "expected_answer": "9762479679106",
+    "metadata": {
+      "answer": "9762479679106",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 148
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  },
+  {
+    "id": "math-python-grpo-heldout-0049",
+    "input": "Find the sum of the decimal digits of 151^114.",
+    "expected_answer": "1072",
+    "metadata": {
+      "answer": "1072",
+      "max_turns": 4,
+      "generator_seed": 20260717,
+      "generator_index": 149
+    },
+    "generator_seed": "seed=20260717;stream_offset=100"
+  }
+]

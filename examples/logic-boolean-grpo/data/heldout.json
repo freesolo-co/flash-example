@@ -1,0 +1,452 @@
+[
+  {
+    "id": "boolean-generated-heldout-0063",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( ( ( True and True ) and False ) and ( not ( False ) and True ) ) or ( not ( not ( False ) ) or ( False or False ) ) ) or ( ( ( ( True or False ) or True ) and not ( ( False and True ) ) ) and ( ( ( True and False ) or not ( True ) ) or ( True and True ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0066",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( ( ( ( True or True ) or ( False or False ) ) or ( False or False ) ) and ( not ( True ) and not ( True ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0023",
+    "input": "Evaluate the following boolean expression:\n\n( ( not ( ( False and True ) ) and ( ( False or True ) or True ) ) and ( ( False and True ) or ( False or True ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0065",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( ( ( ( False or True ) and not ( False ) ) or ( not ( False ) or False ) ) and ( ( False or True ) or True ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0060",
+    "input": "Evaluate the following boolean expression:\n\n( not ( not ( not ( False ) ) ) and not ( not ( ( True or False ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0043",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( not ( False ) and ( False or False ) ) and ( False and False ) ) and not ( ( not ( True ) or ( True or True ) ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0059",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( False and True ) and True ) and ( False or False ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0071",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( ( False or True ) and ( False and True ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0035",
+    "input": "Evaluate the following boolean expression:\n\n( ( not ( ( False and False ) ) or ( ( True or True ) or False ) ) or ( ( True and False ) and True ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0038",
+    "input": "Evaluate the following boolean expression:\n\n( ( True and True ) or True )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0017",
+    "input": "Evaluate the following boolean expression:\n\n( not ( ( not ( True ) or False ) ) or ( not ( ( True and False ) ) or ( ( True or True ) and ( False and True ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0076",
+    "input": "Evaluate the following boolean expression:\n\n( not ( ( True or True ) ) or ( True and True ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0090",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( True or True ) or False ) and ( False or False ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0074",
+    "input": "Evaluate the following boolean expression:\n\n( not ( not ( ( ( True or True ) and True ) ) ) and ( ( not ( True ) or True ) and ( True and False ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0003",
+    "input": "Evaluate the following boolean expression:\n\nnot ( not ( ( True and False ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0022",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( False or False ) or ( False or False ) ) and not ( not ( True ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0070",
+    "input": "Evaluate the following boolean expression:\n\n( ( False or False ) and False )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0087",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( not ( True ) or False ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0082",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( ( ( not ( True ) or ( False and True ) ) or ( True or True ) ) and ( not ( False ) or ( True or True ) ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0002",
+    "input": "Evaluate the following boolean expression:\n\n( ( not ( True ) or ( True or False ) ) and ( ( True and True ) or not ( False ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0081",
+    "input": "Evaluate the following boolean expression:\n\n( not ( ( ( ( False or True ) and True ) or ( ( True or True ) and ( False or False ) ) ) ) or not ( ( ( ( False and False ) and ( False and True ) ) and not ( True ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0093",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( ( ( True and True ) and ( True or True ) ) and ( False or True ) ) and ( ( False and False ) or True ) ) or not ( ( not ( False ) and False ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0084",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( ( ( True and True ) or True ) and ( True and True ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0061",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( ( ( False or False ) or not ( True ) ) or ( not ( False ) or False ) ) and ( ( True and True ) and True ) ) or ( not ( not ( ( False or True ) ) ) and not ( ( False or False ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0079",
+    "input": "Evaluate the following boolean expression:\n\n( not ( ( ( not ( False ) and True ) and ( True or False ) ) ) and ( not ( ( ( False and False ) and True ) ) and ( not ( True ) or True ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0094",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( not ( ( ( False or False ) or ( True or True ) ) ) and ( ( ( False or False ) or True ) and ( not ( True ) or not ( True ) ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0010",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( True or True ) or True ) and ( False or True ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0024",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( ( not ( False ) or ( False and False ) ) and ( False and True ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0047",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( not ( ( False and False ) ) and ( True and False ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0000",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( ( ( False and True ) and ( True or True ) ) and not ( ( False or False ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0085",
+    "input": "Evaluate the following boolean expression:\n\n( not ( ( ( ( True and False ) or ( True or True ) ) or ( False or False ) ) ) or ( not ( not ( False ) ) or ( not ( False ) or ( True and True ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0069",
+    "input": "Evaluate the following boolean expression:\n\n( not ( not ( ( ( True or True ) or ( False and False ) ) ) ) or ( ( ( False and False ) and False ) or ( False or False ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0001",
+    "input": "Evaluate the following boolean expression:\n\n( not ( ( False or True ) ) and not ( False ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0019",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( not ( ( False and True ) ) and not ( False ) ) and ( ( True and False ) or not ( True ) ) ) or ( not ( ( False and True ) ) or ( False or False ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0025",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( ( not ( False ) or True ) and ( False or True ) ) and ( not ( ( True and False ) ) and ( ( True and True ) or ( True or False ) ) ) ) or ( ( not ( ( True or True ) ) or ( True and True ) ) and ( ( ( True and True ) or ( False or False ) ) and ( ( True or False ) and True ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0011",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( False or False ) or ( True or False ) ) or not ( ( False and False ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0075",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( False or False ) and True ) or ( ( True or True ) and ( True or True ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0012",
+    "input": "Evaluate the following boolean expression:\n\nnot ( not ( ( ( True and False ) and not ( False ) ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0092",
+    "input": "Evaluate the following boolean expression:\n\n( ( True and False ) and ( True or False ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0064",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( ( ( True or False ) and True ) or not ( True ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0026",
+    "input": "Evaluate the following boolean expression:\n\n( ( not ( ( True or True ) ) and ( True or False ) ) or ( ( ( False and False ) and True ) or ( True or False ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0040",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( ( True and True ) and ( False and False ) ) and ( ( False or False ) or not ( False ) ) ) or ( ( False or False ) and ( True and True ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0053",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( False or False ) or ( True or False ) ) or ( True and False ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0039",
+    "input": "Evaluate the following boolean expression:\n\n( ( False or False ) and not ( False ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0049",
+    "input": "Evaluate the following boolean expression:\n\nnot ( ( ( False and True ) and ( False or True ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0013",
+    "input": "Evaluate the following boolean expression:\n\n( not ( True ) or True )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0091",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( True or True ) or not ( True ) ) or ( ( False or True ) or not ( False ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0054",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( not ( ( True and True ) ) or ( ( False and False ) and ( True or False ) ) ) or ( ( ( True or True ) and not ( True ) ) or not ( True ) ) ) or ( ( ( False and True ) and True ) and not ( ( True or True ) ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0072",
+    "input": "Evaluate the following boolean expression:\n\n( not ( ( ( True or True ) and True ) ) and ( not ( not ( False ) ) and ( not ( True ) or True ) ) )\n\nIs the expression True or False?",
+    "answer": "False",
+    "metadata": {
+      "answer": "False",
+      "source_split": "generated-heldout"
+    }
+  },
+  {
+    "id": "boolean-generated-heldout-0034",
+    "input": "Evaluate the following boolean expression:\n\n( ( ( ( ( False or False ) or not ( False ) ) and ( ( False or False ) and True ) ) and ( ( False and False ) or ( False or True ) ) ) or ( not ( ( ( False or False ) or True ) ) or not ( ( ( False and True ) or not ( True ) ) ) ) )\n\nIs the expression True or False?",
+    "answer": "True",
+    "metadata": {
+      "answer": "True",
+      "source_split": "generated-heldout"
+    }
+  }
+]

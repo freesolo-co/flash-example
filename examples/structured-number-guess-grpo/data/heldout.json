@@ -1,0 +1,602 @@
+[
+  {
+    "id": "number-guess-heldout-0100",
+    "input": "Find the secret number from 20260727001 through 20260727100.",
+    "expected_secret": 20260727042,
+    "metadata": {
+      "secret": 20260727042,
+      "low": 20260727001,
+      "high": 20260727100,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=100;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0101",
+    "input": "Find the secret number from 20260727101 through 20260727200.",
+    "expected_secret": 20260727142,
+    "metadata": {
+      "secret": 20260727142,
+      "low": 20260727101,
+      "high": 20260727200,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=101;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0102",
+    "input": "Find the secret number from 20260727201 through 20260727300.",
+    "expected_secret": 20260727242,
+    "metadata": {
+      "secret": 20260727242,
+      "low": 20260727201,
+      "high": 20260727300,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=102;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0103",
+    "input": "Find the secret number from 20260727301 through 20260727400.",
+    "expected_secret": 20260727342,
+    "metadata": {
+      "secret": 20260727342,
+      "low": 20260727301,
+      "high": 20260727400,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=103;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0104",
+    "input": "Find the secret number from 20260727401 through 20260727500.",
+    "expected_secret": 20260727442,
+    "metadata": {
+      "secret": 20260727442,
+      "low": 20260727401,
+      "high": 20260727500,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=104;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0105",
+    "input": "Find the secret number from 20260727501 through 20260727600.",
+    "expected_secret": 20260727542,
+    "metadata": {
+      "secret": 20260727542,
+      "low": 20260727501,
+      "high": 20260727600,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=105;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0106",
+    "input": "Find the secret number from 20260727601 through 20260727700.",
+    "expected_secret": 20260727642,
+    "metadata": {
+      "secret": 20260727642,
+      "low": 20260727601,
+      "high": 20260727700,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=106;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0107",
+    "input": "Find the secret number from 20260727701 through 20260727800.",
+    "expected_secret": 20260727742,
+    "metadata": {
+      "secret": 20260727742,
+      "low": 20260727701,
+      "high": 20260727800,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=107;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0108",
+    "input": "Find the secret number from 20260727801 through 20260727900.",
+    "expected_secret": 20260727842,
+    "metadata": {
+      "secret": 20260727842,
+      "low": 20260727801,
+      "high": 20260727900,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=108;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0109",
+    "input": "Find the secret number from 20260727901 through 20260728000.",
+    "expected_secret": 20260727942,
+    "metadata": {
+      "secret": 20260727942,
+      "low": 20260727901,
+      "high": 20260728000,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=109;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0110",
+    "input": "Find the secret number from 20260728001 through 20260728100.",
+    "expected_secret": 20260728042,
+    "metadata": {
+      "secret": 20260728042,
+      "low": 20260728001,
+      "high": 20260728100,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=110;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0111",
+    "input": "Find the secret number from 20260728101 through 20260728200.",
+    "expected_secret": 20260728142,
+    "metadata": {
+      "secret": 20260728142,
+      "low": 20260728101,
+      "high": 20260728200,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=111;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0112",
+    "input": "Find the secret number from 20260728201 through 20260728300.",
+    "expected_secret": 20260728242,
+    "metadata": {
+      "secret": 20260728242,
+      "low": 20260728201,
+      "high": 20260728300,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=112;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0113",
+    "input": "Find the secret number from 20260728301 through 20260728400.",
+    "expected_secret": 20260728342,
+    "metadata": {
+      "secret": 20260728342,
+      "low": 20260728301,
+      "high": 20260728400,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=113;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0114",
+    "input": "Find the secret number from 20260728401 through 20260728500.",
+    "expected_secret": 20260728442,
+    "metadata": {
+      "secret": 20260728442,
+      "low": 20260728401,
+      "high": 20260728500,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=114;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0115",
+    "input": "Find the secret number from 20260728501 through 20260728600.",
+    "expected_secret": 20260728542,
+    "metadata": {
+      "secret": 20260728542,
+      "low": 20260728501,
+      "high": 20260728600,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=115;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0116",
+    "input": "Find the secret number from 20260728601 through 20260728700.",
+    "expected_secret": 20260728642,
+    "metadata": {
+      "secret": 20260728642,
+      "low": 20260728601,
+      "high": 20260728700,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=116;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0117",
+    "input": "Find the secret number from 20260728701 through 20260728800.",
+    "expected_secret": 20260728742,
+    "metadata": {
+      "secret": 20260728742,
+      "low": 20260728701,
+      "high": 20260728800,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=117;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0118",
+    "input": "Find the secret number from 20260728801 through 20260728900.",
+    "expected_secret": 20260728842,
+    "metadata": {
+      "secret": 20260728842,
+      "low": 20260728801,
+      "high": 20260728900,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=118;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0119",
+    "input": "Find the secret number from 20260728901 through 20260729000.",
+    "expected_secret": 20260728942,
+    "metadata": {
+      "secret": 20260728942,
+      "low": 20260728901,
+      "high": 20260729000,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=119;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0120",
+    "input": "Find the secret number from 20260729001 through 20260729100.",
+    "expected_secret": 20260729042,
+    "metadata": {
+      "secret": 20260729042,
+      "low": 20260729001,
+      "high": 20260729100,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=120;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0121",
+    "input": "Find the secret number from 20260729101 through 20260729200.",
+    "expected_secret": 20260729142,
+    "metadata": {
+      "secret": 20260729142,
+      "low": 20260729101,
+      "high": 20260729200,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=121;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0122",
+    "input": "Find the secret number from 20260729201 through 20260729300.",
+    "expected_secret": 20260729242,
+    "metadata": {
+      "secret": 20260729242,
+      "low": 20260729201,
+      "high": 20260729300,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=122;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0123",
+    "input": "Find the secret number from 20260729301 through 20260729400.",
+    "expected_secret": 20260729342,
+    "metadata": {
+      "secret": 20260729342,
+      "low": 20260729301,
+      "high": 20260729400,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=123;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0124",
+    "input": "Find the secret number from 20260729401 through 20260729500.",
+    "expected_secret": 20260729442,
+    "metadata": {
+      "secret": 20260729442,
+      "low": 20260729401,
+      "high": 20260729500,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=124;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0125",
+    "input": "Find the secret number from 20260729501 through 20260729600.",
+    "expected_secret": 20260729542,
+    "metadata": {
+      "secret": 20260729542,
+      "low": 20260729501,
+      "high": 20260729600,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=125;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0126",
+    "input": "Find the secret number from 20260729601 through 20260729700.",
+    "expected_secret": 20260729642,
+    "metadata": {
+      "secret": 20260729642,
+      "low": 20260729601,
+      "high": 20260729700,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=126;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0127",
+    "input": "Find the secret number from 20260729701 through 20260729800.",
+    "expected_secret": 20260729742,
+    "metadata": {
+      "secret": 20260729742,
+      "low": 20260729701,
+      "high": 20260729800,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=127;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0128",
+    "input": "Find the secret number from 20260729801 through 20260729900.",
+    "expected_secret": 20260729842,
+    "metadata": {
+      "secret": 20260729842,
+      "low": 20260729801,
+      "high": 20260729900,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=128;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0129",
+    "input": "Find the secret number from 20260729901 through 20260730000.",
+    "expected_secret": 20260729942,
+    "metadata": {
+      "secret": 20260729942,
+      "low": 20260729901,
+      "high": 20260730000,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=129;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0130",
+    "input": "Find the secret number from 20260730001 through 20260730100.",
+    "expected_secret": 20260730042,
+    "metadata": {
+      "secret": 20260730042,
+      "low": 20260730001,
+      "high": 20260730100,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=130;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0131",
+    "input": "Find the secret number from 20260730101 through 20260730200.",
+    "expected_secret": 20260730142,
+    "metadata": {
+      "secret": 20260730142,
+      "low": 20260730101,
+      "high": 20260730200,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=131;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0132",
+    "input": "Find the secret number from 20260730201 through 20260730300.",
+    "expected_secret": 20260730242,
+    "metadata": {
+      "secret": 20260730242,
+      "low": 20260730201,
+      "high": 20260730300,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=132;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0133",
+    "input": "Find the secret number from 20260730301 through 20260730400.",
+    "expected_secret": 20260730342,
+    "metadata": {
+      "secret": 20260730342,
+      "low": 20260730301,
+      "high": 20260730400,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=133;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0134",
+    "input": "Find the secret number from 20260730401 through 20260730500.",
+    "expected_secret": 20260730442,
+    "metadata": {
+      "secret": 20260730442,
+      "low": 20260730401,
+      "high": 20260730500,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=134;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0135",
+    "input": "Find the secret number from 20260730501 through 20260730600.",
+    "expected_secret": 20260730542,
+    "metadata": {
+      "secret": 20260730542,
+      "low": 20260730501,
+      "high": 20260730600,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=135;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0136",
+    "input": "Find the secret number from 20260730601 through 20260730700.",
+    "expected_secret": 20260730642,
+    "metadata": {
+      "secret": 20260730642,
+      "low": 20260730601,
+      "high": 20260730700,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=136;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0137",
+    "input": "Find the secret number from 20260730701 through 20260730800.",
+    "expected_secret": 20260730742,
+    "metadata": {
+      "secret": 20260730742,
+      "low": 20260730701,
+      "high": 20260730800,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=137;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0138",
+    "input": "Find the secret number from 20260730801 through 20260730900.",
+    "expected_secret": 20260730842,
+    "metadata": {
+      "secret": 20260730842,
+      "low": 20260730801,
+      "high": 20260730900,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=138;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0139",
+    "input": "Find the secret number from 20260730901 through 20260731000.",
+    "expected_secret": 20260730942,
+    "metadata": {
+      "secret": 20260730942,
+      "low": 20260730901,
+      "high": 20260731000,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=139;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0140",
+    "input": "Find the secret number from 20260731001 through 20260731100.",
+    "expected_secret": 20260731042,
+    "metadata": {
+      "secret": 20260731042,
+      "low": 20260731001,
+      "high": 20260731100,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=140;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0141",
+    "input": "Find the secret number from 20260731101 through 20260731200.",
+    "expected_secret": 20260731142,
+    "metadata": {
+      "secret": 20260731142,
+      "low": 20260731101,
+      "high": 20260731200,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=141;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0142",
+    "input": "Find the secret number from 20260731201 through 20260731300.",
+    "expected_secret": 20260731242,
+    "metadata": {
+      "secret": 20260731242,
+      "low": 20260731201,
+      "high": 20260731300,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=142;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0143",
+    "input": "Find the secret number from 20260731301 through 20260731400.",
+    "expected_secret": 20260731342,
+    "metadata": {
+      "secret": 20260731342,
+      "low": 20260731301,
+      "high": 20260731400,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=143;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0144",
+    "input": "Find the secret number from 20260731401 through 20260731500.",
+    "expected_secret": 20260731442,
+    "metadata": {
+      "secret": 20260731442,
+      "low": 20260731401,
+      "high": 20260731500,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=144;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0145",
+    "input": "Find the secret number from 20260731501 through 20260731600.",
+    "expected_secret": 20260731542,
+    "metadata": {
+      "secret": 20260731542,
+      "low": 20260731501,
+      "high": 20260731600,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=145;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0146",
+    "input": "Find the secret number from 20260731601 through 20260731700.",
+    "expected_secret": 20260731642,
+    "metadata": {
+      "secret": 20260731642,
+      "low": 20260731601,
+      "high": 20260731700,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=146;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0147",
+    "input": "Find the secret number from 20260731701 through 20260731800.",
+    "expected_secret": 20260731742,
+    "metadata": {
+      "secret": 20260731742,
+      "low": 20260731701,
+      "high": 20260731800,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=147;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0148",
+    "input": "Find the secret number from 20260731801 through 20260731900.",
+    "expected_secret": 20260731842,
+    "metadata": {
+      "secret": 20260731842,
+      "low": 20260731801,
+      "high": 20260731900,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=148;base_seed=20260717"
+  },
+  {
+    "id": "number-guess-heldout-0149",
+    "input": "Find the secret number from 20260731901 through 20260732000.",
+    "expected_secret": 20260731942,
+    "metadata": {
+      "secret": 20260731942,
+      "low": 20260731901,
+      "high": 20260732000,
+      "max_turns": 7
+    },
+    "generator_seed": "fixed_rng=7;range_block=149;base_seed=20260717"
+  }
+]

@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import re
+from pathlib import Path
 
 from freesolo.datasets import TaskExample
 from freesolo.environments import EnvironmentSingleTurn, RewardResult
@@ -12,6 +14,7 @@ SYSTEM_PROMPT = (
     "in the form Answer: <integer>."
 )
 _FINAL_ANSWER = re.compile(r"(?:^|\n)Answer:\s*(-?\d+)\s*$", re.IGNORECASE)
+_DATASET_PATH = Path(__file__).parent / "data" / "train.jsonl"
 
 
 def extract_answer(text: str) -> int | None:
@@ -56,9 +59,30 @@ def build_dataset() -> list[dict]:
     return rows
 
 
+def load_distilled_dataset(path: str | Path = _DATASET_PATH) -> list[dict]:
+    rows = []
+    with Path(path).open() as handle:
+        for index, line in enumerate(handle):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            answer = extract_answer(str(row["output"]))
+            if answer is None:
+                raise ValueError(f"distilled row {index} has no final answer")
+            rows.append(
+                {
+                    "id": f"thinking-math-distilled-{index:04d}",
+                    "input": row["input"],
+                    "output": row["output"],
+                    "metadata": {"answer": answer},
+                }
+            )
+    return rows
+
+
 class ThinkingMathEnvironment(EnvironmentSingleTurn):
-    def __init__(self) -> None:
-        self.dataset = build_dataset()
+    def __init__(self, dataset_path: str | Path = _DATASET_PATH) -> None:
+        self.dataset = load_distilled_dataset(dataset_path)
 
     def build_prompt_messages(
         self, example: TaskExample, prompt_text: str
@@ -81,5 +105,8 @@ class ThinkingMathEnvironment(EnvironmentSingleTurn):
 
 
 def load_environment(**kwargs: object) -> ThinkingMathEnvironment:
-    _ = kwargs
-    return ThinkingMathEnvironment()
+    dataset_path = kwargs.get("dataset_path", _DATASET_PATH)
+    environment = ThinkingMathEnvironment(dataset_path=str(dataset_path))
+    if kwargs.get("dataset") == "generated":
+        environment.dataset = build_dataset()
+    return environment

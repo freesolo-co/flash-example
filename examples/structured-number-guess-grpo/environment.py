@@ -1,9 +1,11 @@
-"""Multi-turn GRPO number guessing with strict JSON actions."""
+"""Multi-turn number guessing with strict JSON actions."""
 
 from __future__ import annotations
 
 import json
 import random
+import re
+from pathlib import Path
 
 from freesolo.datasets import TaskExample
 from freesolo.environments import (
@@ -13,10 +15,11 @@ from freesolo.environments import (
     RewardResult,
 )
 
+_DATASET_PATH = Path(__file__).parent / "data" / "train.jsonl"
+_RANGE_PATTERN = re.compile(r"from (\d+) through (\d+)\.")
+
 
 def system_prompt(low: int, high: int) -> str:
-    # keep the json example in a plain (non f-string) literal so its braces are
-    # never parsed as str.format replacement fields
     return (
         f"Guess my secret integer between {low} and {high}. After each guess I reply "
         "higher, lower, or correct. Every reply must be exactly one JSON object like "
@@ -62,6 +65,40 @@ def build_dataset(
     ]
 
 
+def load_distilled_dataset(path: str | Path = _DATASET_PATH) -> list[dict]:
+    rows = []
+    with Path(path).open() as handle:
+        for index, line in enumerate(handle):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            match = _RANGE_PATTERN.search(str(row["input"]))
+            if match is None:
+                raise ValueError(f"could not parse range from input: {row['input']}")
+            low, high = (int(value) for value in match.groups())
+            messages = row["output"]["messages"]
+            final_assistant = next(
+                message for message in reversed(messages) if message["role"] == "assistant"
+            )
+            secret = parse_bounded_guess(str(final_assistant["content"]), low, high)
+            if secret is None:
+                raise ValueError("target transcript has no bounded final assistant guess")
+            rows.append(
+                {
+                    "id": f"number-guess-distilled-{index:04d}",
+                    "input": row["input"],
+                    "output": row["output"],
+                    "metadata": {
+                        "secret": secret,
+                        "low": low,
+                        "high": high,
+                        "max_turns": 7,
+                    },
+                }
+            )
+    return rows
+
+
 def metadata(example: TaskExample) -> tuple[int, int, int, int]:
     values = example.metadata or {}
     return (
@@ -73,8 +110,8 @@ def metadata(example: TaskExample) -> tuple[int, int, int, int]:
 
 
 class StructuredNumberGuessEnvironment(EnvironmentMultiTurn):
-    def __init__(self, num_examples: int = 24, max_turns: int = 7) -> None:
-        self.dataset = build_dataset(num_examples=num_examples, max_turns=max_turns)
+    def __init__(self, dataset_path: str | Path = _DATASET_PATH) -> None:
+        self.dataset = load_distilled_dataset(dataset_path)
 
     def start_episode(
         self, example: TaskExample, prompt_text: str
@@ -131,9 +168,21 @@ class StructuredNumberGuessEnvironment(EnvironmentMultiTurn):
             reason="secret found" if solved else "secret not found",
         )
 
+    def sft_completion(self, example: TaskExample) -> list[dict[str, str]]:
+        output = example.output
+        if not isinstance(output, dict) or not isinstance(output.get("messages"), list):
+            raise ValueError("number-guess SFT rows require output.messages")
+        return [dict(message) for message in output["messages"]]
+
 
 def load_environment(**kwargs: object) -> StructuredNumberGuessEnvironment:
-    return StructuredNumberGuessEnvironment(
-        num_examples=int(kwargs.get("num_examples", 24)),
-        max_turns=int(kwargs.get("max_turns", 7)),
-    )
+    dataset_path = kwargs.get("dataset_path", _DATASET_PATH)
+    environment = StructuredNumberGuessEnvironment(dataset_path=str(dataset_path))
+    if "num_examples" in kwargs:
+        environment.dataset = build_dataset(
+            num_examples=int(kwargs["num_examples"]),
+            low=int(kwargs.get("low", 1)),
+            high=int(kwargs.get("high", 100)),
+            max_turns=int(kwargs.get("max_turns", 7)),
+        )
+    return environment

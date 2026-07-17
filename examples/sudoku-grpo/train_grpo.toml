@@ -1,0 +1,34 @@
+model = "Qwen/Qwen3.5-4B"
+algorithm = "grpo"
+thinking = false
+seed = 42
+
+[environment]
+id = "clay/sudoku-grpo"
+
+[environment.params]
+num_examples = 500
+max_turns = 30
+seed = 42
+difficulty = "easy"
+
+[train]
+epochs = 1
+max_examples = 500
+max_steps = 20
+save_at_steps = [4, 8, 20]
+batch_size = 4
+group_size = 4
+max_context_tokens = 8192
+max_completion_tokens = 512
+stop_sequences = ["</move>"]
+temperature = 1.0
+learning_rate = 0.00005
+init_from_adapter = "flash-1784324917-1d8f0ce8"
+
+[gpu]
+provider = "runpod"
+type = "H100"
+exact_type = "H100"
+max_retries = 5
+max_wall_seconds = 3600

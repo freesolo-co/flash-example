@@ -1,0 +1,22 @@
+model = "Qwen/Qwen3.5-9B"
+algorithm = "sft"
+thinking = false
+seed = 42
+
+[environment]
+id = "clay/math-boxed-kimi-sft-4b-20260717"
+
+[train]
+epochs = 3
+max_examples = 143
+max_steps = 75
+save_every = 25
+batch_size = 4
+max_context_tokens = 1024
+lora_rank = 16
+lora_alpha = 32
+
+[gpu]
+type = "A100 PCIe"
+provider = "runpod"
+exact_type = "A100 PCIe"

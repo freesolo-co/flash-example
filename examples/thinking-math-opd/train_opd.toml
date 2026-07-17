@@ -1,0 +1,32 @@
+model = "Qwen/Qwen3.5-9B"
+algorithm = "opd"
+thinking = false
+seed = 42
+
+[environment]
+id = "clay/thinking-math-opd"
+
+[environment.params]
+dataset = "generated"
+
+[train]
+epochs = 1
+max_examples = 24
+max_steps = 40
+save_every = 20
+batch_size = 4
+group_size = 4
+max_context_tokens = 1024
+max_completion_tokens = 384
+temperature = 1.0
+teacher_model = "kimi-k2.6"
+init_from_adapter = "flash-1784325488-7a1d31b9"
+
+[gpu]
+type = "A100 PCIe"
+provider = "runpod"
+exact_type = "A100 PCIe"
+
+[wandb]
+project = "thinking-math-warmstart-20260717"
+run_name = "qwen35-9b-opd-from-sft-seed42"
