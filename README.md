@@ -1,35 +1,43 @@
-# Flash examples
+# Flash distillation examples
 
-Five small, end-to-end examples for training and serving LoRA adapters with [Flash](https://github.com/freesolo-co/flash). Each folder keeps the environment, training config, local smoke, deployed call, provenance, and full workflow together.
+Eight end-to-end examples for distilling strong teacher behavior into small Qwen3.5 adapters with [Flash](https://github.com/freesolo-co/flash). The completed campaign targets one honest result: **match GPT-5.5's per-task quality with 2.3B to 9.65B task specialists**.
 
-The organization is inspired by the layered, self-contained approach in [OpenPipe ART examples](https://github.com/OpenPipe/ART/tree/main/examples), including the separation between training and deployment in [tic-tac-toe self play](https://github.com/OpenPipe/ART/tree/main/examples/tic_tac_toe_self_play) and the separation of task utilities from training in [HN title generator](https://github.com/OpenPipe/ART/tree/main/examples/hn_title_generator). No ART code is copied.
+This is not a general claim that the students beat GPT-5.5. Several students score higher on frozen tasks because GPT-5.5 occasionally violates strict JSON, boxed-answer, tool-use, or multi-turn contracts. See [RESULTS.md](RESULTS.md) for the full framing, run ids, token footprint, and SFT-versus-RL ablations.
 
 ## Examples
 
-| Example                                                          | Algorithm |  Turns | Thinking |             Structured output | Difficulty   | Live training |
-| ---------------------------------------------------------------- | --------- | -----: | -------: | ----------------------------: | ------------ | ------------- |
-| [JSON extraction](examples/json-extraction-sft)                  | SFT       | single |       no | JSON gold plus serving schema | beginner     | done          |
-| [Running total](examples/running-total-sft)                      | SFT       |  multi |       no |                  bare integer | beginner     | done          |
-| [Structured number guess](examples/structured-number-guess-grpo) | GRPO      |  multi |       no |            strict JSON schema | intermediate | done          |
-| [Thinking math](examples/thinking-math-opd)                      | OPD       | single |      yes |            final numeric line | intermediate | done          |
-| [Thinking science](examples/thinking-science-grpo)               | GRPO      | single |      yes |           final answer letter | intermediate | done          |
+| Example                                                          | Base       | Shipped recipe    | Teacher      | Held-out result      |
+| ---------------------------------------------------------------- | ---------- | ----------------- | ------------ | -------------------- |
+| [Running total](examples/running-total-sft)                      | Qwen3.5-2B | pure SFT          | Kimi K2.6    | 100%, GPT-5.5 100%   |
+| [Logic boolean](examples/logic-boolean-grpo)                     | Qwen3.5-4B | single-stage GRPO | GLM-5.2 data | 50/50, GPT-5.5 50/50 |
+| [Structured number guess](examples/structured-number-guess-grpo) | Qwen3.5-2B | SFT to GRPO       | Kimi K2.6    | 100%, GPT-5.5 88%    |
+| [Thinking science](examples/thinking-science-grpo)               | Qwen3.5-9B | single-stage OPD  | Kimi K2.6    | 50/50, GPT-5.5 50/50 |
+| [Math boxed](examples/math-boxed-grpo)                           | Qwen3.5-9B | pure SFT          | Kimi K2.6    | 0.90, GPT-5.5 0.92   |
+| [Math Python](examples/math-python-grpo)                         | Qwen3.5-4B | pure SFT          | Kimi K2.6    | 92%, GPT-5.5 82%     |
+| [Thinking math](examples/thinking-math-opd)                      | Qwen3.5-9B | SFT to OPD        | Kimi K2.6    | 0.92, GPT-5.5 0.92   |
+| [Sudoku](examples/sudoku-grpo)                                   | Qwen3.5-4B | SFT to GRPO       | GLM-5.2      | 100%, GPT-5.5 100%   |
 
-## Live validation status
+Kimi K2.6 is `moonshotai/kimi-k2.6`. Logic boolean and Sudoku use `z-ai/glm-5.2` because it produced higher reward-verified yield under those tasks' strict terminal protocols.
 
-All five environments were published, dry-run, cost-estimated, and trained end to end on
-real managed GPUs (Vast and RunPod) for a total realized cost of about $0.003.
-Publication, dry-run, cost estimation, and training are validated live. Deploy was
-exercised too, but it currently returns the serving capability rejection documented
-below, so deployment itself is not yet validated live.
+The four community-inspired environments retain their provenance files: math boxed and math Python are adapted from Prime Intellect math environments, logic boolean from `primeintellect/logic-env`, and Sudoku from `m8ngotree/sudoku`. No upstream code is copied.
 
-Deploy, call, and undeploy could not be exercised at validation time: fresh deploys are
-currently gated by a production serving rollout that has not yet advertised the
-`revision_provenance` capability the control plane now requires. This is a server-side
-timing gap, not a repository defect, and it is independent of client version. The deploy,
-call, and undeploy commands below are correct and need no change; they run as documented
-once serving advertises that capability. See [VALIDATION.md](VALIDATION.md) for the exact
-run ids, costs, hardware, two training repairs found and fixed during validation, and the
-full deployment-blocker evidence.
+## Repository layout
+
+Every example directory contains:
+
+- `environment.py`: native Flash environment, reward, and deterministic task logic
+- `data/train.jsonl`: reward-verified teacher trajectories
+- `data/heldout.json`: 50 frozen cases not sent to the teacher
+- one shipped `train.toml`, or ordered `train_sft.toml` plus `train_grpo.toml` or `train_opd.toml`
+- `README.md`, `call.py`, and `smoke_test.py`
+- `PROVENANCE.md` where an external environment inspired the task
+
+Top-level tooling:
+
+- [data-generation](data-generation): regenerate reward-verified teacher data from environment-native prompts and rewards
+- [eval](eval): evaluate shipped adapters and GPT-5.5 on the same held-out rows
+- [RESULTS.md](RESULTS.md): final campaign results, run ids, footprint, and ablations
+- [VALIDATION.md](VALIDATION.md): local and live validation record
 
 ## Quickstart
 
@@ -37,97 +45,82 @@ Use Python 3.11 or 3.12.
 
 ```bash
 uv sync
-uv tool install --force "freesolo-flash @ git+https://github.com/freesolo-co/flash.git@c669f0b47aa93801b8ab142b5e05136f6f756aa6"
+uv tool install --force freesolo-flash==0.2.58
 flash login
 flash whoami
-```
-
-The examples target the 0.2.57 schema. At validation time the released 0.2.57 wheel still
-serialized three retired OPD training fields that the production server rejects for every
-algorithm, so live validation used the clean `dev` client pinned above. Switch back to
-`uv tool install --force freesolo-flash==0.2.57` once a wheel without those fields is
-published.
-
-Run all local checks:
-
-```bash
 uv run pytest
 uv run ruff check .
 ```
 
-## Common workflow
+## Train an example
 
-The checked-in configs use the published `clay/...` environments validated for this
-repository. To modify an environment, publish your copy and replace the checked-in id
-with the returned id:
+Publish the example directory so the bundled `data/train.jsonl` is included with the environment. Replace the checked-in `[environment].id` if your new published id differs from the campaign id.
 
-```bash
-flash env push --name EXAMPLE_NAME examples/EXAMPLE_NAME
-```
-
-Validate and inspect cost before training:
+Single-stage recipe:
 
 ```bash
-flash train examples/EXAMPLE_NAME/train.toml --dry-run
-flash train examples/EXAMPLE_NAME/train.toml --cost
+flash env push --name running-total-sft examples/running-total-sft
+flash train examples/running-total-sft/train.toml --dry-run
+flash train examples/running-total-sft/train.toml --cost
+flash train examples/running-total-sft/train.toml --background
 ```
 
-Launch a bounded managed run:
+Two-stage warm start:
 
 ```bash
-flash train examples/EXAMPLE_NAME/train.toml --background
-flash status RUN_ID --follow
-flash log RUN_ID --follow
+flash env push --name structured-number-guess-grpo examples/structured-number-guess-grpo
+flash train examples/structured-number-guess-grpo/train_sft.toml --background
 ```
 
-GRPO and OPD runs can expose deployable step checkpoints:
+After the SFT stage finishes, replace `init_from_adapter` in `train_grpo.toml` with the new parent run id, then validate cost and launch:
 
 ```bash
-flash checkpoints RUN_ID
-flash deploy RUN_ID/step-N
+flash train examples/structured-number-guess-grpo/train_grpo.toml --dry-run
+flash train examples/structured-number-guess-grpo/train_grpo.toml --cost
+flash train examples/structured-number-guess-grpo/train_grpo.toml --background
 ```
 
-SFT final adapters can be deployed with the run id even when no per-step checkpoint list
-appears:
+Warm-start child configs intentionally do not set `lora_rank` or `lora_alpha`; the adapter shape is inherited from the parent.
+
+## Evaluate
+
+Evaluate a shipped adapter on all 50 frozen cases:
 
 ```bash
-flash deploy RUN_ID
+uv run python eval/evaluate_suite.py \
+  --example running-total-sft \
+  --output eval-results/running-total-model.json
 ```
 
-> Deploy, call, and undeploy are currently blocked live by the production serving rollout
-> described in [Live validation status](#live-validation-status). The commands here are
-> correct and unchanged; run them once serving advertises `revision_provenance`.
-
-The exact deployment source can be `RUN_ID/step-N`, but serving calls use the base
-`RUN_ID`:
+Run the corresponding GPT-5.5 comparison through the local gateway:
 
 ```bash
-flash chat RUN_ID -m "test prompt"
+uv run python eval/evaluate_gpt55.py \
+  --example running-total-sft \
+  --output eval-results/running-total-gpt55.json
 ```
 
-Each folder includes a `call.py` for a task-specific deployed check. Set the base URL
-printed by `flash deploy` and then run it:
+See [eval/README.md](eval/README.md) for model, endpoint, and dry-run options.
+
+## Regenerate distilled data
+
+Set `OPENROUTER_API_KEY` in the process environment or pass a private env-file path outside the repository. Never commit the key.
 
 ```bash
-export FLASH_OPENAI_BASE_URL="https://.../v1"
-export FREESOLO_API_KEY="..."
-export FLASH_RUN_ID="RUN_ID"
-uv run python examples/EXAMPLE_NAME/call.py
+export OPENROUTER_API_KEY="..."
+uv run python data-generation/distill.py \
+  --task math-boxed-grpo \
+  --output-dir generated/math-boxed-grpo
 ```
 
-Tear down serving when finished:
+See [data-generation/README.md](data-generation/README.md) for all eight tasks and multi-turn replay validation.
 
-```bash
-flash undeploy RUN_ID
-```
+## Security and interpretation
 
-## Design constraints
-
-- examples target the installed Flash 0.2.57 contract
-- every dataset is deterministic and small
-- no example needs a user-managed teacher key
-- provider and GPU selection remain managed by Flash
 - no secret values belong in this repository
-- two training steps prove the path, not model quality
-
-See [VALIDATION.md](VALIDATION.md) for the exact live runs and outcomes.
+- teacher credentials are read only at runtime
+- held-out rows are never submitted to the teacher by the generation scripts
+- math Python executes model-written code and is not a security sandbox
+- provider-reported tokens use different tokenizers and hidden-reasoning conventions
+- latency was measured on different serving stacks and is not a controlled comparison
+- these are task-specific matches, not a broad model ranking
