@@ -26,14 +26,15 @@ from freesolo.datasets import TaskExample
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES_ROOT = REPO_ROOT / "examples"
 OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
+GSM8K_REVISION = "3101c7d5072418e28b9008a6636bde82a006892c"
 GSM8K_URLS = {
     "train": (
         "https://raw.githubusercontent.com/openai/grade-school-math/"
-        "master/grade_school_math/data/train.jsonl"
+        f"{GSM8K_REVISION}/grade_school_math/data/train.jsonl"
     ),
     "test": (
         "https://raw.githubusercontent.com/openai/grade-school-math/"
-        "master/grade_school_math/data/test.jsonl"
+        f"{GSM8K_REVISION}/grade_school_math/data/test.jsonl"
     ),
 }
 OPENBOOKQA_URL = "https://s3-us-west-2.amazonaws.com/ai2-website/data/OpenBookQA-V1-Sep2018.zip"

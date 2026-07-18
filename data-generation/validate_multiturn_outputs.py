@@ -10,7 +10,12 @@ from pathlib import Path
 from typing import Any
 
 from distill import load_env_file
-from distill_multiturn import ADAPTERS, assert_disjoint, problem_digest
+from distill_multiturn import (
+    ADAPTERS,
+    assert_disjoint,
+    problem_digest,
+    require_local_execution_opt_in,
+)
 from freesolo.environments import EnvironmentEpisode
 
 
@@ -52,6 +57,16 @@ def replay_row(adapter: Any, problem: Any, row: dict[str, Any]) -> None:
         raise ValueError(f"{problem.id}: replay failed: {reason}")
 
 
+def assert_heldout_records(
+    adapter: Any,
+    heldout_problems: list[Any],
+    heldout_rows: list[dict[str, Any]],
+) -> None:
+    expected = [adapter.heldout_record(problem) for problem in heldout_problems]
+    if heldout_rows != expected:
+        raise ValueError("held-out records differ from the generated held-out split")
+
+
 def assert_no_secret(output_dir: Path, env_file: Path | None) -> None:
     secret = os.environ.get("OPENROUTER_API_KEY") or load_env_file(env_file).get(
         "OPENROUTER_API_KEY"
@@ -69,7 +84,16 @@ def assert_no_secret(output_dir: Path, env_file: Path | None) -> None:
             raise ValueError(f"secret value found in generated file: {path}")
 
 
-def validate(task: str, output_dir: Path, env_file: Path | None) -> dict[str, Any]:
+def validate(
+    task: str,
+    output_dir: Path,
+    env_file: Path | None,
+    *,
+    allow_unsafe_local_code_execution: bool = False,
+) -> dict[str, Any]:
+    require_local_execution_opt_in(
+        task, allowed=allow_unsafe_local_code_execution
+    )
     adapter = ADAPTERS[task]()
     manifest = json.loads((output_dir / "manifest.json").read_text())
     train_size = int(manifest["split"]["requested_train"])
@@ -101,10 +125,7 @@ def validate(task: str, output_dir: Path, env_file: Path | None) -> dict[str, An
     heldout_rows = json.loads((output_dir / "heldout.json").read_text())
     if len(heldout_rows) != heldout_size:
         raise ValueError("held-out row count differs from manifest")
-    if {row["id"] for row in heldout_rows} != {
-        problem.id for problem in heldout_problems
-    }:
-        raise ValueError("held-out ids differ from the generated held-out split")
+    assert_heldout_records(adapter, heldout_problems, heldout_rows)
 
     attempts = read_jsonl(output_dir / "attempts.jsonl")
     train_ids = {problem.id for problem in train_problems}
@@ -132,12 +153,25 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--task", choices=tuple(ADAPTERS), required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--api-env-file", type=Path)
+    parser.add_argument(
+        "--allow-unsafe-local-code-execution",
+        action="store_true",
+        help=(
+            "allow math-python artifact replay to run model-generated Python on this "
+            "host without a sandbox"
+        ),
+    )
     return parser
 
 
 def main() -> None:
     args = build_parser().parse_args()
-    result = validate(args.task, args.output_dir, args.api_env_file)
+    result = validate(
+        args.task,
+        args.output_dir,
+        args.api_env_file,
+        allow_unsafe_local_code_execution=args.allow_unsafe_local_code_execution,
+    )
     print(json.dumps(result), flush=True)
 
 

@@ -222,6 +222,10 @@ def test_logic_default_generation_splits_are_disjoint() -> None:
     distill = load_python_module(
         ROOT / "data-generation" / "distill.py", "distill_regression"
     )
+    assert all(
+        distill.GSM8K_REVISION in url and "/master/" not in url
+        for url in distill.GSM8K_URLS.values()
+    )
     adapter = distill.SingleTurnAdapter("logic-boolean-sft-grpo")
     train, heldout, _ = distill.build_splits(
         "logic-boolean-sft-grpo",
@@ -588,14 +592,21 @@ def test_eval_requires_math_python_unsafe_opt_in_and_uses_case_bounds(
     try:
         http_client = HttpClient()
         gateway = evaluate_gpt55.GatewayCaseClient(http_client)
-        response = gateway.create(messages=[], model="test", max_tokens=1)
+        messages = [{"role": "user", "content": "before"}]
+        response = gateway.create(messages=messages, model="test", max_tokens=1)
+        messages.append({"role": "assistant", "content": "after"})
         assert http_client.calls == 2
         assert response.choices[0].message.content == "ok"
+        assert gateway.records[0]["request_messages"] == [
+            {"role": "user", "content": "before"}
+        ]
     finally:
         evaluate_gpt55.time.sleep = monkeypatch_sleep
 
 
-def test_multiturn_distillation_requires_unsafe_opt_in_and_rejects_invalid_sudoku_moves() -> None:
+def test_multiturn_distillation_requires_unsafe_opt_in_and_rejects_invalid_sudoku_moves(
+    tmp_path,
+) -> None:
     distill = load_python_module(
         ROOT / "data-generation" / "distill.py", "distill_multiturn_dependency"
     )
@@ -616,8 +627,34 @@ def test_multiturn_distillation_requires_unsafe_opt_in_and_rejects_invalid_sudok
     else:
         raise AssertionError("math-python distillation bypassed unsafe opt-in")
 
+    sys.modules["distill_multiturn"] = multiturn
+    validator = load_python_module(
+        ROOT / "data-generation" / "validate_multiturn_outputs.py",
+        "validate_multiturn_regression",
+    )
+    try:
+        validator.validate("math-python-sft", tmp_path, None)
+    except RuntimeError as error:
+        assert "--allow-unsafe-local-code-execution" in str(error)
+    else:
+        raise AssertionError("math-python artifact replay bypassed unsafe opt-in")
+
     adapter = multiturn.SudokuAdapter()
-    problem = adapter.build_splits(1, 1, 20260717)[0][0]
+    train_problems, heldout_problems = adapter.build_splits(1, 1, 20260717)
+    heldout_rows = [adapter.heldout_record(problem) for problem in heldout_problems]
+    validator.assert_heldout_records(adapter, heldout_problems, heldout_rows)
+    corrupted_heldout = json.loads(json.dumps(heldout_rows))
+    corrupted_heldout[0]["input"] = "changed"
+    try:
+        validator.assert_heldout_records(
+            adapter, heldout_problems, corrupted_heldout
+        )
+    except ValueError as error:
+        assert "held-out records differ" in str(error)
+    else:
+        raise AssertionError("held-out validation compared ids only")
+
+    problem = train_problems[0]
     puzzle = problem.row["metadata"]["puzzle"]
     clue_row, clue_col = next(
         (row, col)
@@ -657,6 +694,30 @@ def test_committed_sudoku_transcripts_replay_only_valid_moves() -> None:
             move = module.parse_move_string(module.extract_move(str(message["content"])))
             assert move is not None
             assert board.make_move(*move) is True
+
+
+def test_sudoku_distilled_loader_uses_artifact_metadata(tmp_path) -> None:
+    module = load_environment_module("sudoku-sft-grpo")
+    generated = module.build_dataset(
+        num_examples=1,
+        max_turns=17,
+        seed=7,
+        difficulty="easy",
+    )[0]
+    artifact = tmp_path / "train.jsonl"
+    artifact.write_text(
+        json.dumps(
+            {
+                "input": generated["input"],
+                "output": {"messages": []},
+                "metadata": generated["metadata"],
+            }
+        )
+        + "\n"
+    )
+    loaded = module.load_distilled_dataset(artifact)
+    assert loaded[0]["metadata"] == generated["metadata"]
+    assert loaded[0]["metadata"]["max_turns"] == 17
 
 
 def test_sudoku_move_parsing_and_full_solve() -> None:

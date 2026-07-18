@@ -15,9 +15,11 @@ For the Flash workflow and platform documentation, see the [Freesolo docs](https
 | [Structured number guess](examples/structured-number-guess-sft-grpo) | Qwen3.5-2B | SFT to GRPO      | Kimi K2.6 | 50/50, GPT-5.5 50/50         |
 | [Thinking science](examples/thinking-science-opd)                    | Qwen3.5-9B | single-stage OPD | Kimi K2.6 | 50/50, GPT-5.5 50/50         |
 | [Math boxed](examples/math-boxed-sft)                                | Qwen3.5-9B | pure SFT         | Kimi K2.6 | 0.90, GPT-5.5 0.92           |
-| [Math Python](examples/math-python-sft)                              | Qwen3.5-4B | pure SFT         | Kimi K2.6 | 92%, GPT-5.5 82%             |
+| [Math Python](examples/math-python-sft)                              | Qwen3.5-4B | pure SFT         | Kimi K2.6 | 49/50, GPT-5.5 45/46         |
 | [Thinking math](examples/thinking-math-sft-opd)                      | Qwen3.5-9B | SFT to OPD       | Kimi K2.6 | 0.92, GPT-5.5 0.92           |
 | [Sudoku](examples/sudoku-sft-grpo)                                   | Qwen3.5-4B | SFT to GRPO      | GLM-5.2   | 49/50, GPT-5.5 50/50, strict |
+
+Math Python is parity under the enforced tool-use contract: the adapter scored 49/50, and GPT-5.5 scored 45/46 completed OpenRouter cases (97.8%); four additional provider requests hung and were not scored.
 
 Kimi K2.6 is `moonshotai/kimi-k2.6`. Six recipes use Kimi K2.6 supervision, and logic boolean plus Sudoku use `z-ai/glm-5.2` trajectories. Logic boolean now consumes its strict-normalized GLM-5.2 corpus for SFT before GRPO.
 

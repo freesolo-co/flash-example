@@ -44,7 +44,7 @@ class GatewayCaseClient:
         finish_reason = choice.get("finish_reason")
         self.records.append(
             {
-                "request_messages": request["messages"],
+                "request_messages": [dict(message) for message in request["messages"]],
                 "response": content,
                 "finish_reason": finish_reason,
             }

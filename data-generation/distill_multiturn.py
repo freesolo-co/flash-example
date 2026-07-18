@@ -828,6 +828,7 @@ def run(args: argparse.Namespace) -> None:
                     {
                         "input": result.problem.input,
                         "output": {"messages": result.transcript},
+                        "metadata": dict(result.problem.row.get("metadata") or {}),
                     },
                     ensure_ascii=False,
                 )

@@ -80,7 +80,7 @@ uv run python data-generation/distill_multiturn.py \
   --generation-attempts 1
 ```
 
-Math Python executes teacher-generated Python directly on the generation host with no sandbox. The generator refuses to run that task without `--allow-unsafe-local-code-execution`; use the opt-in only on a disposable machine or container.
+Math Python executes teacher-generated Python directly on the generation or replay host with no sandbox. Both commands refuse to run that task without `--allow-unsafe-local-code-execution`; use the opt-in only on a disposable machine or container.
 
 The task defaults select 64 completion tokens for running total and number guess, 384 for math Python, and 1536 for Sudoku. Sudoku stops each teacher call at `</move>` so every assistant turn contains exactly one action.
 
@@ -92,4 +92,4 @@ uv run python data-generation/validate_multiturn_outputs.py \
   --output-dir generated/sudoku-sft-grpo
 ```
 
-The validator reconstructs the frozen split, checks disjointness and row counts, replays every retained transcript through the environment, verifies that no held-out id reached the teacher-attempt log, and scans for the active key value when one is available in the environment.
+The validator reconstructs the frozen split, compares complete held-out records, checks disjointness and row counts, replays every retained transcript through the environment, verifies that no held-out id reached the teacher-attempt log, and scans for the active key value when one is available in the environment. Math Python replay also requires `--allow-unsafe-local-code-execution`.

@@ -448,15 +448,20 @@ def load_distilled_dataset(path: str | Path = _DATASET_PATH) -> list[dict[str, A
             if not line.strip():
                 continue
             row = json.loads(line)
-            source = generated.get(str(row["input"]))
-            if source is None:
-                raise ValueError(f"distilled row {index} does not match the frozen generator")
+            metadata = dict(row.get("metadata") or {})
+            if not {"puzzle", "solution", "max_turns"} <= metadata.keys():
+                source = generated.get(str(row["input"]))
+                if source is None:
+                    raise ValueError(
+                        f"distilled row {index} does not include generator metadata"
+                    )
+                metadata = dict(source["metadata"])
             rows.append(
                 {
                     "id": f"sudoku-distilled-{index:04d}",
                     "input": row["input"],
                     "output": row["output"],
-                    "metadata": dict(source["metadata"]),
+                    "metadata": metadata,
                 }
             )
     return rows
