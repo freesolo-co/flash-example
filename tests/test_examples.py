@@ -23,7 +23,7 @@ EXAMPLES = (
 )
 CONFIGS = {
     "running-total-sft": ("train.toml",),
-    "logic-boolean-grpo": ("train.toml",),
+    "logic-boolean-grpo": ("train_sft.toml", "train_grpo.toml"),
     "structured-number-guess-grpo": ("train_sft.toml", "train_grpo.toml"),
     "thinking-science-grpo": ("train.toml",),
     "math-boxed-grpo": ("train.toml",),
@@ -119,9 +119,31 @@ def test_number_guess_data_has_varied_disjoint_secrets() -> None:
     assert train_secrets.isdisjoint(heldout_secrets)
 
 
+def test_logic_distilled_data_is_strictly_normalized() -> None:
+    module = load_environment_module("logic-boolean-grpo")
+    rows = read_jsonl(
+        ROOT / "examples" / "logic-boolean-grpo" / "data" / "train.jsonl"
+    )
+    for row in rows:
+        output = str(row["output"])
+        answer = module.extract_answer(output)
+        assert answer is not None
+        assert row["metadata"] == {"answer": answer}
+        assert output.count("<answer>") == 1
+        assert output.count("</answer>") == 1
+        assert output.endswith(f"<answer>{answer}</answer>")
+        if output.startswith("<think>"):
+            assert output.count("<think>") == 1
+            assert output.count("</think>") == 1
+            assert "</think>\n<answer>" in output
+        else:
+            assert output == f"<answer>{answer}</answer>"
+
+
 def test_sft_environments_load_the_bundled_data() -> None:
     for name in (
         "running-total-sft",
+        "logic-boolean-grpo",
         "structured-number-guess-grpo",
         "math-boxed-grpo",
         "math-python-grpo",
@@ -129,7 +151,8 @@ def test_sft_environments_load_the_bundled_data() -> None:
         "sudoku-grpo",
     ):
         module = load_environment_module(name)
-        environment = module.load_environment()
+        kwargs = {"use_distilled": True} if name == "logic-boolean-grpo" else {}
+        environment = module.load_environment(**kwargs)
         train_rows = read_jsonl(ROOT / "examples" / name / "data" / "train.jsonl")
         assert len(environment.dataset) == len(train_rows)
 
@@ -137,7 +160,8 @@ def test_sft_environments_load_the_bundled_data() -> None:
 def test_shipped_training_matrix() -> None:
     expected = {
         ("running-total-sft", "train.toml"): ("Qwen/Qwen3.5-2B", "sft", 100),
-        ("logic-boolean-grpo", "train.toml"): ("Qwen/Qwen3.5-4B", "grpo", 50),
+        ("logic-boolean-grpo", "train_sft.toml"): ("Qwen/Qwen3.5-4B", "sft", 100),
+        ("logic-boolean-grpo", "train_grpo.toml"): ("Qwen/Qwen3.5-4B", "grpo", 50),
         ("structured-number-guess-grpo", "train_sft.toml"): (
             "Qwen/Qwen3.5-2B",
             "sft",
@@ -170,6 +194,7 @@ def test_shipped_training_matrix() -> None:
 
 def test_warm_start_configs_inherit_parent_lora_shape() -> None:
     expected_parents = {
+        ("logic-boolean-grpo", "train_grpo.toml"): "flash-1784350210-5225a6a4",
         ("structured-number-guess-grpo", "train_grpo.toml"): "flash-1784319868-8f8ee7be",
         ("thinking-math-opd", "train_opd.toml"): "flash-1784325488-7a1d31b9",
         ("sudoku-grpo", "train_grpo.toml"): "flash-1784324917-1d8f0ce8",
@@ -187,6 +212,9 @@ def test_warm_start_configs_inherit_parent_lora_shape() -> None:
     )
     assert load_config("thinking-math-opd", "train_opd.toml")["environment"]["params"] == {
         "dataset": "generated"
+    }
+    assert load_config("logic-boolean-grpo", "train_sft.toml")["environment"]["params"] == {
+        "use_distilled": True
     }
 
 
@@ -290,6 +318,12 @@ def test_number_guess_lifecycle_and_reward() -> None:
         example, episode({"role": "assistant", "content": '{"guess":42}'})
     )
     assert solved.score == 1.0 and solved.success is True
+
+    record_only = SimpleNamespace(
+        metadata={},
+        record={"metadata": {"low": 1, "high": 100, "secret": 42, "max_turns": 7}},
+    )
+    assert module.metadata(record_only) == (1, 100, 42, 7)
 
 
 def test_single_turn_reward_contracts() -> None:

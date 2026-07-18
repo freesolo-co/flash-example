@@ -1,12 +1,12 @@
 model = "Qwen/Qwen3.5-4B"
 algorithm = "grpo"
 thinking = false
+seed = 42
 
 [environment]
-id = "clay/logic-boolean-grpo"
+id = "clay/logic-boolean-grpo-phase2-20260718"
 
 [train]
-# teacher-free grpo over the environment-generated dataset
 epochs = 10
 max_examples = 24
 max_steps = 50
@@ -15,8 +15,8 @@ batch_size = 4
 group_size = 4
 max_context_tokens = 768
 max_completion_tokens = 384
-lora_rank = 16
-lora_alpha = 32
+stop_sequences = ["</answer>"]
+init_from_adapter = "flash-1784350210-5225a6a4"
 
 [gpu]
 type = "A100 PCIe"

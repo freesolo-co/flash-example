@@ -1,9 +1,11 @@
-"""Single-turn GRPO environment for nested boolean expressions."""
+"""Single-turn SFT and GRPO environment for nested boolean expressions."""
 
 from __future__ import annotations
 
+import json
 import random
 import re
+from pathlib import Path
 
 from freesolo.datasets import TaskExample
 from freesolo.environments import EnvironmentSingleTurn, RewardResult
@@ -15,6 +17,7 @@ SYSTEM_PROMPT = (
 )
 _DATASET_SEED = 20260716
 _DATASET_SIZE = 24
+_DATASET_PATH = Path(__file__).parent / "data" / "train.jsonl"
 _ANSWER_PATTERN = re.compile(
     r"\s*(?:<think>.*?</think>\s*)?<answer>(True|False)</answer>\s*",
     re.DOTALL,
@@ -73,6 +76,27 @@ def build_dataset() -> list[dict]:
     return rows
 
 
+def load_distilled_dataset(path: str | Path = _DATASET_PATH) -> list[dict]:
+    rows = []
+    with Path(path).open() as handle:
+        for index, line in enumerate(handle):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            answer = extract_answer(str(row["output"]))
+            if answer is None:
+                raise ValueError(f"distilled row {index} violates the strict answer contract")
+            rows.append(
+                {
+                    "id": f"boolean-distilled-{index:04d}",
+                    "input": row["input"],
+                    "output": row["output"],
+                    "metadata": {"answer": answer},
+                }
+            )
+    return rows
+
+
 class LogicBooleanEnvironment(EnvironmentSingleTurn):
     def __init__(self) -> None:
         self.dataset = build_dataset()
@@ -88,7 +112,8 @@ class LogicBooleanEnvironment(EnvironmentSingleTurn):
 
     def score_response(self, example: TaskExample, response_text: str) -> RewardResult:
         predicted = extract_answer(response_text)
-        expected = str((example.metadata or {})["answer"])
+        values = example.metadata or dict(example.record.get("metadata") or {})
+        expected = str(values["answer"])
         correct = predicted == expected
         if correct:
             reason = "exact answer match"
@@ -104,5 +129,7 @@ class LogicBooleanEnvironment(EnvironmentSingleTurn):
 
 
 def load_environment(**kwargs: object) -> LogicBooleanEnvironment:
-    _ = kwargs
-    return LogicBooleanEnvironment()
+    environment = LogicBooleanEnvironment()
+    if bool(kwargs.get("use_distilled", False)):
+        environment.dataset = load_distilled_dataset()
+    return environment

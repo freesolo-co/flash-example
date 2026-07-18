@@ -104,7 +104,7 @@ def load_distilled_dataset(path: str | Path = _DATASET_PATH) -> list[dict]:
 
 
 def metadata(example: TaskExample) -> tuple[int, int, int, int]:
-    values = example.metadata or {}
+    values = example.metadata or dict(example.record.get("metadata") or {})
     return (
         int(values["low"]),
         int(values["high"]),
