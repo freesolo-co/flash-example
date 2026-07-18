@@ -9,13 +9,13 @@ This is not a general claim that the students beat GPT-5.5. Some students score 
 | Example                                                          | Base       | Shipped recipe   | Teacher   | Held-out result              |
 | ---------------------------------------------------------------- | ---------- | ---------------- | --------- | ---------------------------- |
 | [Running total](examples/running-total-sft)                      | Qwen3.5-2B | pure SFT         | Kimi K2.6 | 100%, GPT-5.5 100%           |
-| [Logic boolean](examples/logic-boolean-grpo)                     | Qwen3.5-4B | SFT to GRPO      | GLM-5.2   | 48/50, GPT-5.5 50/50         |
-| [Structured number guess](examples/structured-number-guess-grpo) | Qwen3.5-2B | SFT to GRPO      | Kimi K2.6 | 50/50, GPT-5.5 50/50         |
-| [Thinking science](examples/thinking-science-grpo)               | Qwen3.5-9B | single-stage OPD | Kimi K2.6 | 50/50, GPT-5.5 50/50         |
-| [Math boxed](examples/math-boxed-grpo)                           | Qwen3.5-9B | pure SFT         | Kimi K2.6 | 0.90, GPT-5.5 0.92           |
-| [Math Python](examples/math-python-grpo)                         | Qwen3.5-4B | pure SFT         | Kimi K2.6 | 92%, GPT-5.5 82%             |
-| [Thinking math](examples/thinking-math-opd)                      | Qwen3.5-9B | SFT to OPD       | Kimi K2.6 | 0.92, GPT-5.5 0.92           |
-| [Sudoku](examples/sudoku-grpo)                                   | Qwen3.5-4B | SFT to GRPO      | GLM-5.2   | 49/50, GPT-5.5 50/50, strict |
+| [Logic boolean](examples/logic-boolean-sft-grpo)                     | Qwen3.5-4B | SFT to GRPO      | GLM-5.2   | 48/50, GPT-5.5 50/50         |
+| [Structured number guess](examples/structured-number-guess-sft-grpo) | Qwen3.5-2B | SFT to GRPO      | Kimi K2.6 | 50/50, GPT-5.5 50/50         |
+| [Thinking science](examples/thinking-science-opd)               | Qwen3.5-9B | single-stage OPD | Kimi K2.6 | 50/50, GPT-5.5 50/50         |
+| [Math boxed](examples/math-boxed-sft)                           | Qwen3.5-9B | pure SFT         | Kimi K2.6 | 0.90, GPT-5.5 0.92           |
+| [Math Python](examples/math-python-sft)                         | Qwen3.5-4B | pure SFT         | Kimi K2.6 | 92%, GPT-5.5 82%             |
+| [Thinking math](examples/thinking-math-sft-opd)                      | Qwen3.5-9B | SFT to OPD       | Kimi K2.6 | 0.92, GPT-5.5 0.92           |
+| [Sudoku](examples/sudoku-sft-grpo)                                   | Qwen3.5-4B | SFT to GRPO      | GLM-5.2   | 49/50, GPT-5.5 50/50, strict |
 
 Kimi K2.6 is `moonshotai/kimi-k2.6`. Six recipes use Kimi K2.6 supervision, and logic boolean plus Sudoku use `z-ai/glm-5.2` trajectories. Logic boolean now consumes its strict-normalized GLM-5.2 corpus for SFT before GRPO.
 
@@ -70,16 +70,16 @@ flash train examples/running-total-sft/train.toml --background
 Two-stage warm start:
 
 ```bash
-flash env push --name structured-number-guess-grpo examples/structured-number-guess-grpo
-flash train examples/structured-number-guess-grpo/train_sft.toml --background
+flash env push --name structured-number-guess-sft-grpo examples/structured-number-guess-sft-grpo
+flash train examples/structured-number-guess-sft-grpo/train_sft.toml --background
 ```
 
 After the SFT stage finishes, replace `init_from_adapter` in `train_grpo.toml` with the new parent run id, then validate cost and launch:
 
 ```bash
-flash train examples/structured-number-guess-grpo/train_grpo.toml --dry-run
-flash train examples/structured-number-guess-grpo/train_grpo.toml --cost
-flash train examples/structured-number-guess-grpo/train_grpo.toml --background
+flash train examples/structured-number-guess-sft-grpo/train_grpo.toml --dry-run
+flash train examples/structured-number-guess-sft-grpo/train_grpo.toml --cost
+flash train examples/structured-number-guess-sft-grpo/train_grpo.toml --background
 ```
 
 Warm-start child configs intentionally do not set `lora_rank` or `lora_alpha`; the adapter shape is inherited from the parent.
@@ -113,8 +113,8 @@ Set `OPENROUTER_API_KEY` in the process environment or pass a private env-file p
 ```bash
 export OPENROUTER_API_KEY="..."
 uv run python data-generation/distill.py \
-  --task math-boxed-grpo \
-  --output-dir generated/math-boxed-grpo
+  --task math-boxed-sft \
+  --output-dir generated/math-boxed-sft
 ```
 
 See [data-generation/README.md](data-generation/README.md) for all eight tasks and multi-turn replay validation.

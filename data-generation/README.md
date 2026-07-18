@@ -27,23 +27,23 @@ Use `--teacher-model` only when intentionally running a new experiment.
 
 ```bash
 uv run python data-generation/distill.py \
-  --task math-boxed-grpo \
-  --output-dir generated/math-boxed-grpo \
+  --task math-boxed-sft \
+  --output-dir generated/math-boxed-sft \
   --train-size 150 --heldout-size 50
 
 uv run python data-generation/distill.py \
-  --task thinking-math-opd \
-  --output-dir generated/thinking-math-opd \
+  --task thinking-math-sft-opd \
+  --output-dir generated/thinking-math-sft-opd \
   --train-size 150 --heldout-size 50
 
 uv run python data-generation/distill.py \
-  --task thinking-science-grpo \
-  --output-dir generated/thinking-science-grpo \
+  --task thinking-science-opd \
+  --output-dir generated/thinking-science-opd \
   --train-size 150 --heldout-size 50
 
 uv run python data-generation/distill.py \
-  --task logic-boolean-grpo \
-  --output-dir generated/logic-boolean-grpo \
+  --task logic-boolean-sft-grpo \
+  --output-dir generated/logic-boolean-sft-grpo \
   --train-size 150 --heldout-size 50
 ```
 
@@ -61,20 +61,20 @@ uv run python data-generation/distill_multiturn.py \
   --generation-attempts 1
 
 uv run python data-generation/distill_multiturn.py \
-  --task structured-number-guess-grpo \
-  --output-dir generated/structured-number-guess-grpo \
+  --task structured-number-guess-sft-grpo \
+  --output-dir generated/structured-number-guess-sft-grpo \
   --train-size 100 --heldout-size 50 \
   --generation-attempts 1
 
 uv run python data-generation/distill_multiturn.py \
-  --task math-python-grpo \
-  --output-dir generated/math-python-grpo \
+  --task math-python-sft \
+  --output-dir generated/math-python-sft \
   --train-size 100 --heldout-size 50 \
   --generation-attempts 1
 
 uv run python data-generation/distill_multiturn.py \
-  --task sudoku-grpo \
-  --output-dir generated/sudoku-grpo \
+  --task sudoku-sft-grpo \
+  --output-dir generated/sudoku-sft-grpo \
   --train-size 100 --heldout-size 50 \
   --generation-attempts 1
 ```
@@ -85,8 +85,8 @@ Replay a generated multi-turn artifact before using it:
 
 ```bash
 uv run python data-generation/validate_multiturn_outputs.py \
-  --task sudoku-grpo \
-  --output-dir generated/sudoku-grpo
+  --task sudoku-sft-grpo \
+  --output-dir generated/sudoku-sft-grpo
 ```
 
 The validator reconstructs the frozen split, checks disjointness and row counts, replays every retained transcript through the environment, verifies that no held-out id reached the teacher-attempt log, and scans for the active key value when one is available in the environment.
