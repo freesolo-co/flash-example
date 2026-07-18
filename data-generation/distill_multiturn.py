@@ -261,8 +261,8 @@ class NumberGuessAdapter(ImportedMultiTurnAdapter):
     source_description = {
         "generator": "environment.build_dataset",
         "split_scheme": (
-            "the environment generator has fixed rng seed 7, so each episode uses a "
-            "nonoverlapping 100-integer range block; train blocks precede held-out blocks"
+            "each episode uses a nonoverlapping 100-integer range block and its own "
+            "deterministic seed; train blocks precede held-out blocks"
         ),
     }
 
@@ -277,8 +277,13 @@ class NumberGuessAdapter(ImportedMultiTurnAdapter):
         for index in range(train_size + heldout_size):
             low = block_offset + index * 100 + 1
             high = low + 99
+            episode_seed = seed + index
             row = self.module.build_dataset(
-                num_examples=1, low=low, high=high, max_turns=7
+                num_examples=1,
+                low=low,
+                high=high,
+                max_turns=7,
+                seed=episode_seed,
             )[0]
             split = "train" if index < train_size else "heldout"
             row = dict(row)
@@ -288,7 +293,9 @@ class NumberGuessAdapter(ImportedMultiTurnAdapter):
                     id=row["id"],
                     row=row,
                     split=split,
-                    seed=f"fixed_rng=7;range_block={index};base_seed={seed}",
+                    seed=(
+                        f"episode_seed={episode_seed};range_block={index};base_seed={seed}"
+                    ),
                 )
             )
         return all_problems[:train_size], all_problems[train_size:]

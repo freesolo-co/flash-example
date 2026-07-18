@@ -46,9 +46,13 @@ def parse_bounded_guess(text: str, low: int, high: int) -> int | None:
 
 
 def build_dataset(
-    num_examples: int = 24, low: int = 1, high: int = 100, max_turns: int = 7
+    num_examples: int = 24,
+    low: int = 1,
+    high: int = 100,
+    max_turns: int = 7,
+    seed: int = 7,
 ) -> list[dict]:
-    rng = random.Random(7)
+    rng = random.Random(seed)
     return [
         {
             "id": f"number-guess-{index:03d}",
@@ -184,5 +188,6 @@ def load_environment(**kwargs: object) -> StructuredNumberGuessEnvironment:
             low=int(kwargs.get("low", 1)),
             high=int(kwargs.get("high", 100)),
             max_turns=int(kwargs.get("max_turns", 7)),
+            seed=int(kwargs.get("seed", 7)),
         )
     return environment

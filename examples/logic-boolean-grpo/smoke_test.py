@@ -29,7 +29,7 @@ def main() -> None:
 
     correct_result = environment.score_response(
         example,
-        f"<think>evaluate structurally</think><answer>{expected.lower()}</answer>",
+        f"<think>evaluate structurally</think><answer>{expected}</answer>",
     )
     wrong_result = environment.score_response(
         example,
@@ -43,7 +43,9 @@ def main() -> None:
     assert correct_result.score == 1.0 and correct_result.success
     assert wrong_result.score == 0.0 and not wrong_result.success
     assert unfinished_result.score == 0.0 and not unfinished_result.success
-    assert extract_answer("<answer>False</answer><answer>True</answer>") == "True"
+    assert extract_answer("<answer>False</answer><answer>True</answer>") is None
+    assert extract_answer("<answer>True</answer> trailing") is None
+    assert extract_answer("prefix <answer>True</answer>") is None
     assert extract_answer("<answer>True") is None
     print("logic boolean smoke passed")
 

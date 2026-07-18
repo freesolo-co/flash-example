@@ -294,25 +294,34 @@ def parse_openbookqa() -> dict[str, list[Problem]]:
     return parsed
 
 
-def generate_logic(module: ModuleType, count: int, seed: int, split: str) -> list[Problem]:
+def generate_logic(
+    module: ModuleType,
+    count: int,
+    seed: int,
+    split: str,
+    *,
+    excluded_digests: set[str] | None = None,
+) -> list[Problem]:
     rng = random.Random(seed)
     problems = []
-    seen: set[str] = set()
+    seen = set(excluded_digests or ())
     while len(problems) < count:
         depth = rng.randint(2, 5)
         expression, value = module._generate_expression(rng, depth)
-        if expression in seen:
+        problem_input = (
+            "Evaluate the following boolean expression:\n\n"
+            f"{expression}\n\n"
+            "Is the expression True or False?"
+        )
+        digest = input_digest(problem_input)
+        if digest in seen:
             continue
-        seen.add(expression)
+        seen.add(digest)
         index = len(problems)
         problems.append(
             Problem(
                 id=f"boolean-{split}-{index:04d}",
-                input=(
-                    "Evaluate the following boolean expression:\n\n"
-                    f"{expression}\n\n"
-                    "Is the expression True or False?"
-                ),
+                input=problem_input,
                 answer=str(value),
                 source_split=split,
             )
@@ -369,7 +378,13 @@ def build_splits(
         }
     elif task == "logic-boolean-grpo":
         train = generate_logic(adapter.module, train_size, seed, "train")
-        heldout = generate_logic(adapter.module, heldout_size, seed + 1, "heldout")
+        heldout = generate_logic(
+            adapter.module,
+            heldout_size,
+            seed + 1,
+            "heldout",
+            excluded_digests={input_digest(problem.input) for problem in train},
+        )
         source = {
             "name": "environment recursive boolean generator",
             "train_seed": seed,

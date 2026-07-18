@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import sys
 import tomllib
 from pathlib import Path
 
@@ -31,13 +32,18 @@ CONFIGS = {
 }
 
 
-def load_environment_module(name: str):
-    path = ROOT / "examples" / name / "environment.py"
-    spec = importlib.util.spec_from_file_location(name.replace("-", "_"), path)
+def load_python_module(path: Path, module_name: str):
+    spec = importlib.util.spec_from_file_location(module_name, path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
     spec.loader.exec_module(module)
     return module
+
+
+def load_environment_module(name: str):
+    path = ROOT / "examples" / name / "environment.py"
+    return load_python_module(path, name.replace("-", "_"))
 
 
 def load_config(name: str, filename: str) -> dict:
@@ -93,6 +99,23 @@ def test_distilled_data_is_present_and_disjoint() -> None:
         train_inputs = {str(row["input"]) for row in train}
         heldout_inputs = {str(row["input"]) for row in heldout}
         assert train_inputs.isdisjoint(heldout_inputs)
+
+
+def test_number_guess_data_has_varied_disjoint_secrets() -> None:
+    data_dir = ROOT / "examples" / "structured-number-guess-grpo" / "data"
+    train = read_jsonl(data_dir / "train.jsonl")
+    heldout = json.loads((data_dir / "heldout.json").read_text())
+    train_secrets = {
+        json.loads(row["output"]["messages"][-2]["content"])["guess"] for row in train
+    }
+    heldout_secrets = {row["metadata"]["secret"] for row in heldout}
+    offsets = {
+        json.loads(row["output"]["messages"][-2]["content"])["guess"]
+        - int(str(row["input"]).split(" from ", 1)[1].split(" through ", 1)[0])
+        for row in train
+    }
+    assert len(offsets) > 1
+    assert train_secrets.isdisjoint(heldout_secrets)
 
 
 def test_sft_environments_load_the_bundled_data() -> None:
@@ -164,6 +187,25 @@ def test_warm_start_configs_inherit_parent_lora_shape() -> None:
     assert load_config("thinking-math-opd", "train_opd.toml")["environment"]["params"] == {
         "dataset": "generated"
     }
+
+
+def test_logic_default_generation_splits_are_disjoint() -> None:
+    distill = load_python_module(
+        ROOT / "data-generation" / "distill.py", "distill_regression"
+    )
+    adapter = distill.SingleTurnAdapter("logic-boolean-grpo")
+    train, heldout, _ = distill.build_splits(
+        "logic-boolean-grpo",
+        adapter,
+        train_size=150,
+        heldout_size=50,
+        seed=20260717,
+    )
+    assert len(train) == 150
+    assert len(heldout) == 50
+    assert {distill.input_digest(row.input) for row in train}.isdisjoint(
+        {distill.input_digest(row.input) for row in heldout}
+    )
 
 
 def test_stage_specific_environment_parameters_select_generated_data() -> None:
@@ -294,7 +336,12 @@ def test_math_boxed_contract() -> None:
 
 def test_logic_boolean_contract() -> None:
     module = load_environment_module("logic-boolean-grpo")
-    assert module.extract_answer("<answer>False</answer><answer>True</answer>") == "True"
+    assert module.extract_answer("<answer>True</answer>") == "True"
+    assert module.extract_answer("<think>reason</think>\n<answer>False</answer>") == "False"
+    assert module.extract_answer("\n<answer>True</answer>\n") == "True"
+    assert module.extract_answer("<answer>False</answer><answer>True</answer>") is None
+    assert module.extract_answer("<answer>True</answer> trailing") is None
+    assert module.extract_answer("prefix <answer>True</answer>") is None
     assert module.extract_answer("<think>still open") is None
     env = module.load_environment()
     example = task_example(env.dataset[0])
@@ -335,6 +382,41 @@ def test_math_python_lifecycle_and_tool_output() -> None:
     assert wrong.score == 0.0 and wrong.success is False
 
 
+def test_math_python_execution_is_bounded(monkeypatch) -> None:
+    module = load_environment_module("math-python-grpo")
+    output = module.execute_python("print('x' * 10000)")
+    assert len(output) <= module._OUTPUT_LIMIT
+    assert output.endswith("[output truncated]")
+
+    monkeypatch.setattr(module, "_EXECUTION_TIMEOUT_SECONDS", 0.05)
+    assert module.execute_python("import time; time.sleep(10)") == "execution timed out"
+
+
+def test_eval_requires_math_python_unsafe_opt_in_and_uses_case_bounds() -> None:
+    evaluate = load_python_module(
+        ROOT / "eval" / "evaluate_suite.py", "evaluate_suite_regression"
+    )
+    evaluate.require_local_execution_opt_in(
+        "math-python-grpo", dry_run=True, allowed=False
+    )
+    try:
+        evaluate.require_local_execution_opt_in(
+            "math-python-grpo", dry_run=False, allowed=False
+        )
+    except RuntimeError as error:
+        assert "--allow-unsafe-local-code-execution" in str(error)
+    else:
+        raise AssertionError("math-python evaluation did not require unsafe opt-in")
+
+    loaded = evaluate.load_example(evaluate.PROFILES["structured-number-guess-grpo"])
+    row = loaded.rows[0]
+    schema = evaluate.response_schema_for_row(loaded, row)
+    assert schema is not None
+    guess_schema = schema["properties"]["guess"]
+    assert guess_schema["minimum"] == row["metadata"]["low"]
+    assert guess_schema["maximum"] == row["metadata"]["high"]
+
+
 def test_sudoku_move_parsing_and_full_solve() -> None:
     module = load_environment_module("sudoku-grpo")
     assert module.parse_move_string(module.extract_move("<think>x</think><move>A1=5</move>")) == (
@@ -342,7 +424,14 @@ def test_sudoku_move_parsing_and_full_solve() -> None:
         0,
         5,
     )
+    assert module.extract_move("<move>A1=5</move><move>A2=6</move>") == ""
+    assert module.extract_move("<move>A1=5</move> trailing") == ""
     assert module.parse_move_string(module.extract_move("A1=5")) is None
+
+    board = module.SudokuBoard([[5, *([0] * 8)], *[[0] * 9 for _ in range(8)]])
+    assert board.make_move(0, 0, 0) is False
+    assert board.make_move(0, 0, 4) is False
+    assert board.board[0][0] == 5
     env = module.load_environment()
     example = task_example(env.dataset[0])
     puzzle = example.metadata["puzzle"]
@@ -358,6 +447,42 @@ def test_sudoku_move_parsing_and_full_solve() -> None:
         assert step.done is (index == len(empties) - 1)
     reward = env.score_episode(example, episode(*messages))
     assert reward.success is True and reward.score > 0
+
+
+def test_sudoku_reward_requires_metadata_solution() -> None:
+    module = load_environment_module("sudoku-grpo")
+    env = module.load_environment()
+    completed_board = [
+        [((row * 3 + row // 3 + col) % 9) + 1 for col in range(9)]
+        for row in range(9)
+    ]
+    different_solution = [
+        [((value % 9) + 1) for value in row] for row in completed_board
+    ]
+    example = task_example(
+        {
+            "id": "sudoku-unique-solution-test",
+            "input": "synthetic puzzle",
+            "output": "",
+            "metadata": {
+                "puzzle": [[0] * 9 for _ in range(9)],
+                "solution": different_solution,
+                "max_turns": 81,
+            },
+        }
+    )
+    messages = tuple(
+        {
+            "role": "assistant",
+            "content": f"<move>{module.format_move(row, col, value)}</move>",
+        }
+        for row, values in enumerate(completed_board)
+        for col, value in enumerate(values)
+    )
+    reward = env.score_episode(example, episode(*messages))
+    assert module._replay_board(example, messages).is_solved() is True
+    assert reward.success is False
+    assert reward.score < 5.0
 
 
 class _RolloutExample:

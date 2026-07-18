@@ -7,12 +7,20 @@ import os
 
 from openai import OpenAI
 
-SCHEMA = {
-    "type": "object",
-    "properties": {"guess": {"type": "integer", "minimum": 1, "maximum": 100}},
-    "required": ["guess"],
-    "additionalProperties": False,
-}
+
+def schema_for_metadata(metadata: dict[str, object]) -> dict[str, object]:
+    low = int(metadata["low"])
+    high = int(metadata["high"])
+    if low > high:
+        raise ValueError("number-guess lower bound must not exceed upper bound")
+    return {
+        "type": "object",
+        "properties": {
+            "guess": {"type": "integer", "minimum": low, "maximum": high}
+        },
+        "required": ["guess"],
+        "additionalProperties": False,
+    }
 
 
 def main() -> None:
@@ -20,7 +28,10 @@ def main() -> None:
         base_url=os.environ["FLASH_OPENAI_BASE_URL"],
         api_key=os.environ["FREESOLO_API_KEY"],
     )
+    low = 1
+    high = 100
     secret = 42
+    schema = schema_for_metadata({"low": low, "high": high})
     messages = [
         {
             "role": "system",
@@ -35,7 +46,11 @@ def main() -> None:
             temperature=0,
             response_format={
                 "type": "json_schema",
-                "json_schema": {"name": "number_guess", "strict": True, "schema": SCHEMA},
+                "json_schema": {
+                    "name": "number_guess",
+                    "strict": True,
+                    "schema": schema,
+                },
             },
         )
         content = response.choices[0].message.content or ""

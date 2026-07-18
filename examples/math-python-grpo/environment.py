@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import re
-import shutil
+import signal
 import subprocess
 import sys
 import tempfile
+import threading
 import unicodedata
 from fractions import Fraction
 from pathlib import Path
@@ -26,6 +28,7 @@ SYSTEM_PROMPT = (
     "In addition to the Python standard library, you have access to: math, fractions."
 )
 _OUTPUT_LIMIT = 4096
+_EXECUTION_TIMEOUT_SECONDS = 5
 _DATASET_PATH = Path(__file__).parent / "data" / "train.jsonl"
 _PYTHON_BLOCK = re.compile(r"```python\s*(.*?)```", re.IGNORECASE | re.DOTALL)
 _NUMERIC_ANSWER = re.compile(
@@ -118,33 +121,59 @@ def normalize_answer(value: str) -> tuple[str, str]:
 
 
 def execute_python(code: str) -> str:
-    temp_dir = tempfile.mkdtemp(prefix="math-python-")
-    try:
-        completed = subprocess.run(
-            [sys.executable, "-c", code],
-            capture_output=True,
-            text=True,
-            timeout=5,
-            cwd=temp_dir,
-            env={
-                "PATH": os.environ.get("PATH", ""),
-                "PYTHONIOENCODING": "utf-8",
-            },
-        )
-        captured = completed.stdout
-        if completed.stderr:
-            captured += completed.stderr
-        if not captured:
-            captured = "(no output)"
-    except subprocess.TimeoutExpired:
-        captured = "execution timed out"
-    except Exception as error:
-        captured = str(error) or type(error).__name__
-    finally:
-        shutil.rmtree(temp_dir, ignore_errors=True)
-    if len(captured) > _OUTPUT_LIMIT:
-        captured = captured[:_OUTPUT_LIMIT] + "\n[output truncated]"
-    return captured.rstrip()
+    captured = bytearray()
+    truncated = False
+    timed_out = False
+    with tempfile.TemporaryDirectory(prefix="math-python-") as temp_dir:
+        try:
+            process = subprocess.Popen(
+                [sys.executable, "-c", code],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                cwd=temp_dir,
+                env={
+                    "PATH": os.environ.get("PATH", ""),
+                    "PYTHONIOENCODING": "utf-8",
+                },
+                start_new_session=True,
+            )
+            assert process.stdout is not None
+
+            def drain_output() -> None:
+                nonlocal truncated
+                while chunk := process.stdout.read(8192):
+                    remaining = _OUTPUT_LIMIT - len(captured)
+                    if remaining > 0:
+                        captured.extend(chunk[:remaining])
+                    if len(chunk) > remaining:
+                        truncated = True
+
+            reader = threading.Thread(target=drain_output, daemon=True)
+            reader.start()
+            try:
+                process.wait(timeout=_EXECUTION_TIMEOUT_SECONDS)
+            except subprocess.TimeoutExpired:
+                timed_out = True
+            finally:
+                with contextlib.suppress(ProcessLookupError):
+                    os.killpg(process.pid, signal.SIGKILL)
+                process.wait()
+                reader.join(timeout=1)
+                if reader.is_alive():
+                    process.stdout.close()
+                    reader.join(timeout=1)
+        except Exception as error:
+            return (str(error) or type(error).__name__)[:_OUTPUT_LIMIT].rstrip()
+
+    if timed_out:
+        return "execution timed out"
+    text = captured.decode("utf-8", errors="replace")
+    if not text:
+        return "(no output)"
+    if truncated:
+        marker = "\n[output truncated]"
+        text = text[: _OUTPUT_LIMIT - len(marker)] + marker
+    return text.rstrip()
 
 
 def example_metadata(example: TaskExample) -> tuple[str, int]:

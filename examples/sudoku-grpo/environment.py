@@ -58,6 +58,8 @@ class SudokuBoard:
     def make_move(self, row: int, col: int, num: int) -> bool:
         if not (0 <= row < 9 and 0 <= col < 9):
             return False
+        if self.initial_board[row][col] != 0:
+            return False
         if num == 0:
             if self.board[row][col] == 0:
                 return False
@@ -295,8 +297,10 @@ def generate_puzzle(difficulty: str = "easy", seed: int = 42) -> tuple[list[list
 
 
 def extract_move(text: str) -> str:
-    match = re.search(r"<move>(.*?)</move>", text, re.DOTALL | re.IGNORECASE)
-    return match.group(1).strip() if match else ""
+    matches = list(re.finditer(r"<move>(.*?)</move>", text, re.DOTALL | re.IGNORECASE))
+    if len(matches) != 1 or text[matches[0].end() :].strip():
+        return ""
+    return matches[0].group(1).strip()
 
 
 def parse_move_string(move_text: str) -> tuple[int, int, int] | None:
@@ -334,8 +338,15 @@ def calculate_move_reward(
     return reward
 
 
-def calculate_final_reward(board: SudokuBoard, max_turns: int, turns_used: int) -> float:
-    if board.is_solved():
+def calculate_final_reward(
+    board: SudokuBoard,
+    max_turns: int,
+    turns_used: int,
+    *,
+    solved: bool | None = None,
+) -> float:
+    solved = board.is_solved() if solved is None else solved
+    if solved:
         reward = 5.0
         if max_turns > 0:
             reward += 1.0 - turns_used / max_turns
@@ -354,11 +365,14 @@ def get_move_feedback(
     row: int | None = None,
     col: int | None = None,
     num: int | None = None,
+    *,
+    solved: bool | None = None,
 ) -> str:
+    solved = board.is_solved() if solved is None else solved
     if move_valid:
         if num == 0:
             return f"Backtracked. Cell cleared. {board.get_progress_stats()['empty_cells']} cells remaining."
-        if board.is_solved():
+        if solved:
             return "Congratulations. You solved the puzzle."
         if board.is_complete():
             return "The board is complete but incorrect. Review the entries."
@@ -525,9 +539,12 @@ class SudokuEnvironment(EnvironmentMultiTurn):
 
         row, col, num = move
         move_valid = board.make_move(row, col, num)
-        feedback = get_move_feedback(board, move_valid, row, col, num)
+        solved = board.board == _metadata(example)["solution"]
+        feedback = get_move_feedback(
+            board, move_valid, row, col, num, solved=solved
+        )
         return EnvironmentStepResult(
-            done=board.is_solved(),
+            done=solved,
             messages=(
                 {
                     "role": "user",
@@ -548,11 +565,12 @@ class SudokuEnvironment(EnvironmentMultiTurn):
     ) -> RewardResult:
         board = _replay_board(example, episode.messages)
         turns_used = sum(message["role"] == "assistant" for message in episode.messages)
-        solved = board.is_solved()
+        solved = board.board == _metadata(example)["solution"]
         score = calculate_final_reward(
             board,
             self.max_episode_turns(example),
             turns_used,
+            solved=solved,
         )
         stats = board.get_progress_stats()
         reason = (

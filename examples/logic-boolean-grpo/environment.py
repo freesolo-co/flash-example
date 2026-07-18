@@ -15,7 +15,10 @@ SYSTEM_PROMPT = (
 )
 _DATASET_SEED = 20260716
 _DATASET_SIZE = 24
-_ANSWER_PATTERN = re.compile(r"<answer>(.*?)</answer>", re.DOTALL)
+_ANSWER_PATTERN = re.compile(
+    r"\s*(?:<think>.*?</think>\s*)?<answer>(True|False)</answer>\s*",
+    re.DOTALL,
+)
 
 
 def _generate_expression(rng: random.Random, depth: int) -> tuple[str, bool]:
@@ -38,23 +41,10 @@ def _generate_expression(rng: random.Random, depth: int) -> tuple[str, bool]:
 
 
 def extract_answer(text: str) -> str | None:
-    if "<think>" in text and "</think>" not in text:
+    if text.count("<answer>") != 1 or text.count("</answer>") != 1:
         return None
-
-    answer_text = text
-    if "</think>" in answer_text:
-        answer_text = answer_text.split("</think>", 1)[1]
-
-    matches = _ANSWER_PATTERN.findall(answer_text)
-    if not matches:
-        return None
-
-    normalized = matches[-1].strip().casefold()
-    if normalized == "true":
-        return "True"
-    if normalized == "false":
-        return "False"
-    return None
+    match = _ANSWER_PATTERN.fullmatch(text)
+    return match.group(1) if match is not None else None
 
 
 def build_dataset() -> list[dict]:

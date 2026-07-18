@@ -22,6 +22,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES_ROOT = REPO_ROOT / "examples"
 DEFAULT_BASE_URL = "https://clado-ai--freesolo-lora-serving.modal.run/v1"
 DEFAULT_CONFIG_PATH = Path.home() / ".flash" / "config.json"
+UNSAFE_LOCAL_CODE_WARNING = (
+    "WARNING: math-python evaluation executes model-generated Python directly on this host "
+    "with no sandbox. Use only a disposable machine or container."
+)
 
 
 @dataclass(frozen=True)
@@ -32,6 +36,7 @@ class Profile:
     max_tokens: int
     component_name: str
     step_before_append: bool = False
+    stop_sequences: tuple[str, ...] = ()
 
 
 PROFILES = {
@@ -50,6 +55,7 @@ PROFILES = {
             "single",
             1024,
             "exact_answer_rate",
+            stop_sequences=("</answer>",),
         ),
         Profile(
             "structured-number-guess-grpo",
@@ -93,6 +99,7 @@ PROFILES = {
             1536,
             "solved_rate",
             True,
+            ("</move>",),
         ),
     )
 }
@@ -105,6 +112,7 @@ class LoadedExample:
     environment: Any
     rows: list[dict[str, Any]]
     response_schema: dict[str, Any] | None
+    response_schema_factory: Callable[[dict[str, Any]], dict[str, Any]] | None
 
 
 @dataclass(frozen=True)
@@ -214,12 +222,16 @@ def load_example(profile: Profile) -> LoadedExample:
     schema = getattr(call_module, "SCHEMA", None)
     if schema is not None and not isinstance(schema, dict):
         raise TypeError("call.py SCHEMA must be a dictionary")
+    schema_factory = getattr(call_module, "schema_for_metadata", None)
+    if schema_factory is not None and not callable(schema_factory):
+        raise TypeError("call.py schema_for_metadata must be callable")
     return LoadedExample(
         profile=profile,
         environment_module=environment_module,
         environment=environment_module.load_environment(),
         rows=rows,
         response_schema=schema,
+        response_schema_factory=schema_factory,
     )
 
 
@@ -251,11 +263,20 @@ def resolve_api_key(config_path: Path = DEFAULT_CONFIG_PATH) -> str:
     return config_key
 
 
+def response_schema_for_row(
+    loaded: LoadedExample, row: dict[str, Any]
+) -> dict[str, Any] | None:
+    if loaded.response_schema_factory is not None:
+        return loaded.response_schema_factory(dict(row.get("metadata") or {}))
+    return loaded.response_schema
+
+
 def request_completion(
     client: OpenAI,
     loaded: LoadedExample,
     model: str,
     messages: list[dict[str, str]],
+    row: dict[str, Any],
 ) -> CompletionResult:
     request: dict[str, Any] = {
         "model": model,
@@ -263,13 +284,16 @@ def request_completion(
         "temperature": 0.0,
         "max_tokens": loaded.profile.max_tokens,
     }
-    if loaded.response_schema is not None:
+    if loaded.profile.stop_sequences:
+        request["stop"] = list(loaded.profile.stop_sequences)
+    response_schema = response_schema_for_row(loaded, row)
+    if response_schema is not None:
         request["response_format"] = {
             "type": "json_schema",
             "json_schema": {
                 "name": "evaluation_response",
                 "strict": True,
-                "schema": loaded.response_schema,
+                "schema": response_schema,
             },
         }
     completion = client.chat.completions.create(**request)
@@ -285,7 +309,7 @@ def evaluate_single_case(
 ) -> CaseResult:
     example = task_example(row)
     messages = loaded.environment.build_prompt_messages(example, str(example.input))
-    completion = request_completion(client, loaded, model, messages)
+    completion = request_completion(client, loaded, model, messages, row)
     reward = loaded.environment.score_response(example, completion.content)
     return CaseResult(
         id=str(example.id or ""),
@@ -312,7 +336,7 @@ def evaluate_multi_case(
     turns = 0
     for _ in range(loaded.environment.max_episode_turns(example)):
         try:
-            completion = request_completion(client, loaded, model, messages)
+            completion = request_completion(client, loaded, model, messages, row)
         except BadRequestError as error:
             if "maximum context length" not in str(error):
                 raise
@@ -373,6 +397,20 @@ def evaluate_model(
     )
 
 
+def require_local_execution_opt_in(
+    example: str, *, dry_run: bool, allowed: bool
+) -> None:
+    if example != "math-python-grpo" or dry_run:
+        return
+    if not allowed:
+        raise RuntimeError(
+            "math-python evaluation is disabled because it executes model-generated Python "
+            "on the host with no sandbox; rerun with --allow-unsafe-local-code-execution "
+            "only inside a disposable machine or container"
+        )
+    print(UNSAFE_LOCAL_CODE_WARNING, file=sys.stderr, flush=True)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--example", choices=sorted(PROFILES), required=True)
@@ -381,6 +419,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--allow-unsafe-local-code-execution",
+        action="store_true",
+        help=(
+            "allow math-python evaluation to run model-generated Python on this host "
+            "without a sandbox"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -388,6 +434,11 @@ def main() -> None:
     args = parse_args()
     if args.workers < 1:
         raise ValueError("workers must be positive")
+    require_local_execution_opt_in(
+        args.example,
+        dry_run=args.dry_run,
+        allowed=args.allow_unsafe_local_code_execution,
+    )
     profile = PROFILES[args.example]
     model = args.model or profile.adapter_model
     loaded = load_example(profile)
