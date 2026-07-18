@@ -28,6 +28,6 @@ flash train examples/sudoku-grpo/train_grpo.toml --cost
 flash train examples/sudoku-grpo/train_grpo.toml --background
 ```
 
-Shipped runs: SFT `flash-1784324917-1d8f0ce8`, then GRPO `flash-1784327754-e1d3a602`. Deploy checkpoint `step-8`. GRPO improved held-out solve rate from 94% to 100%, matching GPT-5.5 at 100%.
+Shipped runs: SFT `flash-1784324917-1d8f0ce8`, then GRPO `flash-1784327754-e1d3a602`. The prior held-out and ablation numbers are superseded after correcting clue immutability, move parsing, and unique-solution scoring. Results are pending Phase 2 re-evaluation.
 
 See [RESULTS.md](../../RESULTS.md) and [eval](../../eval).

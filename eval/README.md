@@ -4,6 +4,8 @@ The evaluation harness runs every model through the checked-in environment lifec
 
 ## Shipped adapters
 
+> **Security warning:** `math-python-grpo` executes model-generated Python directly on the evaluation host with no sandbox. The harness refuses to run it by default. Use only a disposable machine or container and pass `--allow-unsafe-local-code-execution` to acknowledge the risk. The timeout and output cap limit accidental resource use but do not make execution safe.
+
 `evaluate_suite.py` defaults to the shipped run id for the selected example. It reads `FREESOLO_API_KEY`, or the authenticated Flash CLI config, and calls the configured OpenAI-compatible serving endpoint.
 
 ```bash
@@ -22,6 +24,15 @@ uv run python eval/evaluate_suite.py \
 ```
 
 For Sudoku, deploy `flash-1784327754-e1d3a602/step-8` before evaluation. Serving calls still use the base run id `flash-1784327754-e1d3a602`.
+
+Math Python requires the explicit unsafe opt-in:
+
+```bash
+uv run python eval/evaluate_suite.py \
+  --example math-python-grpo \
+  --allow-unsafe-local-code-execution \
+  --output eval-results/math-python-model.json
+```
 
 ## GPT-5.5 comparison
 

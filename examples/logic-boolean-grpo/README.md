@@ -1,8 +1,8 @@
 # Logic boolean expressions with GRPO
 
-This example trains `Qwen/Qwen3.5-4B` with single-stage GRPO to evaluate nested boolean expressions and end with exactly `<answer>True</answer>` or `<answer>False</answer>`.
+This teacher-free example trains `Qwen/Qwen3.5-4B` with single-stage GRPO to evaluate nested boolean expressions and end with exactly `<answer>True</answer>` or `<answer>False</answer>`.
 
-GLM-5.2 generated the bundled offline distillation corpus because Kimi K2.6 had low verified yield on the strict terminal format. The shipped recipe is pure GRPO over the deterministic environment, so `data/train.jsonl` is included for audit and reuse rather than consumed by `train.toml`.
+The shipped adapter was not distilled from GLM-5.2. `train.toml` runs pure GRPO over the deterministic environment and does not consume `data/train.jsonl`. The bundled GLM-5.2 corpus is retained only for audit or optional SFT reuse.
 
 ## Files
 
@@ -23,7 +23,7 @@ flash train examples/logic-boolean-grpo/train.toml --cost
 flash train examples/logic-boolean-grpo/train.toml --background
 ```
 
-The shipped run is `flash-1784316952-a904a84d`. It scored 50/50 on held-out expressions, matching GPT-5.5 at 50/50.
+The shipped run is `flash-1784316952-a904a84d`. Its prior held-out result is pending Phase 2 re-evaluation under the corrected strict answer parser.
 
 ## Evaluate and deploy
 

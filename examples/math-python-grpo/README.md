@@ -25,6 +25,6 @@ The shipped run is `flash-1784322317-e152ffdd`. It scored 92% reward accuracy ve
 
 ## Execution safety
 
-The local executor uses a temporary directory, a five-second timeout, bounded output, and a minimal child environment. It is not a security sandbox. Run model-written code only on a disposable machine or replace it with a container, microVM, or remote code sandbox.
+The local executor uses a temporary directory, a five-second wall-clock timeout, bounded captured output, and a minimal child environment. It still executes model-generated Python directly on the host and is not a security sandbox. Run it only on a disposable machine or inside a container, microVM, or remote code sandbox. The evaluation harness requires `--allow-unsafe-local-code-execution` before enabling this path.
 
 See [RESULTS.md](../../RESULTS.md) and [eval](../../eval).

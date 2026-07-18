@@ -6,6 +6,7 @@ thinking = false
 id = "clay/logic-boolean-grpo"
 
 [train]
+# teacher-free grpo over the environment-generated dataset
 epochs = 10
 max_examples = 24
 max_steps = 50

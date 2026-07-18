@@ -27,6 +27,6 @@ flash train examples/structured-number-guess-grpo/train_grpo.toml --cost
 flash train examples/structured-number-guess-grpo/train_grpo.toml --background
 ```
 
-Shipped runs: SFT `flash-1784319868-8f8ee7be`, then GRPO `flash-1784321381-dbe68392`. The final adapter solved 100% of held-out episodes versus GPT-5.5 at 88%. The SFT stage already scored 100%; sampled GRPO groups had zero reward variance and made no update.
+Shipped runs: SFT `flash-1784319868-8f8ee7be`, then GRPO `flash-1784321381-dbe68392`. Their prior held-out and ablation numbers are superseded after correcting the per-case JSON schema and regenerated secret distribution. Results are pending Phase 2 re-evaluation.
 
 See [RESULTS.md](../../RESULTS.md) and [eval](../../eval).

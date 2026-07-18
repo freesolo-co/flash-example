@@ -12,10 +12,12 @@ export OPENROUTER_API_KEY="..."
 
 You may instead pass `--api-env-file /path/to/private.env`. Keep that file outside this repository. The scripts read `OPENROUTER_API_KEY` at runtime and never write it to data, manifests, or logs.
 
-Default teachers match the completed campaign:
+Default teachers reproduce the bundled corpora:
 
 - Kimi K2.6 (`moonshotai/kimi-k2.6`): running total, structured number guess, math boxed, math Python, thinking math, and thinking science
-- GLM-5.2 (`z-ai/glm-5.2`): logic boolean and Sudoku, where Kimi K2.6 had lower verified yield under the strict environment contract
+- GLM-5.2 (`z-ai/glm-5.2`): Sudoku and the optional logic-boolean audit/SFT corpus
+
+The shipped logic-boolean adapter is teacher-free GRPO and does not consume its generated corpus.
 
 Use `--teacher-model` only when intentionally running a new experiment.
 

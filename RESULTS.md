@@ -1,27 +1,27 @@
-# Distillation campaign results
+# Training campaign results
 
 ## Conclusion
 
-The campaign distilled strong teacher behavior into 2.3B to 9.65B Qwen3.5 students that **match GPT-5.5's per-task quality** across all eight shipped examples. This is a match claim, not a general claim that the students beat GPT-5.5.
+The campaign produced eight 2.3B to 9.65B Qwen3.5 task specialists: seven trained with teacher-distilled data and logic boolean trained with teacher-free environment RL. Five task results remain valid after the Phase 1 corrections. Logic boolean, structured number guess, and Sudoku are pending Phase 2 re-evaluation under their corrected parser, schema/data, and reward contracts.
 
-Several students score higher under a task's strict environment contract. Those differences are real for these frozen evaluations, but they mostly reflect exact formatting, tool-use, or episode-protocol slips by GPT-5.5 rather than broad capability superiority. The evidence supports shipping compact task specialists, not ranking the underlying models globally.
+Some unaffected students score higher under a task's strict environment contract. Those differences are real for the frozen evaluations that remain valid, but they mostly reflect exact formatting, tool-use, or episode-protocol slips by GPT-5.5 rather than broad capability superiority. The evidence supports shipping compact task specialists, not ranking the underlying models globally.
 
 ## Held-out quality
 
-Each row uses 50 frozen held-out cases. Train and held-out inputs are disjoint, and held-out prompts were not sent to the distillation teacher.
+Each completed row uses 50 frozen held-out cases. Train and held-out inputs are disjoint, and held-out prompts were not sent to a teacher. Pending rows require a fresh Phase 2 evaluation and do not report the superseded numbers.
 
-| Task                    | Base       | Shipped recipe      | Model reward or accuracy |             GPT-5.5 | Verdict                               |
-| ----------------------- | ---------- | ------------------- | -----------------------: | ------------------: | ------------------------------------- |
-| Running total           | Qwen3.5-2B | pure SFT            |                     100% |                100% | match                                 |
-| Logic boolean           | Qwen3.5-4B | single-stage GRPO   |                    50/50 |               50/50 | match                                 |
-| Structured number guess | Qwen3.5-2B | SFT to GRPO         |              100% solved |          88% solved | exceeds this strict contract          |
-| Thinking science        | Qwen3.5-9B | single-stage OPD    |                    50/50 |               50/50 | match                                 |
-| Math boxed              | Qwen3.5-9B | pure SFT            |            0.90 accuracy |       0.92 accuracy | match within the campaign parity band |
-| Math Python             | Qwen3.5-4B | pure SFT            |      92% reward accuracy | 82% reward accuracy | exceeds this strict contract          |
-| Thinking math           | Qwen3.5-9B | SFT to OPD          |            0.92 accuracy |       0.92 accuracy | match                                 |
-| Sudoku                  | Qwen3.5-4B | SFT to GRPO, step 8 |              100% solved |         100% solved | match                                 |
+| Task                    | Base       | Shipped recipe      | Model reward or accuracy |               GPT-5.5 | Verdict                                |
+| ----------------------- | ---------- | ------------------- | -----------------------: | --------------------: | -------------------------------------- |
+| Running total           | Qwen3.5-2B | pure SFT            |                     100% |                  100% | match                                  |
+| Logic boolean           | Qwen3.5-4B | single-stage GRPO   |    pending re-evaluation | pending re-evaluation | corrected parser, Phase 2 pending      |
+| Structured number guess | Qwen3.5-2B | SFT to GRPO         |    pending re-evaluation | pending re-evaluation | corrected schema/data, Phase 2 pending |
+| Thinking science        | Qwen3.5-9B | single-stage OPD    |                    50/50 |                 50/50 | match                                  |
+| Math boxed              | Qwen3.5-9B | pure SFT            |            0.90 accuracy |         0.92 accuracy | near parity, one of 50 cases behind    |
+| Math Python             | Qwen3.5-4B | pure SFT            |      92% reward accuracy |   82% reward accuracy | exceeds this strict contract           |
+| Thinking math           | Qwen3.5-9B | SFT to OPD          |            0.92 accuracy |         0.92 accuracy | match                                  |
+| Sudoku                  | Qwen3.5-4B | SFT to GRPO, step 8 |    pending re-evaluation | pending re-evaluation | corrected reward, Phase 2 pending      |
 
-The teachers were Kimi K2.6 (`moonshotai/kimi-k2.6`) for six tasks. Logic boolean and Sudoku used GLM-5.2 (`z-ai/glm-5.2`) because Kimi K2.6 had lower reward-verified yield under those tasks' strict terminal protocols.
+Six shipped recipes use Kimi K2.6 (`moonshotai/kimi-k2.6`) teacher data, and Sudoku uses GLM-5.2 (`z-ai/glm-5.2`). Logic boolean is teacher-free environment GRPO. Its bundled GLM-5.2 corpus is retained for audit or optional SFT only and was not consumed by the shipped adapter.
 
 ## Shipped runs
 
@@ -47,13 +47,13 @@ Provider-reported mean total tokens per evaluated case or episode were:
 | Task                    | Student parameters |        Student tokens |                 GPT-5.5 tokens | Observation                                                                  |
 | ----------------------- | -----------------: | --------------------: | -----------------------------: | ---------------------------------------------------------------------------- |
 | Running total           |               2.3B |     75.50 per request |             386.63 per request | student used fewer reported tokens                                           |
-| Logic boolean           |              4.66B |       378.42 per case |                519.10 per case | student used fewer reported tokens                                           |
-| Structured number guess |               2.3B |  1,449.00 per episode |           3,288.74 per episode | student used fewer reported tokens                                           |
+| Logic boolean           |              4.66B | pending re-evaluation |          pending re-evaluation | corrected parser, Phase 2 pending                                            |
+| Structured number guess |               2.3B | pending re-evaluation |          pending re-evaluation | corrected schema/data, Phase 2 pending                                       |
 | Thinking science        |              9.65B |       285.28 per case |                445.16 per case | student used fewer reported tokens                                           |
 | Math boxed              |              9.65B |       288.78 per case |                599.14 per case | student used fewer reported tokens                                           |
 | Math Python             |              4.66B |     1,865.60 per case | 4,694.74 per observed GPT case | student used fewer reported tokens; GPT token mean covers 47 completed cases |
 | Thinking math           |              9.65B |       247.50 per case |                567.86 per case | student used fewer reported tokens                                           |
-| Sudoku                  |              4.66B | 26,014.58 per episode |          23,610.08 per episode | student used more reported tokens                                            |
+| Sudoku                  |              4.66B | pending re-evaluation |          pending re-evaluation | corrected reward, Phase 2 pending                                            |
 
 Token accounting is provider-specific and can include different hidden-reasoning conventions and tokenizers. It is useful as an operational footprint signal, not a perfectly controlled model comparison.
 
@@ -61,23 +61,23 @@ Latency is deliberately not presented as a campaign win. Student adapters were m
 
 ## SFT versus RL ablations
 
-The completed ablations favor a simple conclusion: distilled SFT carried most of the quality, while post-SFT RL usually tied or regressed.
+The unaffected completed ablations favor a simple conclusion: distilled SFT carried most of the quality, while post-SFT RL usually tied or regressed. Number-guess and Sudoku ablation outcomes are pending Phase 2 confirmation under the corrected contracts.
 
-- Structured number guess: SFT already solved 100%; GRPO sampled all-reward-1 groups with zero variance and made no effective update.
+- Structured number guess: the prior SFT and GRPO comparison is superseded and pending Phase 2 re-evaluation.
 - Math boxed: 9B SFT scored 0.88 in the detailed ablation, GRPO fell to 0.84, and OPD tied SFT at 0.88. The final campaign comparison uses the sealed 0.90 accuracy result.
 - Thinking math: 9B SFT scored 0.94; OPD reduced it to 0.92. OPD is shipped to demonstrate the warm-start workflow, not because it improved quality.
-- Sudoku: GRPO was the clear positive case, improving SFT from 94% solved to 100% solved at step 8.
+- Sudoku: the prior SFT and GRPO comparison is superseded and pending Phase 2 re-evaluation under clue immutability, strict one-move parsing, and unique-solution scoring.
 - Math Python: multi-turn OPD was too slow to reach a deployable checkpoint and was cancelled; pure SFT shipped.
 - Tiny-base OPD and RL attempts were unstable or below parity on several tasks, so the final recipes use the smallest tested student that met the held-out gate rather than forcing one algorithm everywhere.
 
-The practical recipe is therefore: distill verified trajectories with SFT first, add RL only when the environment exposes a measurable remaining failure mode, and keep the SFT adapter when RL does not improve the frozen held-out set.
+For teacher-distilled recipes, the practical pattern is: distill verified trajectories with SFT first, add RL only when the environment exposes a measurable remaining failure mode, and keep the SFT adapter when RL does not improve the frozen held-out set. Logic boolean is the teacher-free exception.
 
 ## Reproducibility boundaries
 
-- `examples/*/data/train.jsonl` contains the reward-verified teacher trajectories.
+- `examples/*/data/train.jsonl` contains reward-verified teacher trajectories; logic boolean's file is audit/optional-SFT data and is not consumed by its shipped GRPO config.
 - `examples/*/data/heldout.json` contains the frozen 50-case comparison split.
 - [data-generation](data-generation) regenerates the data from environment-native prompts and rewards.
 - [eval](eval) evaluates shipped adapters and GPT-5.5 through the same environment lifecycle.
 - Exact training configs and warm-start run ids are checked into each example directory.
 
-These results establish eight task-specific matches under frozen contracts. They do not establish broad benchmark dominance, controlled latency superiority, or a known parameter ratio to GPT-5.5.
+The five unaffected results establish task-specific performance under frozen contracts; three corrected tasks remain pending Phase 2. None of these results establishes broad benchmark dominance, controlled latency superiority, or a known parameter ratio to GPT-5.5.

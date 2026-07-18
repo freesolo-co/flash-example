@@ -1,23 +1,23 @@
-# Flash distillation examples
+# Flash training examples
 
-Eight end-to-end examples for distilling strong teacher behavior into small Qwen3.5 adapters with [Flash](https://github.com/freesolo-co/flash). The completed campaign targets one honest result: **match GPT-5.5's per-task quality with 2.3B to 9.65B task specialists**.
+Eight end-to-end examples for training small Qwen3.5 task adapters with [Flash](https://github.com/freesolo-co/flash): seven use teacher-distilled data, while logic boolean is teacher-free environment RL. Five unaffected frozen evaluations are reported below; logic boolean, structured number guess, and Sudoku are pending Phase 2 re-evaluation after correctness fixes.
 
-This is not a general claim that the students beat GPT-5.5. Several students score higher on frozen tasks because GPT-5.5 occasionally violates strict JSON, boxed-answer, tool-use, or multi-turn contracts. See [RESULTS.md](RESULTS.md) for the full framing, run ids, token footprint, and SFT-versus-RL ablations.
+This is not a general claim that the students beat GPT-5.5. Some unaffected students score higher on frozen tasks because GPT-5.5 occasionally violates strict boxed-answer, tool-use, or multi-turn contracts. See [RESULTS.md](RESULTS.md) for the full framing, run ids, token footprint, stale-result markers, and SFT-versus-RL ablations.
 
 ## Examples
 
 | Example                                                          | Base       | Shipped recipe    | Teacher      | Held-out result      |
 | ---------------------------------------------------------------- | ---------- | ----------------- | ------------ | -------------------- |
 | [Running total](examples/running-total-sft)                      | Qwen3.5-2B | pure SFT          | Kimi K2.6    | 100%, GPT-5.5 100%   |
-| [Logic boolean](examples/logic-boolean-grpo)                     | Qwen3.5-4B | single-stage GRPO | GLM-5.2 data | 50/50, GPT-5.5 50/50 |
-| [Structured number guess](examples/structured-number-guess-grpo) | Qwen3.5-2B | SFT to GRPO       | Kimi K2.6    | 100%, GPT-5.5 88%    |
+| [Logic boolean](examples/logic-boolean-grpo)                     | Qwen3.5-4B | single-stage GRPO | teacher-free | pending Phase 2      |
+| [Structured number guess](examples/structured-number-guess-grpo) | Qwen3.5-2B | SFT to GRPO       | Kimi K2.6    | pending Phase 2      |
 | [Thinking science](examples/thinking-science-grpo)               | Qwen3.5-9B | single-stage OPD  | Kimi K2.6    | 50/50, GPT-5.5 50/50 |
 | [Math boxed](examples/math-boxed-grpo)                           | Qwen3.5-9B | pure SFT          | Kimi K2.6    | 0.90, GPT-5.5 0.92   |
 | [Math Python](examples/math-python-grpo)                         | Qwen3.5-4B | pure SFT          | Kimi K2.6    | 92%, GPT-5.5 82%     |
 | [Thinking math](examples/thinking-math-opd)                      | Qwen3.5-9B | SFT to OPD        | Kimi K2.6    | 0.92, GPT-5.5 0.92   |
-| [Sudoku](examples/sudoku-grpo)                                   | Qwen3.5-4B | SFT to GRPO       | GLM-5.2      | 100%, GPT-5.5 100%   |
+| [Sudoku](examples/sudoku-grpo)                                   | Qwen3.5-4B | SFT to GRPO       | GLM-5.2      | pending Phase 2      |
 
-Kimi K2.6 is `moonshotai/kimi-k2.6`. Logic boolean and Sudoku use `z-ai/glm-5.2` because it produced higher reward-verified yield under those tasks' strict terminal protocols.
+Kimi K2.6 is `moonshotai/kimi-k2.6`. Seven shipped recipes use teacher-distilled training data: six from Kimi K2.6 and Sudoku from `z-ai/glm-5.2`. Logic boolean ships as teacher-free GRPO over the deterministic environment. Its GLM-5.2 corpus remains available only for audit or optional SFT and is not consumed by `train.toml`.
 
 The four community-inspired environments retain their provenance files: math boxed and math Python are adapted from Prime Intellect math environments, logic boolean from `primeintellect/logic-env`, and Sudoku from `m8ngotree/sudoku`. No upstream code is copied.
 
@@ -84,6 +84,8 @@ Warm-start child configs intentionally do not set `lora_rank` or `lora_alpha`; t
 
 ## Evaluate
 
+> **Security warning:** Math Python evaluation executes model-generated Python directly on the host with no sandbox. It is disabled by default. Run it only in a disposable machine or container and explicitly pass `--allow-unsafe-local-code-execution`.
+
 Evaluate a shipped adapter on all 50 frozen cases:
 
 ```bash
@@ -120,7 +122,7 @@ See [data-generation/README.md](data-generation/README.md) for all eight tasks a
 - no secret values belong in this repository
 - teacher credentials are read only at runtime
 - held-out rows are never submitted to the teacher by the generation scripts
-- math Python executes model-written code and is not a security sandbox
+- math Python executes model-written code directly on the host with no sandbox; local evaluation requires explicit unsafe opt-in and a disposable machine or container
 - provider-reported tokens use different tokenizers and hidden-reasoning conventions
 - latency was measured on different serving stacks and is not a controlled comparison
-- these are task-specific matches, not a broad model ranking
+- completed results are task-specific comparisons, not a broad model ranking; three corrected tasks remain pending Phase 2

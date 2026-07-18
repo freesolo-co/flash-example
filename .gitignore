@@ -9,6 +9,8 @@ __pycache__/
 .coverage
 htmlcov/
 validation-output/
+eval-results/
+generated/
 runs/
 artifacts/
 *.log
