@@ -44,6 +44,8 @@ uv run python eval/evaluate_gpt55.py \
   --output eval-results/running-total-gpt55.json
 ```
 
+The GPT-5.5 math Python path has the same unsafe-execution gate as the shipped-adapter evaluator and requires `--allow-unsafe-local-code-execution` on a disposable machine or container.
+
 The harness stores per-case prompts, responses, finish reasons, native environment rewards, and aggregate success rates. Do not commit gateway credentials or raw private request logs.
 
 ## Full matrix

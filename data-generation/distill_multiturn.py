@@ -43,6 +43,10 @@ DEFAULT_MAX_TOKENS = {
     "math-python-sft": 384,
     "sudoku-sft-grpo": 1536,
 }
+UNSAFE_LOCAL_CODE_WARNING = (
+    "WARNING: math-python distillation executes teacher-generated Python directly on this host "
+    "with no sandbox. Use only a disposable machine or container."
+)
 
 
 @dataclass(frozen=True)
@@ -482,18 +486,22 @@ class SudokuAdapter(ImportedMultiTurnAdapter):
             for message in transcript
             if message["role"] == "assistant"
         ]
+        board = self.module.SudokuBoard(problem.row["metadata"]["puzzle"])
         for reply in assistant:
-            if len(self.module.re.findall(r"<move>.*?</move>", reply, self.module.re.I | self.module.re.S)) != 1:
+            move_delimiters = self.module.re.findall(
+                r"<move>.*?</move>", reply, self.module.re.I | self.module.re.S
+            )
+            if len(move_delimiters) != 1:
                 return False, "assistant turn did not contain exactly one move delimiter"
             if not reply.strip().lower().endswith("</move>"):
                 return False, "assistant turn did not end at the move delimiter"
             move = self.module.parse_move_string(self.module.extract_move(reply))
             if move is None:
                 return False, "assistant turn had an invalid move"
+            if not board.make_move(*move):
+                return False, "assistant turn contained a move rejected by the environment"
         if not bool(reward.success):
             return False, str(reward.reason)
-        example = self.task_example(problem)
-        board = self.module._replay_board(example, tuple(transcript))
         solution = problem.row["metadata"]["solution"]
         if board.board != solution:
             return False, "solved reward did not reproduce the stored unique solution"
@@ -725,7 +733,22 @@ def transcript_characters(transcript: list[dict[str, str]]) -> int:
     return sum(len(str(message["content"])) for message in transcript)
 
 
+def require_local_execution_opt_in(task: str, *, allowed: bool) -> None:
+    if task != "math-python-sft":
+        return
+    if not allowed:
+        raise RuntimeError(
+            "math-python distillation is disabled because it executes teacher-generated Python "
+            "on the host with no sandbox; rerun with --allow-unsafe-local-code-execution "
+            "only inside a disposable machine or container"
+        )
+    print(UNSAFE_LOCAL_CODE_WARNING, file=sys.stderr, flush=True)
+
+
 def run(args: argparse.Namespace) -> None:
+    require_local_execution_opt_in(
+        args.task, allowed=args.allow_unsafe_local_code_execution
+    )
     output_dir = Path(args.output_dir).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     adapter = ADAPTERS[args.task]()
@@ -898,6 +921,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--backoff-seconds", type=float, default=2.0)
     parser.add_argument("--max-tokens", type=int)
     parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument(
+        "--allow-unsafe-local-code-execution",
+        action="store_true",
+        help=(
+            "allow math-python distillation to run teacher-generated Python on this host "
+            "without a sandbox"
+        ),
+    )
     return parser
 
 

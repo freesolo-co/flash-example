@@ -181,6 +181,16 @@ def example_metadata(example: TaskExample) -> tuple[str, int]:
     return str(values["answer"]), int(values["max_turns"])
 
 
+def has_python_tool_result(
+    messages: list[dict[str, str]] | tuple[dict[str, str], ...],
+) -> bool:
+    return any(
+        message["role"] == "user"
+        and str(message["content"]).startswith("```output\n")
+        for message in messages
+    )
+
+
 def load_distilled_dataset(path: str | Path = _DATASET_PATH) -> list[dict]:
     rows = []
     with Path(path).open() as handle:
@@ -228,12 +238,22 @@ class MathPythonEnvironment(EnvironmentMultiTurn):
         messages: list[dict[str, str]],
         assistant_response: str,
     ) -> EnvironmentStepResult:
-        _ = example, messages
-        if extract_boxed_answer(assistant_response) is not None:
+        _ = example
+        boxed_answer = extract_boxed_answer(assistant_response)
+        if boxed_answer is not None and has_python_tool_result(messages):
             return EnvironmentStepResult(done=True, messages=())
         code = extract_python_code(assistant_response)
         if code is None:
-            reply = "Provide a fenced ```python block or give the final answer inside \\boxed{}."
+            if boxed_answer is not None:
+                reply = (
+                    "Run at least one fenced ```python block before giving the final answer "
+                    "inside \\boxed{}."
+                )
+            else:
+                reply = (
+                    "Provide a fenced ```python block or give the final answer inside "
+                    "\\boxed{} after using the tool."
+                )
         else:
             output = execute_python(code)
             reply = (
@@ -254,9 +274,16 @@ class MathPythonEnvironment(EnvironmentMultiTurn):
             if message["role"] == "assistant"
         ]
         predicted = extract_boxed_answer(assistant_messages[-1]) if assistant_messages else None
-        correct = predicted is not None and normalize_answer(predicted) == normalize_answer(expected)
+        tool_used = has_python_tool_result(episode.messages)
+        correct = (
+            tool_used
+            and predicted is not None
+            and normalize_answer(predicted) == normalize_answer(expected)
+        )
         if correct:
-            reason = "final boxed answer matches"
+            reason = "final boxed answer matches after python tool execution"
+        elif not tool_used:
+            reason = "no python tool turn was executed before the final answer"
         elif predicted is None:
             reason = "final assistant message has no complete boxed answer"
         else:

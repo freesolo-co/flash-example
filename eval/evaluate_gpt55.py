@@ -114,6 +114,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--base-url", default=GATEWAY_BASE_URL)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--allow-unsafe-local-code-execution",
+        action="store_true",
+        help=(
+            "allow math-python evaluation to run model-generated Python on this host "
+            "without a sandbox"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -121,6 +129,11 @@ def main() -> None:
     args = parse_args()
     if args.workers < 1:
         raise ValueError("workers must be positive")
+    evaluate_suite.require_local_execution_opt_in(
+        args.example,
+        dry_run=args.dry_run,
+        allowed=args.allow_unsafe_local_code_execution,
+    )
     if args.dry_run:
         profile = replace(
             evaluate_suite.PROFILES[args.example], max_tokens=MAX_TOKENS

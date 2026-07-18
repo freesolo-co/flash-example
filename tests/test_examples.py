@@ -398,20 +398,38 @@ def test_math_python_lifecycle_and_tool_output() -> None:
         }
     )
     opening = env.start_episode(example, "")
+    final_turn = r"the result is \boxed{121932631112635269}."
+    premature_messages = [
+        *opening,
+        {"role": "assistant", "content": final_turn},
+    ]
+    premature_step = env.step_episode(example, premature_messages, final_turn)
+    assert premature_step.done is False
+    assert "Run at least one fenced ```python block" in premature_step.messages[0]["content"]
+    premature_reward = env.score_episode(example, episode(*premature_messages))
+    assert premature_reward.success is False
+    assert premature_reward.reason == "no python tool turn was executed before the final answer"
+
     code_turn = "compute it\n```python\nprint(987654321 * 123456789)\n```"
     tool_step = env.step_episode(example, opening, code_turn)
     assert tool_step.done is False
     assert "121932631112635269" in tool_step.messages[0]["content"]
-    final_turn = r"the result is \boxed{121932631112635269}."
     transcript = (
         *opening,
         {"role": "assistant", "content": code_turn},
         tool_step.messages[0],
         {"role": "assistant", "content": final_turn},
     )
+    final_step = env.step_episode(example, list(transcript), final_turn)
+    assert final_step.done is True
     correct = env.score_episode(example, episode(*transcript))
     wrong = env.score_episode(
-        example, episode({"role": "assistant", "content": r"\boxed{0}"})
+        example,
+        episode(
+            {"role": "assistant", "content": code_turn},
+            tool_step.messages[0],
+            {"role": "assistant", "content": r"\boxed{0}"},
+        ),
     )
     assert correct.score == 1.0 and correct.success is True
     assert wrong.score == 0.0 and wrong.success is False
@@ -427,7 +445,9 @@ def test_math_python_execution_is_bounded(monkeypatch) -> None:
     assert module.execute_python("import time; time.sleep(10)") == "execution timed out"
 
 
-def test_eval_requires_math_python_unsafe_opt_in_and_uses_case_bounds() -> None:
+def test_eval_requires_math_python_unsafe_opt_in_and_uses_case_bounds(
+    monkeypatch, tmp_path
+) -> None:
     evaluate = load_python_module(
         ROOT / "eval" / "evaluate_suite.py", "evaluate_suite_regression"
     )
@@ -442,6 +462,20 @@ def test_eval_requires_math_python_unsafe_opt_in_and_uses_case_bounds() -> None:
         assert "--allow-unsafe-local-code-execution" in str(error)
     else:
         raise AssertionError("math-python evaluation did not require unsafe opt-in")
+
+    expected_adapter_models = {
+        "running-total-sft": "flash-1784320041-9c4a32b8",
+        "logic-boolean-sft-grpo": "flash-1784350975-6dc07970",
+        "structured-number-guess-sft-grpo": "flash-1784349640-ceb35b18",
+        "thinking-science-opd": "flash-1784321193-dab97aef",
+        "math-boxed-sft": "flash-1784263689-f98515ce",
+        "math-python-sft": "flash-1784322317-e152ffdd",
+        "thinking-math-sft-opd": "flash-1784326094-ab33c65b",
+        "sudoku-sft-grpo": "flash-1784327754-e1d3a602",
+    }
+    assert {
+        name: profile.adapter_model for name, profile in evaluate.PROFILES.items()
+    } == expected_adapter_models
 
     loaded = evaluate.load_example(evaluate.PROFILES["structured-number-guess-sft-grpo"])
     row = loaded.rows[0]
@@ -474,10 +508,49 @@ def test_eval_requires_math_python_unsafe_opt_in_and_uses_case_bounds() -> None:
     assert requests[0]["stop"] == ["</answer>"]
     assert completion.content == "<answer>True</answer>"
 
+    def create_truncated(**request):
+        _ = request
+        return SimpleNamespace(
+            choices=[
+                SimpleNamespace(
+                    message=SimpleNamespace(content="<answer>True"),
+                    finish_reason="length",
+                )
+            ]
+        )
+
+    truncated_client = SimpleNamespace(
+        chat=SimpleNamespace(completions=SimpleNamespace(create=create_truncated))
+    )
+    truncated = evaluate.request_completion(
+        truncated_client, logic, "test-model", [], logic.rows[0]
+    )
+    assert truncated.content == "<answer>True"
+    assert truncated.finish_reason == "length"
+
     sys.modules["evaluate_suite"] = evaluate
     evaluate_gpt55 = load_python_module(
         ROOT / "eval" / "evaluate_gpt55.py", "evaluate_gpt55_regression"
     )
+    monkeypatch.setattr(
+        evaluate_gpt55,
+        "parse_args",
+        lambda: SimpleNamespace(
+            example="math-python-sft",
+            workers=1,
+            base_url="http://unused.invalid/v1",
+            output=tmp_path / "unsafe.json",
+            dry_run=False,
+            allow_unsafe_local_code_execution=False,
+        ),
+    )
+    try:
+        evaluate_gpt55.main()
+    except RuntimeError as error:
+        assert "--allow-unsafe-local-code-execution" in str(error)
+    else:
+        raise AssertionError("gpt-5.5 math-python evaluation bypassed unsafe opt-in")
+
     monkeypatch_sleep = evaluate_gpt55.time.sleep
     evaluate_gpt55.time.sleep = lambda _: None
 
@@ -520,6 +593,70 @@ def test_eval_requires_math_python_unsafe_opt_in_and_uses_case_bounds() -> None:
         assert response.choices[0].message.content == "ok"
     finally:
         evaluate_gpt55.time.sleep = monkeypatch_sleep
+
+
+def test_multiturn_distillation_requires_unsafe_opt_in_and_rejects_invalid_sudoku_moves() -> None:
+    distill = load_python_module(
+        ROOT / "data-generation" / "distill.py", "distill_multiturn_dependency"
+    )
+    sys.modules["distill"] = distill
+    multiturn = load_python_module(
+        ROOT / "data-generation" / "distill_multiturn.py",
+        "distill_multiturn_regression",
+    )
+    try:
+        multiturn.run(
+            SimpleNamespace(
+                task="math-python-sft",
+                allow_unsafe_local_code_execution=False,
+            )
+        )
+    except RuntimeError as error:
+        assert "--allow-unsafe-local-code-execution" in str(error)
+    else:
+        raise AssertionError("math-python distillation bypassed unsafe opt-in")
+
+    adapter = multiturn.SudokuAdapter()
+    problem = adapter.build_splits(1, 1, 20260717)[0][0]
+    puzzle = problem.row["metadata"]["puzzle"]
+    clue_row, clue_col = next(
+        (row, col)
+        for row in range(9)
+        for col in range(9)
+        if puzzle[row][col] != 0
+    )
+    invalid_clear = adapter.module.format_move(clue_row, clue_col, 0)
+    valid, reason = adapter.validate_protocol(
+        problem,
+        [{"role": "assistant", "content": f"<move>{invalid_clear}</move>"}],
+        SimpleNamespace(success=True, reason="solved"),
+    )
+    assert valid is False
+    assert reason == "assistant turn contained a move rejected by the environment"
+
+
+def test_committed_sudoku_transcripts_replay_only_valid_moves() -> None:
+    module = load_environment_module("sudoku-sft-grpo")
+    source = {
+        str(row["input"]): row
+        for row in module.build_dataset(
+            num_examples=100,
+            max_turns=30,
+            seed=20260717,
+            difficulty="easy",
+        )
+    }
+    rows = read_jsonl(
+        ROOT / "examples" / "sudoku-sft-grpo" / "data" / "train.jsonl"
+    )
+    for row in rows:
+        board = module.SudokuBoard(source[str(row["input"])]["metadata"]["puzzle"])
+        for message in row["output"]["messages"]:
+            if message["role"] != "assistant":
+                continue
+            move = module.parse_move_string(module.extract_move(str(message["content"])))
+            assert move is not None
+            assert board.make_move(*move) is True
 
 
 def test_sudoku_move_parsing_and_full_solve() -> None:

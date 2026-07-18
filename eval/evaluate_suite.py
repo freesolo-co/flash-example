@@ -51,7 +51,7 @@ PROFILES = {
         ),
         Profile(
             "logic-boolean-sft-grpo",
-            "flash-1784316952-a904a84d",
+            "flash-1784350975-6dc07970",
             "single",
             1024,
             "exact_answer_rate",
@@ -59,7 +59,7 @@ PROFILES = {
         ),
         Profile(
             "structured-number-guess-sft-grpo",
-            "flash-1784321381-dbe68392",
+            "flash-1784349640-ceb35b18",
             "multi",
             128,
             "solved_rate",
@@ -299,14 +299,12 @@ def request_completion(
     completion = client.chat.completions.create(**request)
     choice = completion.choices[0]
     content = choice.message.content or ""
-    if loaded.profile.stop_sequences:
+    finish_reason = getattr(choice, "finish_reason", None)
+    if loaded.profile.stop_sequences and finish_reason == "stop":
         stop = loaded.profile.stop_sequences[0]
         if not content.rstrip().endswith(stop):
             content = content.rstrip() + stop
-    return CompletionResult(
-        content=content,
-        finish_reason=getattr(choice, "finish_reason", None),
-    )
+    return CompletionResult(content=content, finish_reason=finish_reason)
 
 
 def evaluate_single_case(
