@@ -17,14 +17,14 @@ This example distills Kimi K2.6 reasoning into `Qwen/Qwen3.5-9B` with SFT, then 
 Run the stages in order. Replace `init_from_adapter` in the OPD config with your new SFT run id when reproducing.
 
 ```bash
-flash env push --name thinking-math-opd examples/thinking-math-opd
-flash train examples/thinking-math-opd/train_sft.toml --dry-run
-flash train examples/thinking-math-opd/train_sft.toml --cost
-flash train examples/thinking-math-opd/train_sft.toml --background
+flash env push --name thinking-math-sft-opd examples/thinking-math-sft-opd
+flash train examples/thinking-math-sft-opd/train_sft.toml --dry-run
+flash train examples/thinking-math-sft-opd/train_sft.toml --cost
+flash train examples/thinking-math-sft-opd/train_sft.toml --background
 
-flash train examples/thinking-math-opd/train_opd.toml --dry-run
-flash train examples/thinking-math-opd/train_opd.toml --cost
-flash train examples/thinking-math-opd/train_opd.toml --background
+flash train examples/thinking-math-sft-opd/train_opd.toml --dry-run
+flash train examples/thinking-math-sft-opd/train_opd.toml --cost
+flash train examples/thinking-math-sft-opd/train_opd.toml --background
 ```
 
 Shipped runs: SFT `flash-1784325488-7a1d31b9`, then OPD `flash-1784326094-ab33c65b`. The final OPD adapter scored 0.92, matching GPT-5.5 at 0.92. The SFT-only adapter scored 0.94; OPD is retained here to show the complete warm-start workflow, not because it improved quality.

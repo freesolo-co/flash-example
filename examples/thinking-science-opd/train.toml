@@ -4,7 +4,7 @@ thinking = false
 seed = 42
 
 [environment]
-id = "clay/thinking-science-grpo"
+id = "clay/thinking-science-opd"
 
 [train]
 max_steps = 50

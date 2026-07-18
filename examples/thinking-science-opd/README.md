@@ -16,10 +16,10 @@ The bundled offline Kimi K2.6 corpus and OpenBookQA held-out split are included 
 ## Train
 
 ```bash
-flash env push --name thinking-science-grpo examples/thinking-science-grpo
-flash train examples/thinking-science-grpo/train.toml --dry-run
-flash train examples/thinking-science-grpo/train.toml --cost
-flash train examples/thinking-science-grpo/train.toml --background
+flash env push --name thinking-science-opd examples/thinking-science-opd
+flash train examples/thinking-science-opd/train.toml --dry-run
+flash train examples/thinking-science-opd/train.toml --cost
+flash train examples/thinking-science-opd/train.toml --background
 ```
 
 The shipped run is `flash-1784321193-dab97aef`. It answered 50/50 held-out questions correctly, matching GPT-5.5 at 50/50. A tested 4B student reached only 90%, so the 9B student is the smallest shipped model from this search.

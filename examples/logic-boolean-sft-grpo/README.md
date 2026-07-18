@@ -20,14 +20,14 @@ The strict parser accepts either a bare terminal answer or one leading `<think>.
 Run the stages in order. Replace `init_from_adapter` in the GRPO config with your new SFT run id when reproducing.
 
 ```bash
-flash env push --name logic-boolean-grpo examples/logic-boolean-grpo
-flash train examples/logic-boolean-grpo/train_sft.toml --dry-run
-flash train examples/logic-boolean-grpo/train_sft.toml --cost
-flash train examples/logic-boolean-grpo/train_sft.toml --background
+flash env push --name logic-boolean-sft-grpo examples/logic-boolean-sft-grpo
+flash train examples/logic-boolean-sft-grpo/train_sft.toml --dry-run
+flash train examples/logic-boolean-sft-grpo/train_sft.toml --cost
+flash train examples/logic-boolean-sft-grpo/train_sft.toml --background
 
-flash train examples/logic-boolean-grpo/train_grpo.toml --dry-run
-flash train examples/logic-boolean-grpo/train_grpo.toml --cost
-flash train examples/logic-boolean-grpo/train_grpo.toml --background
+flash train examples/logic-boolean-sft-grpo/train_grpo.toml --dry-run
+flash train examples/logic-boolean-sft-grpo/train_grpo.toml --cost
+flash train examples/logic-boolean-sft-grpo/train_grpo.toml --background
 ```
 
 Shipped runs: SFT `flash-1784350210-5225a6a4`, then GRPO `flash-1784350975-6dc07970`. The SFT adapter scored 45/50, and the GRPO adapter scored 48/50 with mean reward 0.96 versus GPT-5.5 at 50/50. Both remaining misses were deeply nested expressions whose correct value was `True`. A 9B SFT-to-GRPO run missed the same two cases, so the 4B adapter is shipped.
@@ -39,7 +39,7 @@ Single-stage GRPO scored 0/50. Under this strict all-or-nothing reward, cold-sta
 ```bash
 flash deploy flash-1784350975-6dc07970
 export FLASH_RUN_ID=flash-1784350975-6dc07970
-uv run python examples/logic-boolean-grpo/call.py
+uv run python examples/logic-boolean-sft-grpo/call.py
 flash undeploy flash-1784350975-6dc07970
 ```
 

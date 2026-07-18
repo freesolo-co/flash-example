@@ -4,7 +4,7 @@ thinking = false
 seed = 42
 
 [environment]
-id = "clay/thinking-math-opd"
+id = "clay/thinking-math-sft-opd"
 
 [environment.params]
 dataset = "generated"

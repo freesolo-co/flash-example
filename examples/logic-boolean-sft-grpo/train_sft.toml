@@ -4,7 +4,7 @@ thinking = false
 seed = 42
 
 [environment]
-id = "clay/logic-boolean-grpo-phase2-20260718"
+id = "clay/logic-boolean-sft-grpo-phase2-20260718"
 
 [environment.params]
 use_distilled = true

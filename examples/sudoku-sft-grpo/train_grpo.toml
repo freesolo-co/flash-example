@@ -4,7 +4,7 @@ thinking = false
 seed = 42
 
 [environment]
-id = "clay/sudoku-grpo"
+id = "clay/sudoku-sft-grpo"
 
 [environment.params]
 num_examples = 500

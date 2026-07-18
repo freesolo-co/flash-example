@@ -15,10 +15,10 @@ This example distills Kimi K2.6 reasoning into `Qwen/Qwen3.5-9B` with pure SFT. 
 ## Train
 
 ```bash
-flash env push --name math-boxed-grpo examples/math-boxed-grpo
-flash train examples/math-boxed-grpo/train.toml --dry-run
-flash train examples/math-boxed-grpo/train.toml --cost
-flash train examples/math-boxed-grpo/train.toml --background
+flash env push --name math-boxed-sft examples/math-boxed-sft
+flash train examples/math-boxed-sft/train.toml --dry-run
+flash train examples/math-boxed-sft/train.toml --cost
+flash train examples/math-boxed-sft/train.toml --background
 ```
 
 The shipped run is `flash-1784263689-f98515ce`. It reached 0.90 held-out accuracy versus GPT-5.5 at 0.92, one of 50 held-out cases behind and therefore near parity.

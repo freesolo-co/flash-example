@@ -15,10 +15,10 @@ This multi-turn example distills Kimi K2.6 tool-use trajectories into `Qwen/Qwen
 ## Train
 
 ```bash
-flash env push --name math-python-grpo examples/math-python-grpo
-flash train examples/math-python-grpo/train.toml --dry-run
-flash train examples/math-python-grpo/train.toml --cost
-flash train examples/math-python-grpo/train.toml --background
+flash env push --name math-python-sft examples/math-python-sft
+flash train examples/math-python-sft/train.toml --dry-run
+flash train examples/math-python-sft/train.toml --cost
+flash train examples/math-python-sft/train.toml --background
 ```
 
 The shipped run is `flash-1784322317-e152ffdd`. It scored 92% reward accuracy versus GPT-5.5 at 82% under the strict tool-use and boxed-answer contract.
