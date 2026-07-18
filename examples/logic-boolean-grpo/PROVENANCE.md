@@ -20,4 +20,4 @@ No source code was copied verbatim. The task behavior and verification contract 
 
 ## Limitations
 
-The dataset is a bounded pool of 24 synthetic expressions with controlled depths from 1 through 5. It covers only boolean expressions, not the rest of the source logic corpus. It is intended as a compact training example, not as a benchmark or a reproduction of the source dataset distribution. Exact-match reward checks only the final tagged truth value and does not grade the reasoning trace.
+The GRPO environment uses a bounded pool of 24 synthetic expressions with controlled depths from 1 through 5, while the SFT warm start uses 150 disjoint teacher-completed expressions. The example covers only boolean expressions, not the rest of the source logic corpus. It is intended as a compact training example, not as a benchmark or a reproduction of the source dataset distribution. Exact-match reward checks only the final tagged truth value and does not grade the reasoning trace.

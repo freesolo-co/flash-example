@@ -15,9 +15,9 @@ You may instead pass `--api-env-file /path/to/private.env`. Keep that file outsi
 Default teachers reproduce the bundled corpora:
 
 - Kimi K2.6 (`moonshotai/kimi-k2.6`): running total, structured number guess, math boxed, math Python, thinking math, and thinking science
-- GLM-5.2 (`z-ai/glm-5.2`): Sudoku and the optional logic-boolean audit/SFT corpus
+- GLM-5.2 (`z-ai/glm-5.2`): Sudoku and logic boolean
 
-The shipped logic-boolean adapter is teacher-free GRPO and does not consume its generated corpus.
+The shipped logic-boolean recipe consumes its strict-normalized generated corpus for the SFT warm start before GRPO.
 
 Use `--teacher-model` only when intentionally running a new experiment.
 

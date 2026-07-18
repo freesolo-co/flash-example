@@ -1,23 +1,25 @@
 # Flash training examples
 
-Eight end-to-end examples for training small Qwen3.5 task adapters with [Flash](https://github.com/freesolo-co/flash): seven use teacher-distilled data, while logic boolean is teacher-free environment RL. Five unaffected frozen evaluations are reported below; logic boolean, structured number guess, and Sudoku are pending Phase 2 re-evaluation after correctness fixes.
+Eight end-to-end examples for training small Qwen3.5 task adapters with [Flash](https://github.com/freesolo-co/flash). All eight use teacher supervision through bundled SFT trajectories or OPD, and all eight now have frozen 50-case evaluations under their active contracts.
 
-This is not a general claim that the students beat GPT-5.5. Some unaffected students score higher on frozen tasks because GPT-5.5 occasionally violates strict boxed-answer, tool-use, or multi-turn contracts. See [RESULTS.md](RESULTS.md) for the full framing, run ids, token footprint, stale-result markers, and SFT-versus-RL ablations.
+This is not a general claim that the students beat GPT-5.5. Some students score higher on frozen tasks because GPT-5.5 occasionally violates strict boxed-answer, tool-use, or multi-turn contracts. See [RESULTS.md](RESULTS.md) for the full framing, run ids, footprint notes, corrected-result history, and SFT-versus-RL ablations.
 
 ## Examples
 
-| Example                                                          | Base       | Shipped recipe    | Teacher      | Held-out result      |
-| ---------------------------------------------------------------- | ---------- | ----------------- | ------------ | -------------------- |
-| [Running total](examples/running-total-sft)                      | Qwen3.5-2B | pure SFT          | Kimi K2.6    | 100%, GPT-5.5 100%   |
-| [Logic boolean](examples/logic-boolean-grpo)                     | Qwen3.5-4B | single-stage GRPO | teacher-free | pending Phase 2      |
-| [Structured number guess](examples/structured-number-guess-grpo) | Qwen3.5-2B | SFT to GRPO       | Kimi K2.6    | pending Phase 2      |
-| [Thinking science](examples/thinking-science-grpo)               | Qwen3.5-9B | single-stage OPD  | Kimi K2.6    | 50/50, GPT-5.5 50/50 |
-| [Math boxed](examples/math-boxed-grpo)                           | Qwen3.5-9B | pure SFT          | Kimi K2.6    | 0.90, GPT-5.5 0.92   |
-| [Math Python](examples/math-python-grpo)                         | Qwen3.5-4B | pure SFT          | Kimi K2.6    | 92%, GPT-5.5 82%     |
-| [Thinking math](examples/thinking-math-opd)                      | Qwen3.5-9B | SFT to OPD        | Kimi K2.6    | 0.92, GPT-5.5 0.92   |
-| [Sudoku](examples/sudoku-grpo)                                   | Qwen3.5-4B | SFT to GRPO       | GLM-5.2      | pending Phase 2      |
+| Example                                                          | Base       | Shipped recipe   | Teacher   | Held-out result              |
+| ---------------------------------------------------------------- | ---------- | ---------------- | --------- | ---------------------------- |
+| [Running total](examples/running-total-sft)                      | Qwen3.5-2B | pure SFT         | Kimi K2.6 | 100%, GPT-5.5 100%           |
+| [Logic boolean](examples/logic-boolean-grpo)                     | Qwen3.5-4B | SFT to GRPO      | GLM-5.2   | 48/50, GPT-5.5 50/50         |
+| [Structured number guess](examples/structured-number-guess-grpo) | Qwen3.5-2B | SFT to GRPO      | Kimi K2.6 | 50/50, GPT-5.5 50/50         |
+| [Thinking science](examples/thinking-science-grpo)               | Qwen3.5-9B | single-stage OPD | Kimi K2.6 | 50/50, GPT-5.5 50/50         |
+| [Math boxed](examples/math-boxed-grpo)                           | Qwen3.5-9B | pure SFT         | Kimi K2.6 | 0.90, GPT-5.5 0.92           |
+| [Math Python](examples/math-python-grpo)                         | Qwen3.5-4B | pure SFT         | Kimi K2.6 | 92%, GPT-5.5 82%             |
+| [Thinking math](examples/thinking-math-opd)                      | Qwen3.5-9B | SFT to OPD       | Kimi K2.6 | 0.92, GPT-5.5 0.92           |
+| [Sudoku](examples/sudoku-grpo)                                   | Qwen3.5-4B | SFT to GRPO      | GLM-5.2   | 49/50, GPT-5.5 50/50, strict |
 
-Kimi K2.6 is `moonshotai/kimi-k2.6`. Seven shipped recipes use teacher-distilled training data: six from Kimi K2.6 and Sudoku from `z-ai/glm-5.2`. Logic boolean ships as teacher-free GRPO over the deterministic environment. Its GLM-5.2 corpus remains available only for audit or optional SFT and is not consumed by `train.toml`.
+Kimi K2.6 is `moonshotai/kimi-k2.6`. Six recipes use Kimi K2.6 supervision, and logic boolean plus Sudoku use `z-ai/glm-5.2` trajectories. Logic boolean now consumes its strict-normalized GLM-5.2 corpus for SFT before GRPO.
+
+Recipe coverage is three pure-SFT examples (running total, math Python, and math boxed), one single-stage OPD example (thinking science), three SFT-to-GRPO examples (structured number guess, Sudoku, and logic boolean), and one SFT-to-OPD example (thinking math). There is no pure single-stage-GRPO example. Logic's strict all-or-nothing reward cold-started single-stage GRPO at 0/50, so the shipped recipe uses an SFT warm start.
 
 The four community-inspired environments retain their provenance files: math boxed and math Python are adapted from Prime Intellect math environments, logic boolean from `primeintellect/logic-env`, and Sudoku from `m8ngotree/sudoku`. No upstream code is copied.
 
@@ -125,4 +127,4 @@ See [data-generation/README.md](data-generation/README.md) for all eight tasks a
 - math Python executes model-written code directly on the host with no sandbox; local evaluation requires explicit unsafe opt-in and a disposable machine or container
 - provider-reported tokens use different tokenizers and hidden-reasoning conventions
 - latency was measured on different serving stacks and is not a controlled comparison
-- completed results are task-specific comparisons, not a broad model ranking; three corrected tasks remain pending Phase 2
+- all completed results are task-specific comparisons, not a broad model ranking; number guess is parity, while logic and Sudoku are near parity under their corrected contracts

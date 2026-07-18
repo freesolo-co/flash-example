@@ -28,6 +28,6 @@ flash train examples/sudoku-grpo/train_grpo.toml --cost
 flash train examples/sudoku-grpo/train_grpo.toml --background
 ```
 
-Shipped runs: SFT `flash-1784324917-1d8f0ce8`, then GRPO `flash-1784327754-e1d3a602`. The prior held-out and ablation numbers are superseded after correcting clue immutability, move parsing, and unique-solution scoring. Results are pending Phase 2 re-evaluation.
+Shipped runs: SFT `flash-1784324917-1d8f0ce8`, then GRPO `flash-1784327754-e1d3a602`, with step 8 selected. Under the strict corrected reward, the adapter solved 49/50 with mean shaped reward 5.5714 versus GPT-5.5 at 50/50 and 5.6700. This is near parity, one case behind. The earlier held-out and ablation numbers remain superseded because they predated clue immutability, strict one-move parsing, and unique-solution scoring.
 
 See [RESULTS.md](../../RESULTS.md) and [eval](../../eval).
