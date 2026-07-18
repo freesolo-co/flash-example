@@ -1,0 +1,26 @@
+model = "Qwen/Qwen3.5-9B"
+algorithm = "opd"
+thinking = false
+seed = 42
+
+[environment]
+id = "clay/thinking-science-opd"
+
+[train]
+max_steps = 50
+save_at_steps = [10, 25, 40, 50]
+max_examples = 24
+epochs = 10
+batch_size = 4
+group_size = 1
+lora_rank = 16
+lora_alpha = 32
+learning_rate = 0.00001
+temperature = 1.0
+max_context_tokens = 1024
+max_completion_tokens = 384
+teacher_model = "kimi-k2.6"
+
+[wandb]
+project = "thinking-science-pure-opd-20260717"
+run_name = "qwen35-9b-single-stage-opd-seed42"

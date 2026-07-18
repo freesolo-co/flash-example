@@ -1,0 +1,25 @@
+model = "Qwen/Qwen3.5-2B"
+algorithm = "grpo"
+thinking = false
+seed = 42
+
+[environment]
+id = "clay/structured-number-guess-warmstart-20260717"
+
+[train]
+epochs = 2
+max_examples = 100
+max_steps = 30
+save_every = 15
+batch_size = 4
+group_size = 4
+max_context_tokens = 1024
+max_completion_tokens = 64
+temperature = 1.0
+structured_outputs = '{"type":"object","properties":{"guess":{"type":"integer"}},"required":["guess"],"additionalProperties":false}'
+init_from_adapter = "flash-1784319868-8f8ee7be"
+
+[gpu]
+type = "A100 PCIe"
+provider = "runpod"
+exact_type = "A100 PCIe"

@@ -1,0 +1,452 @@
+[
+  {
+    "id": "openbookqa-test-8-135",
+    "input": "Eyes allow humans\nA. to detect when a traffic light changes\nB. detect sour flavors in candy\nC. hear music at concerts\nD. detect acrid odors in the air",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-7-171",
+    "input": "If hot water were poured on an arm, what would happen to internal organs?\nA. they would be scalded\nB. organs would remain uneffected\nC. they would begin to decay\nD. they would experience pain",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-1137",
+    "input": "Dunes can be made out of the same thing as\nA. clothes\nB. food\nC. forests\nD. castles",
+    "answer": "D",
+    "metadata": {
+      "answer": "D",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-8-463",
+    "input": "if coffee sits in the fridge and loses its liquid form, what is that point known as?\nA. the freezing point\nB. the prime point\nC. the boiling point\nD. the melting point",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-8-346",
+    "input": "What would be the flavor if you ate the item that fell and is thought to have hit Sir Issac Newton's head\nA. Sweet\nB. Salty\nC. bitter\nD. sour",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-810",
+    "input": "Conservation\nA. leads to longer drought of resources\nB. leads to longer availability of resources\nC. leads to more consumption\nD. leads to short supply of resources",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-7-1159",
+    "input": "If a new species of predator joins a community\nA. the new species will become herbivores\nB. prey will experience an increase in population\nC. prey will experience a drop in population\nD. the old species will die out",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-1208",
+    "input": "An increase in an object's temperature occurs when\nA. an orange is placed in a refrigerator\nB. a steak is removed from the freezer to defrost\nC. a glass of water is moved from counter top to dinner table\nD. an ice tray is placed in a freezer",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-1937",
+    "input": "A wedge requires\nA. electrical energy\nB. chemical energy\nC. mechanical energy\nD. heat energy",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-8-213",
+    "input": "What could have covered an organism in order to create a trilobite?\nA. Grass\nB. Water\nC. Snow\nD. Sand",
+    "answer": "D",
+    "metadata": {
+      "answer": "D",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-369",
+    "input": "to find out how fast you are going you first need to know\nA. where you're going\nB. distance traveled\nC. distance to travel\nD. home location",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-510",
+    "input": "In order for crops to grow food safely, pesticides are used on them. When it floods, this causes t he what to be poisonous?\nA. air\nB. Corn\nC. Runoff\nD. farmers",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-1180",
+    "input": "Mosquitoes enjoy all the people at a BBQ in the summer for what reason?\nA. steak\nB. blood\nC. nice weather\nD. taking food",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-280",
+    "input": "The aluminum cans were much hotter than the\nA. gold jewelry\nB. wooden fence\nC. brass doorknob\nD. steel pole",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-368",
+    "input": "Birds carrying away fruit helps the tree\nA. grow\nB. fertilize\nC. reproduce\nD. conquer",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-105",
+    "input": "if you put wine from a jug into a thin bottle, how come it conforms?\nA. it exhibits absolute rigidity\nB. it is a solid mass\nC. all of these\nD. it is a variable substance",
+    "answer": "D",
+    "metadata": {
+      "answer": "D",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-473",
+    "input": "What do tuna eat?\nA. Atlantic menhaden\nB. Swedish fish\nC. gummy fish\nD. laminariales",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-463",
+    "input": "Which is best an letting electricity pass through?\nA. tile flooring\nB. human flesh\nC. hockey stick\nD. a steak knife",
+    "answer": "D",
+    "metadata": {
+      "answer": "D",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-675",
+    "input": "A person wants to be able to have more natural power in their home. They choose to cease using a traditional electric company to source this electricity, and so decide to install\nA. sun grafts\nB. sunlight shields\nC. panels collecting sunlight\nD. solar bees",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-350",
+    "input": "The salamander could eat a large amounts of what?\nA. fettuccine if left around\nB. waxy leaves from certain plants\nC. dead carcass meat from livestock\nD. six legged winged organisms",
+    "answer": "D",
+    "metadata": {
+      "answer": "D",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-1074",
+    "input": "What are iron nails made out of?\nA. wood\nB. plastic\nC. metal\nD. glass",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-676",
+    "input": "Animals have more fat\nA. in the ocean\nB. in human homes\nC. in landfills\nD. in polar areas",
+    "answer": "D",
+    "metadata": {
+      "answer": "D",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-7-208",
+    "input": "After a storm\nA. ponds may dry out\nB. flowers will wilt and wither\nC. creek beds may be spilling over\nD. drinking water will be in short supply",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-8-293",
+    "input": "A pot of pasta is boiling on the stove, and the lid on top of the pot is shaking as the water boils more rapidly. A person goes to the stove and removes the pot, releasing steam into the air above, and so the steam is\nA. cold air\nB. water vapor\nC. very dry\nD. boiling water",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-132",
+    "input": "Aluminum is what?\nA. reprocessable\nB. plastic\nC. liquid\nD. absorbent",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-301",
+    "input": "A beach ball goes from flat to round once you put what inside of it?\nA. food\nB. sunlight\nC. gas\nD. salt",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-898",
+    "input": "Green parts of a life form absorb\nA. carbon dioxide\nB. light\nC. oxygen\nD. water",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-8-250",
+    "input": "A meadow vole just gave birth, and needs to feed herself so that she can produce milk for her babies. She searches for food in a field, and happily munches down on some\nA. oil\nB. deer\nC. bugs\nD. recycled plastic fruit",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-1948",
+    "input": "Carnivores\nA. eat foliage and vegetables exclusively\nB. are the bottom of the food chain\nC. require prey to survive\nD. require carbon dioxide to survive",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-1087",
+    "input": "As a drought worsens the level at an aquifer will\nA. stay the same\nB. fluctuate wildly\nC. decrease\nD. increase",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-1924",
+    "input": "Desert environments features\nA. tropical plants\nB. tons of sun\nC. massive rain totals\nD. icy precipitation",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-229",
+    "input": "Nuclear activity is the cause of what celestial occurrence?\nA. axial planetary rotation\nB. comets\nC. planetary formation\nD. the sun's rays",
+    "answer": "D",
+    "metadata": {
+      "answer": "D",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-271",
+    "input": "what system is needed for a body to get its needed supply of the gas humans breathe in?\nA. the circulatory system\nB. the digestive system\nC. the school system\nD. central nervous system",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-317",
+    "input": "What type of useful product can be made from the moving winds?\nA. wood\nB. bananas\nC. electricity\nD. metal",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-7-884",
+    "input": "Banging on a drum causes\nA. music to be loud\nB. music to be appealing\nC. reverberations to strike the eardrum\nD. concerts to sell out",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-767",
+    "input": "Photosynthesis can be performed by\nA. a cabbage cell\nB. a bee cell\nC. a bear cell\nD. a cat cell",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-163",
+    "input": "The transportation with the most mass is likely a\nA. commercial plane\nB. private plane\nC. bus\nD. private car",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-8-205",
+    "input": "The reason Earth is so sturdy is because\nA. It is made from rock\nB. It eats three meals a day\nC. It has a loving family\nD. It is made from metal",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-1200",
+    "input": "What date is the amount of daylight minimized\nA. Jul 4th\nB. Feb 29th\nC. May 3rd\nD. Sep 1st",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-7-108",
+    "input": "exposure to fire could result in\nA. wet items\nB. cold items\nC. none of these\nD. combusted items",
+    "answer": "D",
+    "metadata": {
+      "answer": "D",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-998",
+    "input": "Which animal is hiding from a predator?\nA. a tadpole losing its tail as it grows\nB. an angler fish using its Esca to lure another fish\nC. an octopus mimicking the color and texture of a rocky outcrop\nD. a great white shark breaching the water's surface",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-7-424",
+    "input": "When trying to find fresh clams for dinner, a hungry person would don\nA. a dinner jacket\nB. a diving suit\nC. a warm coat\nD. a dress suit",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-8-491",
+    "input": "A farmer harvests seeds from some plants, such as tomatoes, in order to plant them later on. These seeds, once planted\nA. have their own dirt\nB. have their own sunlight\nC. have a lot of sand\nD. contain their necessary nutrition",
+    "answer": "D",
+    "metadata": {
+      "answer": "D",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-1618",
+    "input": "The chance of wildfires is increased by\nA. parched foliage\nB. torrential rain\nC. lush foliage\nD. careful fire maintenance",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-8-350",
+    "input": "which of these would be most ideal for plant root growth?\nA. a sticky clay soil\nB. soil with worms burrowing around\nC. an arid soil with little looseness\nD. all of these",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-3",
+    "input": "Sources of air pollution are\nA. Walking\nB. Landfills\nC. Water\nD. Chips",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-7-284",
+    "input": "If your dog is overweight\nA. add more fat to their diet\nB. cut back their caloric intake\nC. let them sleep more\nD. increase their caloric intake",
+    "answer": "B",
+    "metadata": {
+      "answer": "B",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-9-163",
+    "input": "A Mola Mola might live where?\nA. Lake Michigan\nB. The Mississippi River\nC. Bay of Bengal\nD. Lake Eerie",
+    "answer": "C",
+    "metadata": {
+      "answer": "C",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-695",
+    "input": "Some berries may be eaten by\nA. a bear or person\nB. a bear or shark\nC. a bear or lion\nD. a bear or wolf",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  },
+  {
+    "id": "openbookqa-test-7-107",
+    "input": "Summertime  happens during June in all but which location?\nA. Australia\nB. in Canada\nC. United States\nD. Europe",
+    "answer": "A",
+    "metadata": {
+      "answer": "A",
+      "source_split": "test"
+    }
+  }
+]

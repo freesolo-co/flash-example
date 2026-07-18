@@ -1,0 +1,25 @@
+model = "Qwen/Qwen3.5-4B"
+algorithm = "sft"
+thinking = false
+seed = 42
+
+[environment]
+id = "clay/logic-boolean-sft-grpo-phase2-20260718"
+
+[environment.params]
+use_distilled = true
+
+[train]
+epochs = 3
+max_examples = 150
+max_steps = 100
+save_every = 50
+batch_size = 4
+max_context_tokens = 2048
+lora_rank = 16
+lora_alpha = 32
+
+[gpu]
+type = "A100 PCIe"
+provider = "runpod"
+exact_type = "A100 PCIe"

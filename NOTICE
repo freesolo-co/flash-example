@@ -3,6 +3,6 @@ Copyright 2026 Freesolo
 
 The running-total example adapts the task contract from DavidBShan/flash-mt-runtotal-env at commit e139a0c5796852a5edb33da469a31a68fd333740.
 
-The structured number-guess example adapts an internal Freesolo environment contract. The thinking-math example adapts the scoring shape of an internal Freesolo GSM8K environment, but includes only newly generated synthetic data.
+The structured number-guess example adapts an internal Freesolo environment contract. The thinking-math example adapts the scoring shape of an internal Freesolo GSM8K environment and includes deterministic samples from OpenAI's GSM8K dataset. The thinking-science example includes deterministic samples from AllenAI's OpenBookQA dataset.
 
 Repository organization is inspired by OpenPipe ART's examples directory. No OpenPipe ART source code is copied into this repository.

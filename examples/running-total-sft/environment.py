@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import json
 import random
 import re
 from collections.abc import Sequence
+from pathlib import Path
 
 from freesolo.datasets import TaskExample
 from freesolo.environments import (
@@ -19,6 +21,7 @@ SYSTEM_PROMPT = (
     "the running total as a bare integer. Do not add words or punctuation."
 )
 _INTEGER = re.compile(r"^[+-]?\d+$")
+_DATASET_PATH = Path(__file__).parent / "data" / "train.jsonl"
 
 
 def number_prompt(value: int) -> str:
@@ -43,8 +46,18 @@ def gold_completion(numbers: Sequence[int]) -> list[dict[str, str]]:
     return messages
 
 
+def parse_numbers(input_text: str) -> list[int]:
+    prefix, separator, values = input_text.partition(":")
+    if prefix.strip() != "Numbers" or not separator:
+        raise ValueError(f"invalid running-total input: {input_text!r}")
+    return [int(value) for value in values.split()]
+
+
 def numbers_for(example: TaskExample) -> list[int]:
-    return [int(value) for value in (example.metadata or {})["numbers"]]
+    metadata = example.metadata or {}
+    if metadata.get("numbers"):
+        return [int(value) for value in metadata["numbers"]]
+    return parse_numbers(str(example.input))
 
 
 def assistant_replies(messages: Sequence[dict[str, str]]) -> list[str]:
@@ -68,9 +81,28 @@ def build_dataset(num_examples: int = 24, seed: int = 0) -> list[dict]:
     return rows
 
 
+def load_distilled_dataset(path: str | Path = _DATASET_PATH) -> list[dict]:
+    rows = []
+    with Path(path).open() as handle:
+        for index, line in enumerate(handle):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            numbers = parse_numbers(str(row["input"]))
+            rows.append(
+                {
+                    "id": f"running-total-distilled-{index:04d}",
+                    "input": row["input"],
+                    "output": row["output"],
+                    "metadata": {"numbers": numbers},
+                }
+            )
+    return rows
+
+
 class RunningTotalEnvironment(EnvironmentMultiTurn):
-    def __init__(self, num_examples: int = 24, seed: int = 0) -> None:
-        self.dataset = build_dataset(num_examples, seed)
+    def __init__(self, dataset_path: str | Path = _DATASET_PATH) -> None:
+        self.dataset = load_distilled_dataset(dataset_path)
 
     def start_episode(
         self, example: TaskExample, prompt_text: str
@@ -118,11 +150,18 @@ class RunningTotalEnvironment(EnvironmentMultiTurn):
         )
 
     def sft_completion(self, example: TaskExample) -> list[dict[str, str]]:
+        output = example.output
+        if isinstance(output, dict) and isinstance(output.get("messages"), list):
+            return [dict(message) for message in output["messages"]]
         return gold_completion(numbers_for(example))
 
 
 def load_environment(**kwargs: object) -> RunningTotalEnvironment:
-    return RunningTotalEnvironment(
-        num_examples=int(kwargs.get("num_examples", 24)),
-        seed=int(kwargs.get("seed", 0)),
-    )
+    dataset_path = kwargs.get("dataset_path", _DATASET_PATH)
+    environment = RunningTotalEnvironment(dataset_path=str(dataset_path))
+    if "num_examples" in kwargs:
+        environment.dataset = build_dataset(
+            num_examples=int(kwargs["num_examples"]),
+            seed=int(kwargs.get("seed", 0)),
+        )
+    return environment

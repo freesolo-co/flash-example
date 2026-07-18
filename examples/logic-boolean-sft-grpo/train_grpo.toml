@@ -1,0 +1,24 @@
+model = "Qwen/Qwen3.5-4B"
+algorithm = "grpo"
+thinking = false
+seed = 42
+
+[environment]
+id = "clay/logic-boolean-sft-grpo-phase2-20260718"
+
+[train]
+epochs = 10
+max_examples = 24
+max_steps = 50
+save_every = 10
+batch_size = 4
+group_size = 4
+max_context_tokens = 768
+max_completion_tokens = 384
+stop_sequences = ["</answer>"]
+init_from_adapter = "flash-1784350210-5225a6a4"
+
+[gpu]
+type = "A100 PCIe"
+provider = "runpod"
+exact_type = "A100 PCIe"
