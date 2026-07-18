@@ -298,8 +298,13 @@ def request_completion(
         }
     completion = client.chat.completions.create(**request)
     choice = completion.choices[0]
+    content = choice.message.content or ""
+    if loaded.profile.stop_sequences:
+        stop = loaded.profile.stop_sequences[0]
+        if not content.rstrip().endswith(stop):
+            content = content.rstrip() + stop
     return CompletionResult(
-        content=choice.message.content or "",
+        content=content,
         finish_reason=getattr(choice, "finish_reason", None),
     )
 

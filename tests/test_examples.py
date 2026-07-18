@@ -5,6 +5,7 @@ import json
 import sys
 import tomllib
 from pathlib import Path
+from types import SimpleNamespace
 
 from freesolo.datasets import TaskExample
 from freesolo.environments import EnvironmentEpisode, EnvironmentMultiTurn
@@ -415,6 +416,76 @@ def test_eval_requires_math_python_unsafe_opt_in_and_uses_case_bounds() -> None:
     guess_schema = schema["properties"]["guess"]
     assert guess_schema["minimum"] == row["metadata"]["low"]
     assert guess_schema["maximum"] == row["metadata"]["high"]
+
+    logic = evaluate.load_example(evaluate.PROFILES["logic-boolean-grpo"])
+    requests = []
+
+    def create(**request):
+        requests.append(request)
+        return SimpleNamespace(
+            choices=[
+                SimpleNamespace(
+                    message=SimpleNamespace(content="<answer>True"),
+                    finish_reason="stop",
+                )
+            ]
+        )
+
+    client = SimpleNamespace(
+        chat=SimpleNamespace(completions=SimpleNamespace(create=create))
+    )
+    completion = evaluate.request_completion(
+        client, logic, "test-model", [], logic.rows[0]
+    )
+    assert requests[0]["stop"] == ["</answer>"]
+    assert completion.content == "<answer>True</answer>"
+
+    sys.modules["evaluate_suite"] = evaluate
+    evaluate_gpt55 = load_python_module(
+        ROOT / "eval" / "evaluate_gpt55.py", "evaluate_gpt55_regression"
+    )
+    monkeypatch_sleep = evaluate_gpt55.time.sleep
+    evaluate_gpt55.time.sleep = lambda _: None
+
+    class Response:
+        def __init__(self, status_code, payload):
+            self.status_code = status_code
+            self._payload = payload
+            self.text = json.dumps(payload)
+            self.is_error = status_code >= 400
+
+        def json(self):
+            return self._payload
+
+    class HttpClient:
+        def __init__(self):
+            self.calls = 0
+
+        def post(self, path, json):
+            _ = path, json
+            self.calls += 1
+            if self.calls == 1:
+                return Response(429, {"detail": "rate limited"})
+            return Response(
+                200,
+                {
+                    "choices": [
+                        {
+                            "message": {"content": "ok"},
+                            "finish_reason": "stop",
+                        }
+                    ]
+                },
+            )
+
+    try:
+        http_client = HttpClient()
+        gateway = evaluate_gpt55.GatewayCaseClient(http_client)
+        response = gateway.create(messages=[], model="test", max_tokens=1)
+        assert http_client.calls == 2
+        assert response.choices[0].message.content == "ok"
+    finally:
+        evaluate_gpt55.time.sleep = monkeypatch_sleep
 
 
 def test_sudoku_move_parsing_and_full_solve() -> None:
