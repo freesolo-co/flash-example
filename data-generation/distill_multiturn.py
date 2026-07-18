@@ -25,23 +25,23 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 ROOT = REPO_ROOT / "examples"
 TASK_MODULES = {
     "running-total-sft": ROOT / "running-total-sft" / "environment.py",
-    "structured-number-guess-grpo": ROOT
-    / "structured-number-guess-grpo"
+    "structured-number-guess-sft-grpo": ROOT
+    / "structured-number-guess-sft-grpo"
     / "environment.py",
-    "math-python-grpo": ROOT / "math-python-grpo" / "environment.py",
-    "sudoku-grpo": ROOT / "sudoku-grpo" / "environment.py",
+    "math-python-sft": ROOT / "math-python-sft" / "environment.py",
+    "sudoku-sft-grpo": ROOT / "sudoku-sft-grpo" / "environment.py",
 }
 TEACHERS = {
     "running-total-sft": "moonshotai/kimi-k2.6",
-    "structured-number-guess-grpo": "moonshotai/kimi-k2.6",
-    "math-python-grpo": "moonshotai/kimi-k2.6",
-    "sudoku-grpo": "z-ai/glm-5.2",
+    "structured-number-guess-sft-grpo": "moonshotai/kimi-k2.6",
+    "math-python-sft": "moonshotai/kimi-k2.6",
+    "sudoku-sft-grpo": "z-ai/glm-5.2",
 }
 DEFAULT_MAX_TOKENS = {
     "running-total-sft": 64,
-    "structured-number-guess-grpo": 64,
-    "math-python-grpo": 384,
-    "sudoku-grpo": 1536,
+    "structured-number-guess-sft-grpo": 64,
+    "math-python-sft": 384,
+    "sudoku-sft-grpo": 1536,
 }
 
 
@@ -256,7 +256,7 @@ class RunningTotalAdapter(ImportedMultiTurnAdapter):
 
 
 class NumberGuessAdapter(ImportedMultiTurnAdapter):
-    task_name = "structured-number-guess-grpo"
+    task_name = "structured-number-guess-sft-grpo"
     environment_path = TASK_MODULES[task_name]
     source_description = {
         "generator": "environment.build_dataset",
@@ -333,7 +333,7 @@ class NumberGuessAdapter(ImportedMultiTurnAdapter):
 
 
 class MathPythonAdapter(ImportedMultiTurnAdapter):
-    task_name = "math-python-grpo"
+    task_name = "math-python-sft"
     environment_path = TASK_MODULES[task_name]
     source_description = {
         "generator": "temporary deterministic arithmetic generator",
@@ -417,7 +417,7 @@ class MathPythonAdapter(ImportedMultiTurnAdapter):
 
 
 class SudokuAdapter(ImportedMultiTurnAdapter):
-    task_name = "sudoku-grpo"
+    task_name = "sudoku-sft-grpo"
     environment_path = TASK_MODULES[task_name]
     source_description = {
         "generator": "environment.build_dataset",
@@ -512,9 +512,9 @@ class SudokuAdapter(ImportedMultiTurnAdapter):
 
 ADAPTERS = {
     "running-total-sft": RunningTotalAdapter,
-    "structured-number-guess-grpo": NumberGuessAdapter,
-    "math-python-grpo": MathPythonAdapter,
-    "sudoku-grpo": SudokuAdapter,
+    "structured-number-guess-sft-grpo": NumberGuessAdapter,
+    "math-python-sft": MathPythonAdapter,
+    "sudoku-sft-grpo": SudokuAdapter,
 }
 
 

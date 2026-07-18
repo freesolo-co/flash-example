@@ -50,7 +50,7 @@ PROFILES = {
             "all_turns_exact_rate",
         ),
         Profile(
-            "logic-boolean-grpo",
+            "logic-boolean-sft-grpo",
             "flash-1784316952-a904a84d",
             "single",
             1024,
@@ -58,42 +58,42 @@ PROFILES = {
             stop_sequences=("</answer>",),
         ),
         Profile(
-            "structured-number-guess-grpo",
+            "structured-number-guess-sft-grpo",
             "flash-1784321381-dbe68392",
             "multi",
             128,
             "solved_rate",
         ),
         Profile(
-            "thinking-science-grpo",
+            "thinking-science-opd",
             "flash-1784321193-dab97aef",
             "single",
             2048,
             "exact_answer_rate",
         ),
         Profile(
-            "math-boxed-grpo",
+            "math-boxed-sft",
             "flash-1784263689-f98515ce",
             "single",
             2048,
             "boxed_answer_rate",
         ),
         Profile(
-            "math-python-grpo",
+            "math-python-sft",
             "flash-1784322317-e152ffdd",
             "multi",
             2048,
             "exact_answer_rate",
         ),
         Profile(
-            "thinking-math-opd",
+            "thinking-math-sft-opd",
             "flash-1784326094-ab33c65b",
             "single",
             2048,
             "exact_answer_rate",
         ),
         Profile(
-            "sudoku-grpo",
+            "sudoku-sft-grpo",
             "flash-1784327754-e1d3a602",
             "multi",
             1536,
@@ -184,17 +184,17 @@ def expected_output(name: str, row: dict[str, Any]) -> Any:
     answer = row.get("answer")
     if name == "running-total-sft":
         return {"expected_running_totals": row.get("expected_running_totals")}
-    if name == "structured-number-guess-grpo":
+    if name == "structured-number-guess-sft-grpo":
         return str(metadata["secret"])
-    if name == "logic-boolean-grpo":
+    if name == "logic-boolean-sft-grpo":
         return f"<answer>{metadata['answer']}</answer>"
-    if name == "thinking-science-grpo":
+    if name == "thinking-science-opd":
         return f"Answer: {metadata['answer']}"
-    if name in {"math-boxed-grpo", "math-python-grpo"}:
+    if name in {"math-boxed-sft", "math-python-sft"}:
         return f"\\boxed{{{metadata.get('answer', answer)}}}"
-    if name == "thinking-math-opd":
+    if name == "thinking-math-sft-opd":
         return f"Answer: {metadata.get('answer', answer)}"
-    if name == "sudoku-grpo":
+    if name == "sudoku-sft-grpo":
         return "Solve the unique puzzle one move at a time."
     raise ValueError(f"unsupported example: {name}")
 
@@ -405,7 +405,7 @@ def evaluate_model(
 def require_local_execution_opt_in(
     example: str, *, dry_run: bool, allowed: bool
 ) -> None:
-    if example != "math-python-grpo" or dry_run:
+    if example != "math-python-sft" or dry_run:
         return
     if not allowed:
         raise RuntimeError(

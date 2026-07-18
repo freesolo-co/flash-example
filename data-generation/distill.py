@@ -42,10 +42,10 @@ OPENBOOKQA_PATHS = {
     "test": "OpenBookQA-V1-Sep2018/Data/Additional/test_complete.jsonl",
 }
 TEACHERS = {
-    "logic-boolean-grpo": "z-ai/glm-5.2",
-    "math-boxed-grpo": "moonshotai/kimi-k2.6",
-    "thinking-math-opd": "moonshotai/kimi-k2.6",
-    "thinking-science-grpo": "moonshotai/kimi-k2.6",
+    "logic-boolean-sft-grpo": "z-ai/glm-5.2",
+    "math-boxed-sft": "moonshotai/kimi-k2.6",
+    "thinking-math-sft-opd": "moonshotai/kimi-k2.6",
+    "thinking-science-opd": "moonshotai/kimi-k2.6",
 }
 TASK_ENVIRONMENTS = {
     task: EXAMPLES_ROOT / task / "environment.py" for task in TEACHERS
@@ -100,13 +100,13 @@ class SingleTurnAdapter:
         self.environment = self.module.load_environment()
 
     def output_for_answer(self, answer: str) -> str:
-        if self.task == "math-boxed-grpo":
+        if self.task == "math-boxed-sft":
             return f"\\boxed{{{answer}}}"
-        if self.task == "thinking-math-opd":
+        if self.task == "thinking-math-sft-opd":
             return f"Answer: {answer}"
-        if self.task == "logic-boolean-grpo":
+        if self.task == "logic-boolean-sft-grpo":
             return f"<answer>{answer}</answer>"
-        if self.task == "thinking-science-grpo":
+        if self.task == "thinking-science-opd":
             return f"Answer: {answer}"
         raise ValueError(f"unsupported task: {self.task}")
 
@@ -356,7 +356,7 @@ def build_splits(
     heldout_size: int,
     seed: int,
 ) -> tuple[list[Problem], list[Problem], dict[str, Any]]:
-    if task in {"math-boxed-grpo", "thinking-math-opd"}:
+    if task in {"math-boxed-sft", "thinking-math-sft-opd"}:
         train = deterministic_sample(parse_gsm8k("train"), train_size, seed)
         heldout = deterministic_sample(parse_gsm8k("test"), heldout_size, seed + 1)
         source = {
@@ -365,7 +365,7 @@ def build_splits(
             "heldout_url": GSM8K_URLS["test"],
             "selection_seed": seed,
         }
-    elif task == "thinking-science-grpo":
+    elif task == "thinking-science-opd":
         pools = parse_openbookqa()
         train = deterministic_sample(pools["train"], train_size, seed)
         heldout = deterministic_sample(pools["test"], heldout_size, seed + 1)
@@ -376,7 +376,7 @@ def build_splits(
             "heldout_split": OPENBOOKQA_PATHS["test"],
             "selection_seed": seed,
         }
-    elif task == "logic-boolean-grpo":
+    elif task == "logic-boolean-sft-grpo":
         train = generate_logic(adapter.module, train_size, seed, "train")
         heldout = generate_logic(
             adapter.module,
@@ -436,7 +436,7 @@ def run(args: argparse.Namespace) -> None:
         args.task, adapter, args.train_size, args.heldout_size, args.seed
     )
     teacher_model = args.teacher_model or TEACHERS[args.task]
-    max_tokens = args.max_tokens or (512 if args.task == "logic-boolean-grpo" else 384)
+    max_tokens = args.max_tokens or (512 if args.task == "logic-boolean-sft-grpo" else 384)
     teacher = OpenRouterTeacher(
         endpoint=args.endpoint,
         model=teacher_model,
