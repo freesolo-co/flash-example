@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, replace
 from pathlib import Path
@@ -27,11 +28,16 @@ class GatewayCaseClient:
         self.chat = SimpleNamespace(completions=self)
 
     def create(self, **request: Any) -> SimpleNamespace:
-        response = self._http_client.post("chat/completions", json=request)
-        if response.is_error:
-            raise RuntimeError(
-                f"gateway request failed with HTTP {response.status_code}: {response.text}"
-            )
+        retryable_statuses = {408, 429, 500, 502, 503, 504}
+        for attempt in range(6):
+            response = self._http_client.post("chat/completions", json=request)
+            if not response.is_error:
+                break
+            if response.status_code not in retryable_statuses or attempt == 5:
+                raise RuntimeError(
+                    f"gateway request failed with HTTP {response.status_code}: {response.text}"
+                )
+            time.sleep(min(2**attempt, 30))
         payload = response.json()
         choice = payload["choices"][0]
         content = choice.get("message", {}).get("content") or ""
