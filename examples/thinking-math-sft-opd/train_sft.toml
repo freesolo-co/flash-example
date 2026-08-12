@@ -23,5 +23,6 @@ type = "A100 PCIe"
 provider = "runpod"
 
 [wandb]
+# unrelated to the freesolo project above: this is the wandb run-grouping label.
 project = "thinking-math-warmstart-20260717"
 run_name = "qwen35-9b-sft-seed42"

@@ -24,5 +24,6 @@ max_completion_tokens = 384
 teacher_model = "kimi-k3"
 
 [wandb]
+# unrelated to the freesolo project above: this is the wandb run-grouping label.
 project = "thinking-science-pure-opd-20260717"
 run_name = "qwen35-9b-single-stage-opd-seed42"
