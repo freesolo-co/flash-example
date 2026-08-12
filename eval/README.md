@@ -1,6 +1,20 @@
 # Held-out evaluation
 
-The evaluation harness runs every model through the checked-in environment lifecycle and reward function on the 50 frozen rows in each example's `data/heldout.json`.
+Every example is scored on the 50 frozen rows in its `data/heldout.json`, graded by the environment's own reward. There are two ways to run that, and which one applies depends on whether the task takes one turn or several.
+
+## Which evaluator
+
+**`flash env eval`** is the integrated path. It scores a deployed adapter against the environment's published `evaluations.py` suite and records the result in the dashboard, so the number lands next to the run that produced it:
+
+```bash
+flash env eval <run-id>
+```
+
+It sends one prompt and grades one response, so it fits the four single-turn examples: `logic-boolean-sft-grpo`, `thinking-science-opd`, `math-boxed-sft`, and `thinking-math-sft-opd`.
+
+**`evaluate_suite.py`** is the local path and drives the full episode loop. The other four examples are multi-turn — running total feeds one number per turn, number guess needs higher/lower feedback, math Python needs an executed tool turn, and Sudoku plays up to 30 moves — so a single response cannot produce the number they report. Their `evaluations.py` raises with a pointer here rather than scoring one reply and quietly reporting a different measurement.
+
+Useful options that only exist locally: `--dry-run`, `--model` / `--base-url`, and the GPT-5.5 comparison below.
 
 ## Shipped adapters
 

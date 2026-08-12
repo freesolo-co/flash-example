@@ -39,6 +39,7 @@ The four community-inspired environments retain their provenance files: math box
 Every example directory contains:
 
 - `environment.py`: native Flash environment, reward, and deterministic task logic
+- `evaluations.py`: the held-out suite `flash env eval` runs, or the reason this task cannot use it
 - `data/train.jsonl`: reward-verified teacher trajectories
 - `data/heldout.json`: 50 frozen cases not sent to the teacher
 - one shipped `train.toml`, or ordered `train_sft.toml` plus `train_grpo.toml` or `train_opd.toml`
@@ -110,13 +111,21 @@ Warm-start child configs intentionally do not set `lora_rank` or `lora_alpha`; t
 
 > **Security warning:** Math Python evaluation executes model-generated Python directly on the host with no sandbox. It is disabled by default. Run it only in a disposable machine or container and explicitly pass `--allow-unsafe-local-code-execution`.
 
-Evaluate a shipped adapter on all 50 frozen cases:
+The four single-turn examples ship an `evaluations.py` suite, so a deployed adapter is scored by Flash itself and the result is recorded against the run:
+
+```bash
+flash env eval <run-id>
+```
+
+That covers logic boolean, thinking science, math boxed, and thinking math. The other four are multi-turn, and `flash env eval` grades a single response per case, so they are scored by the local evaluator that drives the full episode:
 
 ```bash
 uv run python eval/evaluate_suite.py \
   --example running-total-sft \
   --output eval-results/running-total-model.json
 ```
+
+The local evaluator works for all eight and is also where `--dry-run`, `--model`, and `--base-url` live.
 
 Run the corresponding GPT-5.5 comparison through the local gateway:
 
