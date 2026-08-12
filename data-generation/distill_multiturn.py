@@ -32,9 +32,9 @@ TASK_MODULES = {
     "sudoku-sft-grpo": ROOT / "sudoku-sft-grpo" / "environment.py",
 }
 TEACHERS = {
-    "running-total-sft": "moonshotai/kimi-k2.6",
-    "structured-number-guess-sft-grpo": "moonshotai/kimi-k2.6",
-    "math-python-sft": "moonshotai/kimi-k2.6",
+    "running-total-sft": "moonshotai/kimi-k3",
+    "structured-number-guess-sft-grpo": "moonshotai/kimi-k3",
+    "math-python-sft": "moonshotai/kimi-k3",
     "sudoku-sft-grpo": "z-ai/glm-5.2",
 }
 DEFAULT_MAX_TOKENS = {

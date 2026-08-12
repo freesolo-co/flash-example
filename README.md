@@ -21,9 +21,14 @@ For the Flash workflow and platform documentation, see the [Freesolo docs](https
 
 Math Python is parity under the enforced tool-use contract: the adapter scored 49/50, and GPT-5.5 scored 45/46 completed OpenRouter cases (97.8%); four additional provider requests hung and were not scored.
 
-Kimi K2.6 is `moonshotai/kimi-k2.6`. Six recipes use Kimi K2.6 supervision, and logic boolean plus Sudoku use `z-ai/glm-5.2` trajectories. Logic boolean now consumes its strict-normalized GLM-5.2 corpus for SFT before GRPO.
+Six recipes use Kimi supervision, and logic boolean plus Sudoku use GLM-5.2 trajectories. Logic boolean now consumes its strict-normalized GLM-5.2 corpus for SFT before GRPO.
 
-Those are the OpenRouter model ids used to generate the bundled trajectories. The OPD configs are a separate surface: `[train] teacher_model` selects a Flash-managed teacher by alias, and the shipped configs use `kimi-k3` because the `kimi-k2.6` alias the campaign ran under has since been retired. Run `flash train --dry-run` to see the current allow-list if an alias is rejected.
+Both teacher surfaces now point at Kimi K3, under the two different names each one uses:
+
+- OPD training: `[train] teacher_model = "kimi-k3"`, a Flash-managed teacher alias. Provider and repository ids are not accepted here; `flash train --dry-run` lists the current allow-list if an alias is rejected.
+- data regeneration: `moonshotai/kimi-k3`, an OpenRouter model id passed straight through to their API.
+
+The bundled trajectories and every number in [RESULTS.md](RESULTS.md) came from the predecessor, Kimi K2.6, which Flash has since retired as a managed alias.
 
 Recipe coverage is three pure-SFT examples (running total, math Python, and math boxed), one single-stage OPD example (thinking science), three SFT-to-GRPO examples (structured number guess, Sudoku, and logic boolean), and one SFT-to-OPD example (thinking math). There is no pure single-stage-GRPO example. Logic's strict all-or-nothing reward cold-started single-stage GRPO at 0/50, so the shipped recipe uses an SFT warm start.
 
