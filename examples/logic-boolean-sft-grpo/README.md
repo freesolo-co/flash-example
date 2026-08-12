@@ -20,7 +20,7 @@ The strict parser accepts either a bare terminal answer or one leading `<think>.
 Run the stages in order. Replace `init_from_adapter` in the GRPO config with your new SFT run id when reproducing.
 
 ```bash
-flash env push --name logic-boolean-sft-grpo examples/logic-boolean-sft-grpo
+flash env push --name logic-boolean-sft-grpo --project <your-uuid> examples/logic-boolean-sft-grpo
 flash train examples/logic-boolean-sft-grpo/train_sft.toml --dry-run
 flash train examples/logic-boolean-sft-grpo/train_sft.toml --cost
 flash train examples/logic-boolean-sft-grpo/train_sft.toml --background

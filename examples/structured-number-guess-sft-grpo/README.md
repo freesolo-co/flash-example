@@ -17,7 +17,7 @@ This multi-turn example distills Kimi K2.6 binary-search trajectories into `Qwen
 Run the stages in order. Replace `init_from_adapter` in the GRPO config with your new SFT run id when reproducing. The config retains the original campaign parent id; the corrected Phase 2 run used the new SFT parent listed below.
 
 ```bash
-flash env push --name structured-number-guess-sft-grpo examples/structured-number-guess-sft-grpo
+flash env push --name structured-number-guess-sft-grpo --project <your-uuid> examples/structured-number-guess-sft-grpo
 flash train examples/structured-number-guess-sft-grpo/train_sft.toml --dry-run
 flash train examples/structured-number-guess-sft-grpo/train_sft.toml --cost
 flash train examples/structured-number-guess-sft-grpo/train_sft.toml --background

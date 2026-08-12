@@ -205,10 +205,10 @@ def test_warm_start_configs_inherit_parent_lora_shape() -> None:
         assert "lora_rank" not in train
         assert "lora_alpha" not in train
 
-    assert load_config("thinking-math-sft-opd", "train_opd.toml")["train"]["teacher_model"] == "kimi-k2.6"
+    # the campaign ran under the kimi-k2.6 managed alias, which flash has since retired.
+    assert load_config("thinking-math-sft-opd", "train_opd.toml")["train"]["teacher_model"] == "kimi-k3"
     assert (
-        load_config("thinking-science-opd", "train.toml")["train"]["teacher_model"]
-        == "kimi-k2.6"
+        load_config("thinking-science-opd", "train.toml")["train"]["teacher_model"] == "kimi-k3"
     )
     assert load_config("thinking-math-sft-opd", "train_opd.toml")["environment"]["params"] == {
         "dataset": "generated"

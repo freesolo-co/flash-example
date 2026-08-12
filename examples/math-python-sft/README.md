@@ -15,7 +15,7 @@ This multi-turn example distills Kimi K2.6 tool-use trajectories into `Qwen/Qwen
 ## Train
 
 ```bash
-flash env push --name math-python-sft examples/math-python-sft
+flash env push --name math-python-sft --project <your-uuid> examples/math-python-sft
 flash train examples/math-python-sft/train.toml --dry-run
 flash train examples/math-python-sft/train.toml --cost
 flash train examples/math-python-sft/train.toml --background

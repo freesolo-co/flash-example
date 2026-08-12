@@ -15,7 +15,7 @@ This example distills Kimi K2.6 reasoning into `Qwen/Qwen3.5-9B` with pure SFT. 
 ## Train
 
 ```bash
-flash env push --name math-boxed-sft examples/math-boxed-sft
+flash env push --name math-boxed-sft --project <your-uuid> examples/math-boxed-sft
 flash train examples/math-boxed-sft/train.toml --dry-run
 flash train examples/math-boxed-sft/train.toml --cost
 flash train examples/math-boxed-sft/train.toml --background

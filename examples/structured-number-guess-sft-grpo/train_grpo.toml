@@ -2,6 +2,8 @@ model = "Qwen/Qwen3.5-2B"
 algorithm = "grpo"
 thinking = false
 seed = 42
+# replace with your own project uuid: `flash projects list` (or `flash projects create`)
+project = "00000000-0000-0000-0000-000000000000"
 
 [environment]
 id = "clay/structured-number-guess-warmstart-20260717"
@@ -11,7 +13,7 @@ epochs = 2
 max_examples = 100
 max_steps = 30
 save_every = 15
-batch_size = 4
+prompts_per_step = 4
 group_size = 4
 max_context_tokens = 1024
 max_completion_tokens = 64
@@ -22,4 +24,3 @@ init_from_adapter = "flash-1784319868-8f8ee7be"
 [gpu]
 type = "A100 PCIe"
 provider = "runpod"
-exact_type = "A100 PCIe"

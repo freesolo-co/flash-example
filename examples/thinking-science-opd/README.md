@@ -16,7 +16,7 @@ The bundled offline Kimi K2.6 corpus and OpenBookQA held-out split are included 
 ## Train
 
 ```bash
-flash env push --name thinking-science-opd examples/thinking-science-opd
+flash env push --name thinking-science-opd --project <your-uuid> examples/thinking-science-opd
 flash train examples/thinking-science-opd/train.toml --dry-run
 flash train examples/thinking-science-opd/train.toml --cost
 flash train examples/thinking-science-opd/train.toml --background

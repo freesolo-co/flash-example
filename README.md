@@ -23,6 +23,8 @@ Math Python is parity under the enforced tool-use contract: the adapter scored 4
 
 Kimi K2.6 is `moonshotai/kimi-k2.6`. Six recipes use Kimi K2.6 supervision, and logic boolean plus Sudoku use `z-ai/glm-5.2` trajectories. Logic boolean now consumes its strict-normalized GLM-5.2 corpus for SFT before GRPO.
 
+Those are the OpenRouter model ids used to generate the bundled trajectories. The OPD configs are a separate surface: `[train] teacher_model` selects a Flash-managed teacher by alias, and the shipped configs use `kimi-k3` because the `kimi-k2.6` alias the campaign ran under has since been retired. Run `flash train --dry-run` to see the current allow-list if an alias is rejected.
+
 Recipe coverage is three pure-SFT examples (running total, math Python, and math boxed), one single-stage OPD example (thinking science), three SFT-to-GRPO examples (structured number guess, Sudoku, and logic boolean), and one SFT-to-OPD example (thinking math). There is no pure single-stage-GRPO example. Logic's strict all-or-nothing reward cold-started single-stage GRPO at 0/50, so the shipped recipe uses an SFT warm start.
 
 The four community-inspired environments retain their provenance files: math boxed and math Python are adapted from Prime Intellect math environments, logic boolean from `primeintellect/logic-env`, and Sudoku from `m8ngotree/sudoku`. No upstream code is copied.
@@ -51,12 +53,23 @@ Use Python 3.11 or 3.12.
 
 ```bash
 uv sync
-uv tool install --force freesolo-flash==0.2.58
+uv tool install --force freesolo-flash
 flash login
 flash whoami
 uv run pytest
 uv run ruff check .
 ```
+
+## Pick a project
+
+Every run belongs to a Freesolo project, and both `flash train` and `flash env push` require its UUID. Create one (or list the projects you already have) and keep the id handy:
+
+```bash
+flash projects create flash-examples
+flash projects list
+```
+
+Each checked-in `train.toml` carries a placeholder `project` id. Replace it with your own UUID, or override it per command with `--set project=<your-uuid>`.
 
 ## Train an example
 
@@ -65,7 +78,7 @@ Publish the example directory so the bundled `data/train.jsonl` is included with
 Single-stage recipe:
 
 ```bash
-flash env push --name running-total-sft examples/running-total-sft
+flash env push --name running-total-sft --project <your-uuid> examples/running-total-sft
 flash train examples/running-total-sft/train.toml --dry-run
 flash train examples/running-total-sft/train.toml --cost
 flash train examples/running-total-sft/train.toml --background
@@ -74,7 +87,7 @@ flash train examples/running-total-sft/train.toml --background
 Two-stage warm start:
 
 ```bash
-flash env push --name structured-number-guess-sft-grpo examples/structured-number-guess-sft-grpo
+flash env push --name structured-number-guess-sft-grpo --project <your-uuid> examples/structured-number-guess-sft-grpo
 flash train examples/structured-number-guess-sft-grpo/train_sft.toml --background
 ```
 

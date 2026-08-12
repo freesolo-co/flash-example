@@ -2,6 +2,8 @@ model = "Qwen/Qwen3.5-9B"
 algorithm = "opd"
 thinking = false
 seed = 42
+# replace with your own project uuid: `flash projects list` (or `flash projects create`)
+project = "00000000-0000-0000-0000-000000000000"
 
 [environment]
 id = "clay/thinking-science-opd"
@@ -11,7 +13,7 @@ max_steps = 50
 save_at_steps = [10, 25, 40, 50]
 max_examples = 24
 epochs = 10
-batch_size = 4
+prompts_per_step = 4
 group_size = 1
 lora_rank = 16
 lora_alpha = 32
@@ -19,7 +21,7 @@ learning_rate = 0.00001
 temperature = 1.0
 max_context_tokens = 1024
 max_completion_tokens = 384
-teacher_model = "kimi-k2.6"
+teacher_model = "kimi-k3"
 
 [wandb]
 project = "thinking-science-pure-opd-20260717"
