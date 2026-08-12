@@ -82,7 +82,8 @@ The practical pattern is to establish the exact output or episode contract with 
 - `examples/*/data/train.jsonl` contains reward-verified teacher trajectories. Logic boolean's file is strict-normalized and consumed by `train_sft.toml`.
 - `examples/*/data/heldout.json` contains the frozen 50-case comparison split.
 - [data-generation](data-generation) regenerates the data from environment-native prompts and rewards.
-- [eval](eval) evaluates shipped adapters and GPT-5.5 through the same environment lifecycle.
+- `flash env eval <run-id>` grades a deployed adapter against the frozen split, using each example's `evaluations.py` sidecar and the environment's own reward.
+- The GPT-5.5 numbers below were produced by a standalone evaluator that has since been deleted along with the rest of `eval/`. They are reported as recorded and are not reproducible from this repository as it stands; reproducing them needs an evaluator that can send the held-out cases to an arbitrary external model.
 - Exact training configs and warm-start run ids are checked into each example directory, except that the number-guess config retains its original campaign parent id and must be updated to a newly reproduced SFT run before launching its GRPO child.
 
 All eight results are task-specific. None establishes broad benchmark dominance, controlled latency superiority, or a known parameter ratio to GPT-5.5.

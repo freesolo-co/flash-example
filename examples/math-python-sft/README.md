@@ -25,6 +25,8 @@ The shipped run is `flash-1784322317-e152ffdd`. It scored 92% reward accuracy ve
 
 ## Execution safety
 
-The local executor uses a temporary directory, a five-second wall-clock timeout, bounded captured output, and a minimal child environment. It still executes model-generated Python directly on the host and is not a security sandbox. Run it only on a disposable machine or inside a container, microVM, or remote code sandbox. The evaluation harness requires `--allow-unsafe-local-code-execution` before enabling this path.
+The local executor uses a temporary directory, a five-second wall-clock timeout, bounded captured output, and a minimal child environment. It still executes model-generated Python directly on the host and is not a security sandbox. Run it only on a disposable machine or inside a container, microVM, or remote code sandbox.
 
-See [RESULTS.md](../../RESULTS.md) and [eval](../../eval).
+This applies to `flash env eval` too: grading this example plays out episodes, and each episode runs the model's fenced Python on the machine you run the command from. Evaluating an adapter you do not trust is equivalent to running its code.
+
+See [RESULTS.md](../../RESULTS.md).

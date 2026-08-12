@@ -29,4 +29,4 @@ flash train examples/structured-number-guess-sft-grpo/train_grpo.toml --backgrou
 
 Corrected Phase 2 runs: SFT `flash-1784349216-ba05be67`, then GRPO `flash-1784349640-ceb35b18`. On 50 genuine varied-secret binary-search cases, the adapter solved 50/50 with mean reward 1.0, matching GPT-5.5 at 50/50 and mean reward 1.0. The older claim that this example exceeded GPT-5.5 came from trivial constant-offset data and is retracted.
 
-See [RESULTS.md](../../RESULTS.md) and [eval](../../eval).
+See [RESULTS.md](../../RESULTS.md). Grade a deployed adapter with `flash env eval <run-id>`.

@@ -39,6 +39,7 @@ The four community-inspired environments retain their provenance files: math box
 Every example directory contains:
 
 - `environment.py`: native Flash environment, reward, and deterministic task logic
+- `evaluations.py`: the held-out suite `flash env eval` runs, or the reason this task cannot use it
 - `data/train.jsonl`: reward-verified teacher trajectories
 - `data/heldout.json`: 50 frozen cases not sent to the teacher
 - one shipped `train.toml`, or ordered `train_sft.toml` plus `train_grpo.toml` or `train_opd.toml`
@@ -48,7 +49,7 @@ Every example directory contains:
 Top-level tooling:
 
 - [data-generation](data-generation): regenerate reward-verified teacher data from environment-native prompts and rewards
-- [eval](eval): evaluate shipped adapters and GPT-5.5 on the same held-out rows
+- `flash env eval <run-id>`: grade a deployed adapter on the frozen held-out rows, using each example's `evaluations.py` and the environment's own reward
 - [RESULTS.md](RESULTS.md): final campaign results, run ids, footprint, and ablations
 - [VALIDATION.md](VALIDATION.md): local and live validation record
 
@@ -108,25 +109,21 @@ Warm-start child configs intentionally do not set `lora_rank` or `lora_alpha`; t
 
 ## Evaluate
 
-> **Security warning:** Math Python evaluation executes model-generated Python directly on the host with no sandbox. It is disabled by default. Run it only in a disposable machine or container and explicitly pass `--allow-unsafe-local-code-execution`.
-
-Evaluate a shipped adapter on all 50 frozen cases:
-
-```bash
-uv run python eval/evaluate_suite.py \
-  --example running-total-sft \
-  --output eval-results/running-total-model.json
-```
-
-Run the corresponding GPT-5.5 comparison through the local gateway:
+Every example ships an `evaluations.py` suite beside its `environment.py`, so a deployed adapter is
+scored by Flash itself against the frozen held-out cases and the result is recorded against the
+run:
 
 ```bash
-uv run python eval/evaluate_gpt55.py \
-  --example running-total-sft \
-  --output eval-results/running-total-gpt55.json
+flash env eval <run-id>
 ```
 
-See [eval/README.md](eval/README.md) for model, endpoint, and dry-run options.
+That covers all eight. The four multi-turn examples -- running total, number guess, math python,
+and sudoku -- grade a whole transcript rather than one reply, so their suites set
+`grades_episodes = True` and `flash env eval` plays each case out turn by turn before scoring it
+with the environment's own reward.
+
+Episode grading requires a Flash new enough to honour that opt-in. An older CLI sends one prompt
+per case, which measures a different task than the run trains on.
 
 ## Regenerate distilled data
 
