@@ -24,4 +24,4 @@ flash train examples/thinking-science-opd/train.toml --background
 
 The shipped run is `flash-1784321193-dab97aef`. It answered 50/50 held-out questions correctly, matching GPT-5.5 at 50/50. A tested 4B student reached only 90%, so the 9B student is the smallest shipped model from this search.
 
-See [RESULTS.md](../../RESULTS.md) and [eval](../../eval).
+See [RESULTS.md](../../RESULTS.md). Grade a deployed adapter with `flash env eval <run-id>`.

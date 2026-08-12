@@ -49,7 +49,7 @@ Every example directory contains:
 Top-level tooling:
 
 - [data-generation](data-generation): regenerate reward-verified teacher data from environment-native prompts and rewards
-- [eval](eval): evaluate shipped adapters and GPT-5.5 on the same held-out rows
+- `flash env eval <run-id>`: grade a deployed adapter on the frozen held-out rows, using each example's `evaluations.py` and the environment's own reward
 - [RESULTS.md](RESULTS.md): final campaign results, run ids, footprint, and ablations
 - [VALIDATION.md](VALIDATION.md): local and live validation record
 

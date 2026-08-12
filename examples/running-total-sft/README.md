@@ -33,4 +33,4 @@ uv run python examples/running-total-sft/call.py
 flash undeploy flash-1784320041-9c4a32b8
 ```
 
-See [RESULTS.md](../../RESULTS.md) for the campaign comparison and [eval](../../eval) for the held-out harness.
+See [RESULTS.md](../../RESULTS.md) for the campaign comparison. Grade a deployed adapter against the held-out rows with `flash env eval <run-id>`.

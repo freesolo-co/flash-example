@@ -23,4 +23,4 @@ flash train examples/math-boxed-sft/train.toml --background
 
 The shipped run is `flash-1784263689-f98515ce`. It reached 0.90 held-out accuracy versus GPT-5.5 at 0.92, one of 50 held-out cases behind and therefore near parity.
 
-See [RESULTS.md](../../RESULTS.md) and [eval](../../eval).
+See [RESULTS.md](../../RESULTS.md). Grade a deployed adapter with `flash env eval <run-id>`.

@@ -43,4 +43,4 @@ uv run python examples/logic-boolean-sft-grpo/call.py
 flash undeploy flash-1784350975-6dc07970
 ```
 
-See [RESULTS.md](../../RESULTS.md) and [eval](../../eval).
+See [RESULTS.md](../../RESULTS.md). Grade a deployed adapter with `flash env eval <run-id>`.
