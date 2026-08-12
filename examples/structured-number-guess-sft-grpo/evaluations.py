@@ -150,4 +150,13 @@ def load_evaluations(environment=None, **kwargs: object) -> list[EvalSuite]:
         from environment import load_environment
 
         scorer = load_environment(**kwargs)
+    if not hasattr(scorer, "reward_with_error"):
+        # the raw SDK environment exposes score_episode, not the wrapper's rollout-state api, so a
+        # suite built on it would raise AttributeError on the first case instead of here. flash
+        # always passes its wrapper; this only fires for a direct call that omits it.
+        raise TypeError(
+            f"{type(scorer).__name__} is the raw SDK environment, which cannot score a rollout "
+            "state. Pass the Flash-wrapped environment: "
+            "load_evaluations(environment=flash.envs.loader.load_freesolo_environment(path))"
+        )
     return [EpisodeEvalSuite(scorer, heldout_cases())]

@@ -115,3 +115,30 @@ def test_multi_turn_suite_exposes_the_frozen_cases(example: str) -> None:
     assert len(cases) == EXPECTED_CASES
     assert all(case.id for case in cases), "every case needs an id to report against"
     assert all(case.metadata for case in cases), "the environment scores from case metadata"
+
+
+@pytest.mark.parametrize("example", MULTI_TURN)
+def test_multi_turn_sidecar_rejects_the_unwrapped_environment(example: str) -> None:
+    """`load_evaluations()` without flash's wrapper must fail loudly at construction.
+
+    The raw SDK environment exposes `score_episode`, not the wrapper's `reward_with_error`, so a
+    suite built on it raises AttributeError on the first case scored. Failing here instead names
+    the actual problem while the caller can still act on it.
+    """
+    import importlib.util
+    import sys
+
+    directory = ROOT / "examples" / example
+    spec = importlib.util.spec_from_file_location(
+        f"sidecar_{example.replace('-', '_')}", directory / "evaluations.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    sys.path.insert(0, str(directory))
+    try:
+        spec.loader.exec_module(module)
+        with pytest.raises(TypeError, match="raw SDK environment"):
+            module.load_evaluations()
+    finally:
+        sys.path.remove(str(directory))
+        for name in ("environment", "evaluations"):
+            sys.modules.pop(name, None)
