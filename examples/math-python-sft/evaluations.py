@@ -32,8 +32,8 @@ def heldout_cases() -> list:
     `flash.envs.evaluations.validate_evaluation_cases` requires real `EvalCase` instances via
     `isinstance`, so a structurally identical local class does not pass. Flash is always importable
     where this matters, because flash is the process running `env eval`. When it is absent -- the
-    SDK alone, or `eval/evaluate_suite.py` -- fall back to `TaskExample`, which carries the same
-    four fields this suite needs.
+    SDK alone, or any consumer without the CLI installed -- fall back to `TaskExample`, which
+    carries the same four fields this suite needs.
 
     The metadata must survive the trip: the driver rebuilds the example from `case.metadata`
     (`flash/cli/commands/env/test.py:_evaluation_example`), and these environments read `numbers`,

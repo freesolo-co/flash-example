@@ -1,7 +1,7 @@
 """Held-out evaluation suite for `flash env eval`.
 
 Published beside environment.py, so `flash env eval <run-id>` scores a deployed adapter against
-the same 50 frozen cases eval/evaluate_suite.py uses, graded by the environment's own reward.
+the same 50 frozen held-out cases, graded by the environment's own reward.
 """
 
 from __future__ import annotations

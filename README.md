@@ -109,33 +109,21 @@ Warm-start child configs intentionally do not set `lora_rank` or `lora_alpha`; t
 
 ## Evaluate
 
-> **Security warning:** Math Python evaluation executes model-generated Python directly on the host with no sandbox. It is disabled by default. Run it only in a disposable machine or container and explicitly pass `--allow-unsafe-local-code-execution`.
-
-The four single-turn examples ship an `evaluations.py` suite, so a deployed adapter is scored by Flash itself and the result is recorded against the run:
+Every example ships an `evaluations.py` suite beside its `environment.py`, so a deployed adapter is
+scored by Flash itself against the frozen held-out cases and the result is recorded against the
+run:
 
 ```bash
 flash env eval <run-id>
 ```
 
-That covers logic boolean, thinking science, math boxed, and thinking math. The other four are multi-turn, and `flash env eval` grades a single response per case, so they are scored by the local evaluator that drives the full episode:
+That covers all eight. The four multi-turn examples -- running total, number guess, math python,
+and sudoku -- grade a whole transcript rather than one reply, so their suites set
+`grades_episodes = True` and `flash env eval` plays each case out turn by turn before scoring it
+with the environment's own reward.
 
-```bash
-uv run python eval/evaluate_suite.py \
-  --example running-total-sft \
-  --output eval-results/running-total-model.json
-```
-
-The local evaluator works for all eight and is also where `--dry-run`, `--model`, and `--base-url` live.
-
-Run the corresponding GPT-5.5 comparison through the local gateway:
-
-```bash
-uv run python eval/evaluate_gpt55.py \
-  --example running-total-sft \
-  --output eval-results/running-total-gpt55.json
-```
-
-See [eval/README.md](eval/README.md) for model, endpoint, and dry-run options.
+Episode grading requires a Flash new enough to honour that opt-in. An older CLI sends one prompt
+per case, which measures a different task than the run trains on.
 
 ## Regenerate distilled data
 
