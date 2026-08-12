@@ -17,7 +17,7 @@ This example distills Kimi K2.6 reasoning into `Qwen/Qwen3.5-9B` with SFT, then 
 Run the stages in order. Replace `init_from_adapter` in the OPD config with your new SFT run id when reproducing.
 
 ```bash
-flash env push --name thinking-math-sft-opd examples/thinking-math-sft-opd
+flash env push --name thinking-math-sft-opd --project <your-uuid> examples/thinking-math-sft-opd
 flash train examples/thinking-math-sft-opd/train_sft.toml --dry-run
 flash train examples/thinking-math-sft-opd/train_sft.toml --cost
 flash train examples/thinking-math-sft-opd/train_sft.toml --background

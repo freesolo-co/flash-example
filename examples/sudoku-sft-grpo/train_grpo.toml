@@ -2,6 +2,8 @@ model = "Qwen/Qwen3.5-4B"
 algorithm = "grpo"
 thinking = false
 seed = 42
+# replace with your own project uuid: `flash projects list` (or `flash projects create`)
+project = "00000000-0000-0000-0000-000000000000"
 
 [environment]
 id = "clay/sudoku-sft-grpo"
@@ -17,7 +19,7 @@ epochs = 1
 max_examples = 500
 max_steps = 20
 save_at_steps = [4, 8, 20]
-batch_size = 4
+prompts_per_step = 4
 group_size = 4
 max_context_tokens = 8192
 max_completion_tokens = 512
@@ -29,6 +31,3 @@ init_from_adapter = "flash-1784324917-1d8f0ce8"
 [gpu]
 provider = "runpod"
 type = "H100"
-exact_type = "H100"
-max_retries = 5
-max_wall_seconds = 3600

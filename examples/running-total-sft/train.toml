@@ -2,6 +2,8 @@ model = "Qwen/Qwen3.5-2B"
 algorithm = "sft"
 thinking = false
 seed = 42
+# replace with your own project uuid: `flash projects list` (or `flash projects create`)
+project = "00000000-0000-0000-0000-000000000000"
 
 [environment]
 id = "clay/running-total-pure-sft-20260717"
@@ -19,6 +21,4 @@ lora_alpha = 32
 
 [gpu]
 provider = "runpod"
-exact_type = "RTX 4090"
-max_retries = 5
-max_wall_seconds = 1800
+type = "RTX 4090"

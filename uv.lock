@@ -69,7 +69,7 @@ dev = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "freesolo", specifier = ">=0.2.54" },
+    { name = "freesolo", specifier = ">=0.4.0" },
     { name = "httpx", specifier = ">=0.27" },
     { name = "openai", specifier = ">=1.0" },
     { name = "pytest", specifier = ">=8.0" },
@@ -78,14 +78,15 @@ dev = [
 
 [[package]]
 name = "freesolo"
-version = "0.2.56"
+version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "openai" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3e/fa/ff606bcb7432a92b2ac356ef58a7269bd4e04ca9312021b080bbc7f0821d/freesolo-0.2.56.tar.gz", hash = "sha256:380c81f87470a423a78561672ada0c0ed38370430c192ad8cfbb5826d2462a6f", size = 353761, upload-time = "2026-07-02T23:21:31.131Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b9/e9/336cf2366a26ffc032f8483b2519ea77ffbc39334bb6cd4f5ee717e807a0/freesolo-0.4.0.tar.gz", hash = "sha256:f7ad2c6d15769419698e027fcb64bc82300630dde5a33a59a883aa6b7d40ec36", size = 327471, upload-time = "2026-07-31T20:17:46.991Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/26/e5/d136100545354dbe73abec0bbd091027724a97e46895325f313b0a1349ee/freesolo-0.2.56-py3-none-any.whl", hash = "sha256:59bea224b4dc8a44e87c033ca1a2fddfd139b7376e6fb730663dcb8b2804a154", size = 61931, upload-time = "2026-07-02T23:21:30.12Z" },
+    { url = "https://files.pythonhosted.org/packages/61/6f/369511625dfe06bd9fba91581acffe75f3f8842badbdbe8e754fd7c26b78/freesolo-0.4.0-py3-none-any.whl", hash = "sha256:83b5cffe35a123d6e99acb3bc238c4491644ff151b1c4674d980c7fbe1a50ce0", size = 44971, upload-time = "2026-07-31T20:17:45.621Z" },
 ]
 
 [[package]]

@@ -18,7 +18,7 @@ This multi-turn example uses GLM-5.2 trajectories to warm-start `Qwen/Qwen3.5-4B
 Run the stages in order. Replace `init_from_adapter` in the GRPO config with your new SFT run id when reproducing.
 
 ```bash
-flash env push --name sudoku-sft-grpo examples/sudoku-sft-grpo
+flash env push --name sudoku-sft-grpo --project <your-uuid> examples/sudoku-sft-grpo
 flash train examples/sudoku-sft-grpo/train_sft.toml --dry-run
 flash train examples/sudoku-sft-grpo/train_sft.toml --cost
 flash train examples/sudoku-sft-grpo/train_sft.toml --background

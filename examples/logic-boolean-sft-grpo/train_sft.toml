@@ -2,6 +2,8 @@ model = "Qwen/Qwen3.5-4B"
 algorithm = "sft"
 thinking = false
 seed = 42
+# replace with your own project uuid: `flash projects list` (or `flash projects create`)
+project = "00000000-0000-0000-0000-000000000000"
 
 [environment]
 id = "clay/logic-boolean-sft-grpo-phase2-20260718"
@@ -22,4 +24,3 @@ lora_alpha = 32
 [gpu]
 type = "A100 PCIe"
 provider = "runpod"
-exact_type = "A100 PCIe"

@@ -16,7 +16,7 @@ This example distills Kimi K2.6 trajectories into `Qwen/Qwen3.5-2B` with pure SF
 The checked-in environment id is the immutable campaign environment containing the same bundled training data. Replace it if you publish your own copy.
 
 ```bash
-flash env push --name running-total-sft examples/running-total-sft
+flash env push --name running-total-sft --project <your-uuid> examples/running-total-sft
 flash train examples/running-total-sft/train.toml --dry-run
 flash train examples/running-total-sft/train.toml --cost
 flash train examples/running-total-sft/train.toml --background

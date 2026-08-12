@@ -44,9 +44,9 @@ OPENBOOKQA_PATHS = {
 }
 TEACHERS = {
     "logic-boolean-sft-grpo": "z-ai/glm-5.2",
-    "math-boxed-sft": "moonshotai/kimi-k2.6",
-    "thinking-math-sft-opd": "moonshotai/kimi-k2.6",
-    "thinking-science-opd": "moonshotai/kimi-k2.6",
+    "math-boxed-sft": "moonshotai/kimi-k3",
+    "thinking-math-sft-opd": "moonshotai/kimi-k3",
+    "thinking-science-opd": "moonshotai/kimi-k3",
 }
 TASK_ENVIRONMENTS = {
     task: EXAMPLES_ROOT / task / "environment.py" for task in TEACHERS

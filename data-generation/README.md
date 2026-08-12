@@ -12,10 +12,12 @@ export OPENROUTER_API_KEY="..."
 
 You may instead pass `--api-env-file /path/to/private.env`. Keep that file outside this repository. The scripts read `OPENROUTER_API_KEY` at runtime and never write it to data, manifests, or logs.
 
-Default teachers reproduce the bundled corpora:
+Default teachers:
 
-- Kimi K2.6 (`moonshotai/kimi-k2.6`): running total, structured number guess, math boxed, math Python, thinking math, and thinking science
+- Kimi K3 (`moonshotai/kimi-k3`): running total, structured number guess, math boxed, math Python, thinking math, and thinking science
 - GLM-5.2 (`z-ai/glm-5.2`): Sudoku and logic boolean
+
+The bundled corpora were generated with Kimi K2.6, which these defaults have since replaced. Regenerating produces a new K3 corpus rather than reproducing the checked-in one byte for byte; pass `--teacher-model moonshotai/kimi-k2.6` to stay on the original teacher.
 
 The shipped logic-boolean recipe consumes its strict-normalized generated corpus for the SFT warm start before GRPO.
 

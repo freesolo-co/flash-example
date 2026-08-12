@@ -2,6 +2,8 @@ model = "Qwen/Qwen3.5-9B"
 algorithm = "sft"
 thinking = false
 seed = 42
+# replace with your own project uuid: `flash projects list` (or `flash projects create`)
+project = "00000000-0000-0000-0000-000000000000"
 
 [environment]
 id = "clay/thinking-math-kimi-sft-4b-20260717"
@@ -19,8 +21,8 @@ lora_alpha = 32
 [gpu]
 type = "A100 PCIe"
 provider = "runpod"
-exact_type = "A100 PCIe"
 
 [wandb]
+# unrelated to the freesolo project above: this is the wandb run-grouping label.
 project = "thinking-math-warmstart-20260717"
 run_name = "qwen35-9b-sft-seed42"
